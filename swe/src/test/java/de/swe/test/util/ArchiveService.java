@@ -30,7 +30,7 @@ public enum ArchiveService {
 	
 	private static final String SOLDER_VERSION = "3.1.0.Final";
 	
-	private static final String INFINISPAN_CDI_VERSION = "5.1.1.FINAL";
+	private static final String INFINISPAN_CDI_VERSION = "5.1.2.FINAL";
 	private static final String CACHE_API_VERSION = "0.4";
 	
 	private static final String SEAM_VERSION = "3.1.0.Final";
