@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+	<persistence-unit name="swePersistenceUnit">
+		<jta-data-source>java:jboss/datasources/SweDS</jta-data-source>
+		
+		<!-- Caching von Objekten mit @Cacheable -->
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		
+		<!-- JPA 2.0: Bean Validation innerhalb des OR-Mappers abschalten,
+		     da im UI bzw. im Web Service bereits validiert wird -->
+		<validation-mode>NONE</validation-mode>
+		
+		<properties>
+			<!-- Keine proprietaeren Erweiterungen von HQL nutzen -->
+			<property name="hibernate.query.jpaql_strict_compliance" value="true"/>
+
+			<!-- SQL-Anweisungen lesbar protokollieren -->
+			<property name="hibernate.format_sql" value="true"/>
+
+			<!-- Kommentare zu den generierten SQL-Anweisungen hinzufuegen -->
+			<property name="hibernate.use_sql_comments" value="true"/>
+			
+			<!-- Batch fuer DML von automatisch versionierten Datensaetzen -->
+			<property name="hibernate.jdbc.batch_versioned_data" value="true"/>
+			
+			<!-- Infinispan als L2C -->
+			<property name="hibernate.cache.use_second_level_cache" value="true"/>
+			<property name="hibernate.cache.use_query_cache" value="true"/>
+            <property name="hibernate.cache.infinispan.cachemanager" value="java:jboss/infinispan/hibernate"/>
+            <property name="hibernate.cache.infinispan.statistics" value="true"/>
+
+			<!-- Nur notwendig, falls H2 als In-Memory Datenbank genutzt wird
+			<property name="hibernate.hbm2ddl.auto" value="create"/>
+			-->
+		</properties>
+	</persistence-unit>
+</persistence>

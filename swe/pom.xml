@@ -1,0 +1,1922 @@
+<?xml version="1.0"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<!--
+	Aufrufe [-p : Profile]:
+	1) Flat-XML-Dateien fuer PostgreSQL
+		mvn -Ppostgresql test
+	2) Flat-XML-Dateien fuer MySQL
+		mvn -Pmysql test
+	3) Arquillian-Tests
+		mvn test
+	4) Doku generieren
+		mvn -DskipTests site
+		mvn -DskipTests -o site				// -o : offline
+
+	Aufraeumen:
+	5) Verzeichnis "target" loeschen
+		mvn clean
+	6) User und DB in PostgreSQL loeschen
+		mvn -Ppostgresql clean
+	7) User und DB in MySQL loeschen
+		mvn -Pmysql clean
+		
+	XML Schema fuer RESTful Web Service
+	8) mvn -Pschemagen generate-resources
+
+	(Un-) Deployment ohne Eclipse, z.B. mit Jenkins oder Hudson
+	9)  Deployment in einen laufenden JBoss
+		mvn -DskipTests package jboss-as:deploy
+	10) Undeployment
+		mvn -DskipTests jboss-as:undeploy
+
+	Properties aus settings.xml:
+	- admin.postgresql.password	Passwort des Administrators "postgres" von PostgreSQL
+	- user.postgresql.password	Passwort des Anwendungs-Users von PostgreSQL
+	- admin.mysql.password		Passwort des Administrators "root" von MySQL
+	- user.mysql.password		Passwort des Anwendungs-Users von MySQL
+	
+	WICHTIG: Der (Windows-) User "postgres" muss Leserechte fuer das Verzeichnis fuer den Eclipse-Workspace haben.
+-->
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.swe</groupId>
+	<artifactId>swe</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+	<name>swe</name>
+	
+	<url>http://www.iwi.hs-karlsruhe.de</url>
+	<inceptionYear>2012</inceptionYear>
+	<description>Web-Projekt mit Integrationstests mit Arquillian</description>
+	<prerequisites>
+		<maven>3.0.2</maven>
+	</prerequisites>
+	
+	<scm>
+		<developerConnection>scm:git:http://www.iwi.hs-karlsruhe.de/git/swe07.git</developerConnection>
+		<url>http://www.iwi.hs-karlsruhe.de/git/swe07.git</url>
+	</scm>
+	
+	<issueManagement>
+		<system>Redmine</system>
+		<url>http://iwi-w-apl8.hs-karlsruhe.de/redmine/projects/swe07</url>
+	</issueManagement>
+	
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://localhost:9090/jenkins</url>
+	</ciManagement>
+	
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<organization>
+		<name>Hochschule Karlsruhe</name>
+		<url>http://www.hs-karlsruhe.de</url>
+	</organization>
+	
+	<developers>
+		<developer>
+			<id>Nhat.Nguyen</id>
+			<name>Nhat Nguyen</name>
+			<email>ngnh1011@hs-karlsruhe.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
+		<developer>
+			<id>Elena.Remizova</id>
+			<name>Elena Remizova</name>
+			<email>reel1011@HS-Karlsruhe.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
+		<developer>
+			<id>Priscila.Stroemsdoerfer</id>
+			<name>Priscila Stroemsdoerfer</name>
+			<email>stpr1011@HS-Karlsruhe.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
+		<developer>
+			<id>Michael.Volz</id>
+			<name>Michael Volz</name>
+			<email>vomi1011@HS-Karlsruhe.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
+	</developers>
+
+	<properties>
+		<testklassen>**/*Test.java</testklassen>
+		<domainklassen>**/domain/*.java</domainklassen>
+		
+		<dbname.postgresql>shopdb</dbname.postgresql>
+		<user.postgresql>swe</user.postgresql>
+		<schema.postgresql>${user.postgresql}</schema.postgresql>
+		<sqlsrc.dir.postgresql>src/main/resources/postgresql</sqlsrc.dir.postgresql>
+		<test.dir.postgresql>src/test/resources/postgresql</test.dir.postgresql>
+		
+		<dbname.mysql>swedb</dbname.mysql>
+		<user.mysql>swe</user.mysql>
+		<sqlsrc.dir.mysql>src/main/resources/mysql</sqlsrc.dir.mysql>
+		<test.dir.mysql>src/test/resources/mysql</test.dir.mysql>
+
+		<datasets.dir>${basedir}/src/test/resources/datasets</datasets.dir>
+		
+		<!-- Verzeichnis fuer XML Schema fuer JAX-RS -->
+		<schema.dir>${basedir}/src/main/resources/schema</schema.dir>
+		<!-- Generierte JAXB-Klassen fuer Tests zu JAX-RS -->
+		<test.jaxrs.package>de.shop.test.rest.domain.</test.jaxrs.package>
+		<test.jaxrs.dir>${basedir}/src/test/java</test.jaxrs.dir>
+		<test.jaxrs.package.dir>${test.jaxrs.dir}/de/shop/test/rest/domain/</test.jaxrs.package.dir>
+		
+		<!-- Klassen fuer Generierung des Metamodel gemaess JPA -->
+		<genmetamodel-klassen>**/domain/*.java</genmetamodel-klassen>
+		
+		<!-- Verzeichnis fuer XML Schema fuer JAX-RS -->
+		<schema.dir>${basedir}/src/main/resources/schema</schema.dir>
+		
+		<findBugs.maxHeap>768</findBugs.maxHeap>
+		<javadoc.minmemory>128m</javadoc.minmemory>
+		<javadoc.maxmemory>1g</javadoc.maxmemory>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<!-- Versionsnummern fuer verwendete Software -->
+		<maven.version>3.0.2</maven.version>
+		<java.version>1.7</java.version>
+		<java.minor.version>1.7.0-03</java.minor.version>
+		<arquillian-bom.version>1.0.0.CR7</arquillian-bom.version>
+		<shrinkwrap-bom.version>1.0.0-cr-3</shrinkwrap-bom.version>
+		<shrinkwrap-resolver-bom.version>2.0.0-alpha-1</shrinkwrap-resolver-bom.version>
+		<xalan.version>2.7.1-1.jbossorg</xalan.version>
+		<jboss.version>7.1.1.Final</jboss.version>
+		<jboss-javaee-6.0.version>3.0.0.Beta1</jboss-javaee-6.0.version>
+		<jboss-logging.version>3.1.0.GA</jboss-logging.version>
+		<seam-bom.version>3.1.0.Final</seam-bom.version>
+		
+		<hibernate-jpamodelgen.version>1.2.0.Final</hibernate-jpamodelgen.version>
+		<!--
+		<jaxb.version>2.2.5</jaxb.version>
+		-->
+		<jaxb.version>2.2.4-1</jaxb.version>
+		
+		<picketbox.version>4.0.7.Final</picketbox.version>
+		<jboss-ejb3-ext-api.version>2.0.0</jboss-ejb3-ext-api.version>
+		<infinispan-cdi.version>5.1.2.FINAL</infinispan-cdi.version>
+		
+		<seam-bom.version>3.1.0.Final</seam-bom.version>
+		<resteasy-bom.version>2.3.2.Final</resteasy-bom.version>
+		<richfaces-bom.version>4.2.0.Final</richfaces-bom.version>
+		
+		<junit.version>4.10</junit.version>
+		<dbunit.version>2.4.8</dbunit.version>
+		<slf4j.version>1.6.4</slf4j.version>
+		
+		<!--
+			mvn help:describe -Dplugin=org.jacoco:jacoco-maven-plugin -Ddetail
+			https://github.com/benalexau/jacoco
+		-->
+		<!--
+		<arquillian-jacoco.version>1.0.0.Alpha2</arquillian-jacoco.version>
+		<jacoco-maven-plugin.version>0.5.6.201201232323</jacoco-maven-plugin.version>
+		-->
+		
+		<postgresql.driver.version>9.1-901-1.jdbc4</postgresql.driver.version>
+		<mysql.driver.version>5.1.18</mysql.driver.version>
+
+		<!-- Versionsnummern fuer Maven-Plugins -->
+		<lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
+		<maven-enforcer-plugin.version>1.0.1</maven-enforcer-plugin.version>
+		<build-helper-maven-plugin.version>1.5</build-helper-maven-plugin.version>
+		<maven-war-plugin.version>2.2</maven-war-plugin.version>
+		<jboss-as-maven-plugin.version>7.1.0.Final</jboss-as-maven-plugin.version>
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
+		<maven-surefire-plugin.version>2.12</maven-surefire-plugin.version>
+		<maven-surefire-report-plugin.version>2.12</maven-surefire-report-plugin.version>
+		<maven-project-info-reports-plugin>2.4</maven-project-info-reports-plugin>
+		<taglist-maven-plugin>2.4</taglist-maven-plugin>
+		<maven-site-plugin.version>3.0</maven-site-plugin.version>
+		<maven-javadoc-plugin.version>2.8.1</maven-javadoc-plugin.version>
+		<findbugs-maven-plugin.version>2.4.0</findbugs-maven-plugin.version>
+		<maven-pmd-plugin.version>2.7.1</maven-pmd-plugin.version>
+		<maven-checkstyle-plugin.version>2.9.1</maven-checkstyle-plugin.version>
+		<versions-maven-plugin.version>1.2</versions-maven-plugin.version>
+		
+		<maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
+		<maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
+		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-install-plugin.version>2.3.1</maven-install-plugin.version>
+
+		<sql-maven-plugin.version>1.5</sql-maven-plugin.version>
+		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+		<dbunit-maven-plugin.version>1.0-beta-3</dbunit-maven-plugin.version>
+	</properties>
+	
+	<build>
+		<defaultGoal>test-compile</defaultGoal>
+		
+		<finalName>${project.artifactId}</finalName>
+
+		<pluginManagement>
+			<plugins>
+				<!-- Nur zum Abspeichern der Konfiguration von M2E; nicht relevant fuer die Ausfuehrung von Maven -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>${lifecycle-mapping.version}</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[${maven-antrun-plugin.version},)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<!-- http://wiki.eclipse.org/M2E_plugin_execution_not_covered -->
+			<!-- https://docs.sonatype.org/display/M2ECLIPSE/Project+build+lifecycle+mapping -->
+			<!-- http://stackoverflow.com/questions/6641532/org-eclipse-m2e-lifecycle-mapping -->
+			<!--
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>${lifecycle-mapping.version}</version>
+				<configuration>
+					<lifecycleMapping>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.codehaus.mojo</groupId>
+									<artifactId>build-helper-maven-plugin</artifactId>
+									<versionRange>[${build-helper-maven-plugin.version},)</versionRange>
+									<phase>generate-sources</phase>
+									<goals>
+										<goal>add-source</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<execute/>
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMapping>
+				</configuration>
+			</plugin>
+			-->
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven-enforcer-plugin.version}</version>
+				<executions>
+					<!-- Warning durch M2E -->
+					<execution>
+						<id>enforce-maven-environment</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<rules>
+						<requireMavenVersion>
+							<version>[${maven.version},)</version>
+						</requireMavenVersion>
+						<requireJavaVersion>
+							<version>[${java.minor.version},)</version>
+						</requireJavaVersion>
+						<requirePluginVersions/>
+					</rules>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+								
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+					<encoding>UTF-8</encoding>
+							
+					<!-- Generierung der Metamodel-Klassen fuer Criteria Queries -->
+					<!-- http://docs.jboss.org/hibernate/jpamodelgen/1.2/reference/en-US/html_single -->
+					<!-- http://in.relation.to/12805.lace -->
+					<!--
+					<compilerArguments>
+						<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+					</compilerArguments>
+					-->
+					
+					<!-- http://relation.to/Bloggers/AMoreConciseWayToGenerateTheJPA2MetamodelInMaven -->
+					<compilerArgument>-proc:none</compilerArgument>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-jpamodelgen</artifactId>
+						<version>${hibernate-jpamodelgen.version}</version>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+				
+				<executions>
+					<execution>
+						<id>run-annotation-processors-only</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<compilerArgument>-proc:only</compilerArgument>
+							<includes>
+								<include>${domainklassen}</include>
+							</includes>
+						</configuration>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions> 
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-maven-plugin.version}</version>
+				<executions>      
+					<execution> 
+					<phase>process-sources</phase>
+					<configuration>
+						<sources>
+							<source>${project.build.directory}/generated-sources/annotations</source>
+						</sources>
+					</configuration>
+					<goals>
+						<goal>add-source</goal>
+					</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+				<configuration>
+					<!-- Maven erwartet web.xml: im Gegensatz zu Java EE 6 -->
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<!-- Alternative zu WEB-INF/jboss-deployment-structure.xml
+					<archive>
+						<manifestEntries>
+							<Dependencies>org.infinispan,org.infinispan.client.hotrod,org.jboss.as.controller-client,org.jboss.dmr,com.google.guava,org.hibernate,org.joda.time,org.slf4j</Dependencies>
+						</manifestEntries>
+					</archive>
+					-->
+					<!-- von WEB-INF/lib ausschliessen -->
+					<packagingExcludes>
+						WEB-INF/lib/aether-api-1.8.jar,
+						WEB-INF/lib/aether-connector-wagon-1.8.jar,
+						WEB-INF/lib/aether-impl-1.8.jar,
+						WEB-INF/lib/aether-spi-1.8.jar,
+						WEB-INF/lib/aether-util-1.8.jar,
+						WEB-INF/lib/commons-logging-1.0.4.jar,
+						WEB-INF/lib/commons-logging-api-1.1.jar,
+						WEB-INF/lib/commons-pool-1.5.6.jar,
+						WEB-INF/lib/cssparser-0.9.5.jar,
+						WEB-INF/lib/google-collections-1.0.jar,
+						WEB-INF/lib/guava-10.0.1.jar,
+						WEB-INF/lib/infinispan-client-hotrod-${infinispan-cdi.version}.jar,
+						WEB-INF/lib/infinispan-core-${infinispan-cdi.version}.jar,
+						WEB-INF/lib/jboss-marshalling-1.3.7.GA.jar,
+						WEB-INF/lib/jboss-marshalling-river-1.3.6.GA.jar,
+						WEB-INF/lib/jboss-servlet-api_3.0_spec-1.0.0.Final.jar,
+						WEB-INF/lib/jboss-transaction-api-1.0.1.GA.jar,
+						WEB-INF/lib/jgroups-3.0.4.Final.jar,
+						WEB-INF/lib/jsr305-1.3.9.jar,
+						WEB-INF/lib/maven-aether-provider-3.0.1.jar,
+						WEB-INF/lib/maven-model-3.0.1.jar,
+						WEB-INF/lib/maven-model-builder-3.0.1.jar,
+						WEB-INF/lib/maven-repository-metadata-3.0.1.jar,
+						WEB-INF/lib/maven-settings-3.0.1.jar,
+						WEB-INF/lib/maven-settings-builder-3.0.1.jar,
+						WEB-INF/lib/plexus-cipher-1.4.jar,
+						WEB-INF/lib/plexus-classworlds-2.2.2.jar,
+						WEB-INF/lib/plexus-component-annotations-1.5.5.jar,
+						WEB-INF/lib/plexus-container-default-1.5.5.jar,
+						WEB-INF/lib/plexus-interpolation-1.14.jar,
+						WEB-INF/lib/plexus-sec-dispatcher-1.3.jar,
+						WEB-INF/lib/plexus-utils-2.0.4.jar,
+						WEB-INF/lib/rhq-pluginAnnotations-3.0.4.jar,
+						WEB-INF/lib/sac-1.3.jar,
+						WEB-INF/lib/shrinkwrap-api-${shrinkwrap-bom.version}.jar,
+						WEB-INF/lib/shrinkwrap-resolver-api-${shrinkwrap-resolver-bom.version}.jar,
+						WEB-INF/lib/shrinkwrap-resolver-api-maven-${shrinkwrap-resolver-bom.version}.jar,
+						WEB-INF/lib/shrinkwrap-spi-${shrinkwrap-bom.version}.jar,
+						WEB-INF/lib/slf4j-api-1.6.1.jar,
+						WEB-INF/lib/stax2-api-3.1.1.jar,
+						WEB-INF/lib/staxmapper-1.0.0.Final.jar,
+						WEB-INF/lib/wagon-file-1.0-beta-7.jar,
+						WEB-INF/lib/wagon-http-lightweight-1.0-beta-7.jar,
+						WEB-INF/lib/wagon-http-shared-1.0-beta-7.jar,
+						WEB-INF/lib/wagon-provider-api-1.0-beta-7.jar,
+						WEB-INF/lib/woodstox-core-asl-4.1.1.jar,
+						WEB-INF/lib/xbean-reflect-3.4.jar
+					</packagingExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>postgresql/**</exclude>
+					<exclude>mysql/**</exclude>
+					<exclude>schema/*</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>postgresql/**</exclude>
+					<exclude>mysql/**</exclude>
+					<exclude>datasets/*</exclude>
+					<exclude>findbugs.xml</exclude>
+					<exclude>checkstyle.xml</exclude>
+					<exclude>pmd.xml</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>jboss</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<!-- Repositories, aus denen die benoetigte Software heruntergeladen werden kann -->
+			<repositories>
+				<repository>
+					<id>jboss</id>
+					<name>JBoss Maven 2 Repository</name>
+					<url>https://repository.jboss.org/nexus/content/groups/public</url>
+				</repository>
+				<repository>
+					<id>java.net</id>
+					<name>java.net Maven Repository</name>
+					<url>https://maven.java.net/content/repositories/releases</url>
+				</repository>
+			</repositories>
+			
+			<pluginRepositories>
+				<pluginRepository>
+					<id>jboss</id>
+					<name>JBoss Maven 2 Repository</name>
+					<url>https://repository.jboss.org/nexus/content/groups/public</url>
+				</pluginRepository>
+			</pluginRepositories>
+		
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.jboss.spec</groupId>
+						<artifactId>jboss-javaee-6.0</artifactId>
+						<version>${jboss-javaee-6.0.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.jboss.shrinkwrap</groupId>
+						<artifactId>shrinkwrap-bom</artifactId>
+						<version>${shrinkwrap-bom.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.jboss.shrinkwrap.resolver</groupId>
+						<artifactId>shrinkwrap-resolver-bom</artifactId>
+						<version>${shrinkwrap-resolver-bom.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.jboss.arquillian</groupId>
+						<artifactId>arquillian-bom</artifactId>
+						<version>${arquillian-bom.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>seam-bom</artifactId>
+						<version>${seam-bom.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.jboss.resteasy</groupId>
+						<artifactId>resteasy-bom</artifactId>
+						<version>${resteasy-bom.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.richfaces</groupId>
+						<artifactId>richfaces-bom</artifactId>
+						<version>${richfaces-bom.version}</version>
+						<type>pom</type>
+						<scope>import</scope>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		
+			<!--
+				Verwendete Software in Form von .jar-Dateien: notwendig fuer Uebersetzung und zur Laufzeit
+			-->
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.as</groupId>
+					<artifactId>jboss-as-arquillian-container-managed</artifactId>
+					<!--
+					<artifactId>jboss-as-arquillian-container-remote</artifactId>
+					-->
+					<version>${jboss.version}</version>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.logging</groupId>
+					<artifactId>jboss-logging</artifactId>
+					<version>${jboss-logging.version}</version>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.arquillian.junit</groupId>
+					<artifactId>arquillian-junit-container</artifactId>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.shrinkwrap</groupId>
+					<artifactId>shrinkwrap-impl-base</artifactId>
+					<scope>test</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.jboss.shrinkwrap.resolver</groupId>
+					<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.xalan</groupId>
+					<artifactId>serializer</artifactId>
+					<version>${xalan.version}</version>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.enterprise</groupId>
+					<artifactId>cdi-api</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.spec.javax.ejb</groupId>
+					<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-jpamodelgen</artifactId>
+					<version>${hibernate-jpamodelgen.version}</version>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.hibernate.javax.persistence</groupId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<scope>provided</scope>
+				</dependency>
+		
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+					<scope>provided</scope>
+					<exclusions>
+						<exclusion>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxb-provider</artifactId>
+					<exclusions>
+						<exclusion>
+							<groupId>javax.servlet</groupId>
+							<artifactId>servlet-api</artifactId>
+						</exclusion>
+					</exclusions>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.arquillian.protocol</groupId>
+					<artifactId>arquillian-protocol-servlet</artifactId>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.solder</groupId>
+					<artifactId>solder-impl</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.sun.faces</groupId>
+					<artifactId>jsf-api</artifactId>
+					<scope>provided</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>com.sun.faces</groupId>
+					<artifactId>jsf-impl</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.spec.javax.servlet</groupId>
+					<artifactId>jboss-servlet-api_3.0_spec</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.seam.persistence</groupId>
+					<artifactId>seam-persistence</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.seam.transaction</groupId>
+					<artifactId>seam-transaction</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.seam.faces</groupId>
+					<artifactId>seam-faces</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.seam.security</groupId>
+					<artifactId>seam-security</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.seam.international</groupId>
+					<artifactId>seam-international</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.ocpsoft</groupId>
+					<artifactId>prettyfaces-jsf2</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.picketlink.idm</groupId>
+					<artifactId>picketlink-idm-core</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.drools</groupId>
+					<artifactId>drools-api</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.richfaces.core</groupId>
+					<artifactId>richfaces-core-impl</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.richfaces.ui</groupId>
+					<artifactId>richfaces-components-ui</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.atmosphere</groupId>
+					<artifactId>atmosphere-runtime</artifactId>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.infinispan</groupId>
+					<artifactId>infinispan-cdi</artifactId>
+					<version>${infinispan-cdi.version}</version>
+				</dependency>
+				
+				<!-- org.jboss.ejb3.annotation.SecurityDomain -->
+				<dependency>
+					<groupId>org.jboss.ejb3</groupId>
+					<artifactId>jboss-ejb3-ext-api</artifactId>
+					<version>${jboss-ejb3-ext-api.version}</version>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jboss.spec.javax.security.jacc</groupId>
+					<artifactId>jboss-jacc-api_1.4_spec</artifactId>
+					<scope>provided</scope>
+				</dependency>
+		
+				<!-- org.jboss.security.auth.spi.Util.createPasswordHash, org.jboss.security.client.SecurityClient -->
+				<dependency>
+					<groupId>org.picketbox</groupId>
+					<artifactId>jbosssx</artifactId>
+					<version>${picketbox.version}</version>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.picketbox</groupId>
+					<artifactId>jbosssx-client</artifactId>
+					<version>${picketbox.version}</version>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.picketbox</groupId>
+					<artifactId>jboss-security-spi</artifactId>
+					<version>${picketbox.version}</version>
+					<scope>provided</scope>
+				</dependency>
+						
+				<!-- org.jboss.as.controller.client.ModelControllerClient und org.jboss.dmr.ModelNode -->
+				<dependency>
+					<groupId>org.jboss.as</groupId>
+					<artifactId>jboss-as-controller-client</artifactId>
+					<version>${jboss.version}</version>
+					<scope>provided</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-multipart-provider</artifactId>
+					<exclusions>
+						<exclusion>
+							<groupId>javax.servlet</groupId>
+							<artifactId>servlet-api</artifactId>
+						</exclusion>
+					</exclusions>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+					<version>${slf4j.version}</version>
+					<scope>provided</scope>
+				</dependency>
+						
+				<dependency>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+					<version>${junit.version}</version><!--$NO-MVN-MAN-VER$-->
+					<scope>test</scope>
+				</dependency>
+				
+				<!--
+				<dependency>
+					<groupId>org.jboss.arquillian.extension</groupId>
+					<artifactId>arquillian-jacoco</artifactId>
+					<version>${arquillian-jacoco.version}</version>
+				</dependency>
+				-->
+				
+				<dependency>
+					<groupId>org.dbunit</groupId>
+					<artifactId>dbunit</artifactId>
+					<version>${dbunit.version}</version>
+					<scope>test</scope>
+					<exclusions>
+						<exclusion>
+							<groupId>junit</groupId>
+							<artifactId>junit</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+		
+				<dependency>
+					<groupId>postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>${postgresql.driver.version}</version>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>${mysql.driver.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		
+			<build>
+				<plugins>
+					<!-- Plugin fuer Querverweise -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jxr-plugin</artifactId>
+						<version>${maven-jxr-plugin.version}</version>
+					</plugin>
+		
+					<!-- Durchfuehren der Tests mit Arquillian und JUnit --> 
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+		    			<artifactId>maven-surefire-plugin</artifactId>
+		    			<version>${maven-surefire-plugin.version}</version>
+						
+						<configuration>
+							<runOrder>alphabetical</runOrder>
+							<redirectTestOutputToFile>true</redirectTestOutputToFile>
+							<trimStackTrace>false</trimStackTrace>
+							<printSummary>true</printSummary>
+							<includes>
+								<include>${testklassen}</include>
+							</includes>
+							<useFile>true</useFile>
+						</configuration>
+					</plugin>
+					
+					<!-- Testbericht erstellen -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<version>${maven-project-info-reports-plugin}</version>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-report-plugin</artifactId>
+						<version>${maven-surefire-report-plugin.version}</version>
+						
+						<configuration>
+							<showSuccess>true</showSuccess>
+							<inputEncoding>UTF-8</inputEncoding>
+							<outputEncoding>UTF-8</outputEncoding>
+						</configuration>
+				
+						<executions>
+							<execution>
+								<id>test-report</id>
+								<phase>test</phase>
+								<goals>
+									<goal>report-only</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<!--
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${jacoco-maven-plugin.version}</version>
+						<configuration>
+							<excludes>
+								<exclude>org.dbunit.*</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>prepare-jacoco-agent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					-->
+					
+					<!-- Deployment in den JBoss Appserver durch Maven:  mvn package jboss-as:deploy -->
+					<plugin>
+						<groupId>org.jboss.as.plugins</groupId>
+						<artifactId>jboss-as-maven-plugin</artifactId>
+						<version>${jboss-as-maven-plugin.version}</version>
+					</plugin>
+
+		
+					<!-- Web-Site mit HTML-Seiten auf deutsch ("de") generieren -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-site-plugin</artifactId>
+						<version>${maven-site-plugin.version}</version>
+						<configuration>
+							<locales>de</locales>
+							<outputEncoding>UTF-8</outputEncoding>
+						
+							<reportPlugins>
+								<plugin>
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-project-info-reports-plugin</artifactId>
+									<version>${maven-project-info-reports-plugin.version}</version>
+								</plugin>
+					
+								<plugin>
+									<!-- Generierung der Web-Site -->
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-surefire-report-plugin</artifactId>
+									<version>${maven-surefire-report-plugin.version}</version>
+									
+									<configuration>
+										<showSuccess>true</showSuccess>
+										<inputEncoding>UTF-8</inputEncoding>
+										<outputEncoding>UTF-8</outputEncoding>
+									</configuration>
+								</plugin>
+					
+								<plugin>
+									<!-- Generierung der Javadoc-Dokumentation -->
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-javadoc-plugin</artifactId>
+									<version>${maven-javadoc-plugin.version}</version>
+									<configuration>
+										<minmemory>${javadoc.minmemory}</minmemory>
+										<maxmemory>${javadoc.maxmemory}</maxmemory>
+										
+										<!-- Javadoc mit externen Quellen verknuepfen (dauert sehr lange!) -->
+										<!--
+										<linksource>true</linksource>
+										<links>
+											<link>http://download.oracle.com/javase/6/docs/api/</link>
+											<link>http://download.oracle.com/javaee/6/api/</link>
+											<link>http://kentbeck.github.com/junit/javadoc/latest/</link>
+										</links>
+										-->
+										
+										<packagesheader>Packages des Webshops</packagesheader>
+										<doctitle>Softwarearchitektur: Version ${project.version}</doctitle>
+										<windowtitle>Softwarearchitektur: Version ${project.version}</windowtitle>
+										<bottom>Copyright &#169; ${project.inceptionYear}-${currentYear} Hochschule Karlsruhe - Informatik und Wirtschaftsinformatik. All Rights Reserved.</bottom>
+										
+										<outputName>Surefire Bericht</outputName>
+									</configuration>
+								</plugin>
+								
+								<!-- Generierung der HTML-Seiten mit Java-Quellcode und Querverweisen -->
+								<plugin>
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-jxr-plugin</artifactId>
+									<version>${maven-jxr-plugin.version}</version>
+								</plugin>
+								
+								<plugin>
+									<groupId>org.codehaus.mojo</groupId>
+									<artifactId>taglist-maven-plugin</artifactId>
+									<version>${taglist-maven-plugin}</version>
+									<configuration>
+										<tagListOptions>
+											<tagClasses>
+												<tagClass>
+													<displayName>Todo Liste</displayName>
+													<tags>
+														<tag>
+															<matchString>TODO</matchString>
+															<matchType>ignoreCase</matchType>
+														</tag>
+														<tag>
+															<matchString>FIXME</matchString>
+															<matchType>ignoreCase</matchType>
+														</tag>
+													</tags>
+												</tagClass>
+											</tagClasses>
+										</tagListOptions>
+									</configuration>
+								</plugin>
+						
+								<plugin>
+									<groupId>org.codehaus.mojo</groupId>
+									<artifactId>findbugs-maven-plugin</artifactId>
+									<version>${findbugs-maven-plugin.version}</version>
+									<configuration>
+										<effort>Max</effort>
+										<xmlOutput>true</xmlOutput>
+										<findbugsXmlOutputDirectory>${project.build.directory}/site</findbugsXmlOutputDirectory>
+										<maxHeap>${findBugs.maxHeap}</maxHeap>
+										<excludeFilterFile>${basedir}/src/test/resources/findbugs.xml</excludeFilterFile>
+									</configuration>
+								</plugin>
+								
+								<plugin>
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-pmd-plugin</artifactId>
+									<version>${maven-pmd-plugin.version}</version>
+									<configuration>
+										<targetJdk>${java.version}</targetJdk>
+										<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+										<linkXref>true</linkXref>
+										<includeTests>true</includeTests>
+										<!-- 100 Tokens entsprechen 5-10 Zeilen Quellcode bzgl CPD = Copy-Paste-Detection -->
+										<minimumTokens>100</minimumTokens>
+										
+										<rulesets>
+											<!-- Konfigurationsdatei fuer PMD einschl. CPD -->
+											<ruleset>/src/test/resources/pmd.xml</ruleset>
+										</rulesets>
+									</configuration>
+								</plugin>
+								
+								<plugin>
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-checkstyle-plugin</artifactId>
+									<version>${maven-checkstyle-plugin.version}</version>
+									
+									<configuration>
+										<configLocation>${basedir}/src/test/resources/checkstyle.xml</configLocation>
+										<includeTestSourceDirectory>true</includeTestSourceDirectory>
+										<violationSeverity>warning</violationSeverity>
+									</configuration>
+								</plugin>
+								
+								<!--
+								<plugin>
+									<groupId>org.jacoco</groupId>
+									<artifactId>jacoco-maven-plugin</artifactId>
+								</plugin>
+								-->
+								
+								<plugin>
+									<groupId>org.codehaus.mojo</groupId>
+									<artifactId>versions-maven-plugin</artifactId>
+									<version>${versions-maven-plugin.version}</version>
+								</plugin>
+							</reportPlugins>
+						</configuration>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>${versions-maven-plugin.version}</version>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>${maven-clean-plugin.version}</version>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>${maven-jar-plugin.version}</version>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-install-plugin</artifactId>
+						<version>${maven-install-plugin.version}</version>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<version>${maven-deploy-plugin.version}</version>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>postgresql</id>
+			
+			<properties>
+				<driver>org.postgresql.Driver</driver>
+				<urlAdmin>jdbc:postgresql:postgres</urlAdmin>
+				<url.postgresql>jdbc:postgresql:${dbname.postgresql}</url.postgresql>
+			</properties>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>${sql-maven-plugin.version}</version>
+		
+						<!-- JDBC Treiber -->
+						<dependencies>
+							<dependency>
+								<groupId>postgresql</groupId>
+								<artifactId>postgresql</artifactId>
+								<version>${postgresql.driver.version}</version>
+							</dependency>
+						</dependencies>
+		
+						<!-- Gemeinsame Konfiguration fuer alle Aufrufe -->
+						<configuration>
+							<driver>${driver}</driver>   <!-- siehe oben beim Tag properties -->
+							<url>${url.postgresql}</url>
+							<username>postgres</username>
+							<password>${admin.postgresql.password}</password>
+						</configuration>
+						
+						<executions>
+							<execution>
+								<id>validate</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<url>${urlAdmin}</url>
+									<sqlCommand>
+										SELECT 1;
+									</sqlCommand>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>create-db</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<!-- Ergaenzende Konfiguration -->
+								<configuration>
+									<url>${urlAdmin}</url>
+									<!-- CREATE DATABASE kann beim wiederholten Aufruf nicht mehr funktionieren -->
+									<onError>continue</onError>
+									<autocommit>true</autocommit>  <!-- CREATE DATABASE kann nicht in einem Transaktionsblock laufen -->
+									<sqlCommand>
+										CREATE DATABASE ${dbname.postgresql};
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>create-user</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<!-- Ergaenzende Konfiguration -->
+								<configuration>
+									<url>${urlAdmin}</url>
+									<!-- CREATE ROLE kann beim wiederholten Aufruf nicht mehr funktionieren -->
+									<onError>continue</onError>
+									<autocommit>true</autocommit>  <!-- CREATE DATABASE kann nicht in einem Transaktionsblock laufen -->
+									<sqlCommand>
+										CREATE ROLE ${user.postgresql} LOGIN PASSWORD '${user.postgresql.password}'
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>delete-schema</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<onError>continue</onError>
+									<sqlCommand>
+										DROP SCHEMA ${schema.postgresql} CASCADE;
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>create-schema</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<sqlCommand>
+										CREATE SCHEMA ${schema.postgresql} AUTHORIZATION ${user.postgresql};
+									</sqlCommand>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>create-tables</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<!-- Anwendungsuser wird Owner der Anwendungs-Tabellen -->
+									<username>${user.postgresql}</username>
+									<password>${user.postgresql.password}</password>
+									<enableFiltering>true</enableFiltering>
+									<srcFiles>
+										<srcFile>${sqlsrc.dir.postgresql}/create-tables.sql</srcFile>
+									</srcFiles>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>create-trigger</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<username>${user.postgresql}</username>
+									<password>${user.postgresql.password}</password>
+									<!-- ";" in separater Zeile, weil ";" innerhalb von Trigger-Anweisungen benoetigt wird -->
+									<delimiterType>row</delimiterType>
+									<enableFiltering>true</enableFiltering>
+									<srcFiles>
+										<srcFile>${sqlsrc.dir.postgresql}/create-trigger.sql</srcFile>
+									</srcFiles>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>load</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<!-- Ergaenzende Konfiguration -->
+								<configuration>
+									<enableFiltering>true</enableFiltering>
+									<srcFiles>
+										<!-- COPY darf nur durch Superuser ausgefuehrt werden -->
+										<srcFile>${test.dir.postgresql}/load-csv.sql</srcFile>
+										<srcFile>${test.dir.postgresql}/alter-seq.sql</srcFile>
+									</srcFiles>
+									<sqlCommand>
+										REVOKE CREATE ON SCHEMA ${schema.postgresql} FROM ${user.postgresql};
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>drop-schema-and-user</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<!-- Ergaenzende Konfiguration -->
+								<configuration>
+									<onError>continue</onError>
+									<autocommit>true</autocommit>
+									<sqlCommand>
+										DROP SCHEMA ${schema.postgresql} CASCADE;
+										DROP ROLE IF EXISTS ${user.postgresql};
+									</sqlCommand>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>${maven-antrun-plugin.version}</version>
+						
+						<executions>
+							<execution>
+								<id>generate-load-csv</id>
+								<phase>generate-test-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+		
+								<configuration>
+									<target>
+										<delete file="${basedir}/${test.dir.postgresql}/load-csv.sql"/>
+										<copy file="${test.dir.postgresql}/load-csv.template.sql" tofile="${test.dir.postgresql}/load-csv.sql">
+											<filterset>
+												<filter token="CSVDIR" value="${basedir}/${test.dir.postgresql}"/>
+											</filterset>
+										</copy>
+										<replace file="${test.dir.postgresql}/load-csv.sql" token="\" value="/"/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>dbunit-maven-plugin</artifactId>
+						<version>${dbunit-maven-plugin.version}</version>
+						
+						<dependencies>
+							<dependency>
+								<groupId>postgresql</groupId>
+								<artifactId>postgresql</artifactId>
+								<version>${postgresql.driver.version}</version>
+							</dependency>
+						</dependencies>
+						
+						<configuration>
+							<driver>${driver}</driver>
+							<url>${url.postgresql}</url>
+							<username>${user.postgresql}</username>
+							<password>${user.postgresql.password}</password>
+							<schema>${schema.postgresql}</schema>
+							<dataTypeFactoryName>org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</dataTypeFactoryName>
+							<ordered>true</ordered>
+							<supportBatchStatement>true</supportBatchStatement>
+							<caseSensitiveTableNames>true</caseSensitiveTableNames>
+							<datatypeWarning>true</datatypeWarning>
+						</configuration>
+						
+						<executions>
+							<execution>
+								<id>export-dtd</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>export</goal>
+								</goals>
+		
+								<configuration>
+									<format>dtd</format>
+									<dest>${datasets.dir}/db.dtd</dest>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>export-flat-xml</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>export</goal>
+								</goals>
+		
+								<configuration>
+									<format>flat</format>
+									<doctype>db.dtd</doctype>
+									<dest>${datasets.dir}/db.xml</dest>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+		    			<artifactId>maven-surefire-plugin</artifactId>
+		    			<version>${maven-surefire-plugin.version}</version>
+						
+						<configuration>
+							<!-- Keine JUnit-Tests --> 
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>mysql</id>
+
+			<properties>
+				<driver>com.mysql.jdbc.Driver</driver>
+				<urlAdmin>jdbc:mysql:///mysql</urlAdmin>
+				<url.mysql>jdbc:mysql:///${dbname.mysql}</url.mysql>
+			</properties>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>${sql-maven-plugin.version}</version>
+		
+						<!-- JDBC Treiber -->
+						<dependencies>
+							<dependency>
+								<groupId>mysql</groupId>
+								<artifactId>mysql-connector-java</artifactId>
+								<version>${mysql.driver.version}</version>
+							</dependency>
+						</dependencies>
+		
+						<!-- Gemeinsame Konfiguration fuer alle Aufrufe -->
+						<configuration>
+							<driver>${driver}</driver>
+							<url>${url.mysql}</url>
+							<username>root</username>
+							<password>${admin.mysql.password}</password>
+						</configuration>
+						
+						<executions>
+							<execution>
+								<id>validate</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<url>${urlAdmin}</url>
+									<sqlCommand>
+										SELECT 1;
+									</sqlCommand>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>create-user</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<url>${urlAdmin}</url>
+									<!-- CREATE USER kann beim wiederholten Aufruf nicht mehr funktionieren -->
+									<onError>continue</onError>
+									<sqlCommand>
+										CREATE USER ${user.mysql} IDENTIFIED BY '${user.mysql.password}';
+										CREATE USER ${user.mysql}@localhost IDENTIFIED BY '${user.mysql.password}';
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>create-db</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<url>${urlAdmin}</url>
+									<sqlCommand>
+										DROP DATABASE IF EXISTS ${dbname.mysql};
+										CREATE DATABASE ${dbname.mysql};
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>grant</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<sqlCommand>
+										GRANT CREATE, DROP, ALTER, INDEX, CREATE ROUTINE, SELECT, INSERT, UPDATE, DELETE, EXECUTE, TRIGGER ON ${dbname.mysql}.* TO ${user.mysql};
+										GRANT CREATE, DROP, ALTER, INDEX, CREATE ROUTINE, SELECT, INSERT, UPDATE, DELETE, EXECUTE, TRIGGER ON ${dbname.mysql}.* TO ${user.mysql}@localhost;
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>create-tables</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<!-- Anwendungsuser wird Owner der Anwendungs-Tabellen -->
+									<username>${user.mysql}</username>
+									<password>${user.mysql.password}</password>
+									<enableFiltering>true</enableFiltering>
+									<srcFiles>
+										<srcFile>${sqlsrc.dir.mysql}/create-tables.sql</srcFile>
+									</srcFiles>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>create-trigger</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<username>${user.mysql}</username>
+									<password>${user.mysql.password}</password>
+									<!-- ";" in separater Zeile, weil ";" innerhalb von Trigger-Anweisungen benoetigt wird -->
+									<delimiterType>row</delimiterType>
+									<enableFiltering>true</enableFiltering>
+									<srcFiles>
+										<srcFile>${sqlsrc.dir.mysql}/create-trigger.sql</srcFile>
+									</srcFiles>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>revoke</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<sqlCommand>
+										REVOKE CREATE, DROP, ALTER, INDEX, CREATE ROUTINE ON ${dbname.mysql}.* FROM ${user.mysql};
+										REVOKE CREATE, DROP, ALTER, INDEX, CREATE ROUTINE ON ${dbname.mysql}.* FROM ${user.mysql}@localhost;
+									</sqlCommand>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>load</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<username>${user.mysql}</username>
+									<password>${user.mysql.password}</password>
+									<enableFiltering>true</enableFiltering>
+									<srcFiles>
+										<srcFile>${test.dir.mysql}/load-csv.sql</srcFile>
+									</srcFiles>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>drop-database-and-user</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								
+								<configuration>
+									<url>${urlAdmin}</url>
+									<sqlCommand>
+										DROP DATABASE IF EXISTS ${dbname.mysql};
+										DROP USER ${user.mysql};
+										DROP USER ${user.mysql}@localhost;
+									</sqlCommand>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>${maven-antrun-plugin.version}</version>
+						
+						<executions>
+							<execution>
+								<id>generate-load-csv</id>
+								<phase>generate-test-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+		
+								<configuration>
+									<target>
+										<delete file="${basedir}/${test.dir.mysql}/load-csv.sql"/>
+										<copy file="${test.dir.mysql}/load-csv.template.sql" tofile="${test.dir.mysql}/load-csv.sql">
+											<filterset>
+												<filter token="CSVDIR" value="${basedir}/${test.dir.mysql}"/>
+											</filterset>
+										</copy>
+										<replace file="${test.dir.mysql}/load-csv.sql" token="\" value="/"/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>dbunit-maven-plugin</artifactId>
+						<version>${dbunit-maven-plugin.version}</version>
+						
+						<dependencies>
+							<dependency>
+								<groupId>mysql</groupId>
+								<artifactId>mysql-connector-java</artifactId>
+								<version>${mysql.driver.version}</version>
+							</dependency>
+						</dependencies>
+						
+						<configuration>
+							<driver>${driver}</driver>
+							<url>${url.mysql}</url>
+							<username>${user.mysql}</username>
+							<password>${user.mysql.password}</password>
+							<dataTypeFactoryName>org.dbunit.ext.mysql.MySqlDataTypeFactory</dataTypeFactoryName>
+							<metadataHandlerName>org.dbunit.ext.mysql.MySqlMetadataHandler</metadataHandlerName>
+							<ordered>true</ordered>
+							<datatypeWarning>true</datatypeWarning>
+							<supportBatchStatement>true</supportBatchStatement>
+							<!-- Linux, Unix, Mac: -->
+							<!--
+							<caseSensitiveTableNames>true</caseSensitiveTableNames>
+							-->
+						</configuration>
+						
+						<executions>
+							<execution>
+								<id>export-dtd</id>
+								<phase>generate-test-resources</phase>
+								<goals>
+									<goal>export</goal>
+								</goals>
+		
+								<configuration>
+									<format>dtd</format>
+									<dest>${datasets.dir}/db.dtd</dest>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>export-flat-xml</id>
+								<phase>generate-test-resources</phase>
+								<goals>
+									<goal>export</goal>
+								</goals>
+		
+								<configuration>
+									<format>flat</format>
+									<doctype>db.dtd</doctype>
+									<dest>${datasets.dir}/db.xml</dest>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+		    			<artifactId>maven-surefire-plugin</artifactId>
+		    			<version>${maven-surefire-plugin.version}</version>
+						
+						<configuration>
+							<!-- Keine JUnit-Tests --> 
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>			
+		</profile>
+		
+		<profile>
+			<id>schema</id>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>${maven-antrun-plugin.version}</version>
+	
+						<dependencies>
+							<dependency>
+								<groupId>com.sun</groupId>
+								<artifactId>tools</artifactId>
+								<version>${java.version}</version>
+								<scope>system</scope>
+								<systemPath>${java.home}/../lib/tools.jar</systemPath>
+							</dependency>
+							<dependency>
+								<groupId>com.sun.xml.bind</groupId>
+								<artifactId>jaxb-xjc</artifactId>
+								<version>${jaxb.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>com.sun.xml.bind</groupId>
+								<artifactId>jaxb-impl</artifactId>
+								<version>${jaxb.version}</version>
+							</dependency>
+						</dependencies>
+						
+						<executions>
+							<execution>
+								<id>generate-xml-schema</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+		
+								<configuration>
+									<target>
+										<mkdir dir="${schema.dir}"/>
+										<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask"/>
+										
+										<path id="schemagen.classpath">
+											<fileset dir="${env.JBOSS_HOME}/modules">
+												<include name="javax/xml/bind/api/main/*.jar"/>
+												<include name="javax/persistence/api/main/*.jar"/>
+												<include name="javax/validation/api/main/*.jar"/>
+												<include name="org/hibernate/validator/main/*.jar"/>
+											</fileset>
+										</path>
+										
+										<schemagen destdir="${schema.dir}"
+										           verbose="true"
+										           includeantruntime="false"
+										           classpathref="schemagen.classpath">
+
+											<src path="${basedir}/src/main/java"/>
+											
+											<!-- Es muessen nicht alle Klassen aufgezaehlt werden. -->
+											<!-- "schemagen" ermittelt automatisch die referenzierten Klassen. -->
+											<include name="de/shop/artikelverwaltung/domain/package-info.java"/>
+											<include name="de/shop/artikelverwaltung/domain/Artikel.java"/>
+									
+											<include name="de/shop/bestellverwaltung/domain/package-info.java"/>
+									
+											<include name="de/shop/kundenverwaltung/domain/package-info.java"/>
+											<include name="de/shop/kundenverwaltung/domain/Firmenkunde.java"/>
+											<include name="de/shop/kundenverwaltung/domain/Privatkunde.java"/>
+									
+											<include name="de/shop/kundenverwaltung/rest/package-info.java"/>
+											<include name="de/shop/kundenverwaltung/rest/KundeList.java"/>
+											
+											<include name="de/shop/bestellverwaltung/domain/package-info.java"/>
+											<include name="de/shop/bestellverwaltung/domain/Bestellung.java"/>
+											
+											<include name="de/shop/bestellverwaltung/rest/package-info.java"/>
+											<include name="de/shop/bestellverwaltung/rest/BestellungList.java"/>
+											<include name="de/shop/bestellverwaltung/rest/LieferungList.java"/>
+											
+											<schema namespace="urn:shop:kundenverwaltung" file="kundenverwaltung.xsd"/>
+											<schema namespace="urn:shop:bestellverwaltung" file="bestellverwaltung.xsd"/>
+											<schema namespace="urn:shop:artikelverwaltung" file="artikelverwaltung.xsd"/>
+										</schemagen>
+										
+										<loadfile property="xsd.string" srcFile="${schema.dir}/kundenverwaltung.xsd"/>
+										<fail message="Die generierte XSD-Schemadatei 'kundenverwaltung.xsd' enthaelt 'xs:anyType' und ist deshalb NICHT KORREKT">
+											<condition>
+												<contains string="${xsd.string}" substring="xs:anyType"/>
+											</condition>
+										</fail>
+										
+										<loadfile property="xsd.string" srcFile="${schema.dir}/bestellverwaltung.xsd"/>
+										<fail message="Die generierte XSD-Schemadatei 'bestellverwaltung.xsd' enthaelt 'xs:anyType' und ist deshalb NICHT KORREKT">
+											<condition>
+												<contains string="${xsd.string}" substring="xs:anyType"/>
+											</condition>
+										</fail>
+										
+										<loadfile property="xsd.string" srcFile="${schema.dir}/artikelverwaltung.xsd"/>
+										<fail message="Die generierte XSD-Schemadatei 'artikelverwaltung.xsd' enthaelt 'xs:anyType' und ist deshalb NICHT KORREKT">
+											<condition>
+												<contains string="${xsd.string}" substring="xs:anyType"/>
+											</condition>
+										</fail>
+										
+										<echo message=' '/>
+										<echo message='Refresh [F5] fuer das Web-Projekt durchfuehren:'/>
+										<echo message='xsd-Dateien sind im Unterverzeichnis "src/main/resources/schema"'/>
+									</target>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>generate-jaxb-classes</id>
+								<phase>generate-test-sources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+		
+								<configuration>
+									<target>
+										<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask"/>
+
+										<path id="xjc.classpath">
+											<fileset dir="${env.JBOSS_HOME}/modules">
+												<include name="javax/xml/bind/api/main/*.jar"/>
+											</fileset>
+										</path>
+
+										<xjc destdir="${test.jaxrs.dir}"
+											 schema="${schema.dir}/kundenverwaltung.xsd"
+											 package="${test.jaxrs.package}kundenverwaltung"
+											 extension="true">
+											<classpath>
+												<fileset dir="${env.JBOSS_HOME}/modules">
+													<include name="**/*.jar"/>
+													<exclude name="**/*-jandex.jar"/>
+												</fileset>
+											</classpath>
+											<produces dir="${test.jaxrs.package.dir}kundenverwaltung" includes="*" />
+										</xjc>
+										
+										<xjc destdir="${test.jaxrs.dir}"
+											 schema="${schema.dir}/bestellverwaltung.xsd"
+											 package="${test.jaxrs.package}bestellverwaltung"
+											 extension="true">
+											<classpath>
+												<fileset dir="${env.JBOSS_HOME}/modules">
+													<include name="**/*.jar"/>
+													<exclude name="**/*-jandex.jar"/>
+												</fileset>
+											</classpath>
+											<produces dir="${test.jaxrs.package.dir}bestellverwaltung" includes="*" />
+										</xjc>
+										
+										<xjc destdir="${test.jaxrs.dir}"
+											 schema="${schema.dir}/artikelverwaltung.xsd"
+											 package="${test.jaxrs.package}artikelverwaltung"
+											 extension="true">
+											<classpath>
+												<fileset dir="${env.JBOSS_HOME}/modules">
+													<include name="**/*.jar"/>
+													<exclude name="**/*-jandex.jar"/>
+												</fileset>
+											</classpath>
+											<produces dir="${test.jaxrs.package.dir}artikelverwaltung" includes="*" />
+										</xjc>
+									
+										<echo message=' '/>
+										<echo message='Refresh [F5] fuer das Maven-Projekt durchfuehren:'/>
+										<echo message='Generierte JAXB-Dateien sind im Unterverzeichnis "${test.jaxrs.package.dir}"'/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

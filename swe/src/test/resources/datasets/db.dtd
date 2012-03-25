@@ -1,0 +1,73 @@
+<!ELEMENT dataset (
+    adresse*,
+    autohersteller*,
+    bestellposition*,
+    bestellung*,
+    fahrzeug*,
+    kunde*)>
+
+<!ELEMENT adresse EMPTY>
+<!ATTLIST adresse
+    a_id CDATA #REQUIRED
+    strasse CDATA #IMPLIED
+    hausnr CDATA #REQUIRED
+    plz CDATA #REQUIRED
+    ort CDATA #REQUIRED
+    kunde_fk CDATA #REQUIRED
+    erstellt CDATA #REQUIRED
+    aktualisiert CDATA #REQUIRED
+>
+
+<!ELEMENT autohersteller EMPTY>
+<!ATTLIST autohersteller
+    a_id CDATA #REQUIRED
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT bestellposition EMPTY>
+<!ATTLIST bestellposition
+    bp_id CDATA #REQUIRED
+    bestellung_fk CDATA #REQUIRED
+    fahrzeug_fk CDATA #REQUIRED
+    anzahl CDATA #REQUIRED
+    idx CDATA #REQUIRED
+>
+
+<!ELEMENT bestellung EMPTY>
+<!ATTLIST bestellung
+    b_id CDATA #REQUIRED
+    kunde_fk CDATA #REQUIRED
+    idx CDATA #REQUIRED
+    status CDATA #IMPLIED
+    bestelldatum CDATA #REQUIRED
+    aktualisiert CDATA #REQUIRED
+>
+
+<!ELEMENT fahrzeug EMPTY>
+<!ATTLIST fahrzeug
+    f_id CDATA #REQUIRED
+    hersteller_fk CDATA #REQUIRED
+    modell CDATA #REQUIRED
+    baujahr CDATA #IMPLIED
+    beschreibung CDATA #IMPLIED
+    preis CDATA #IMPLIED
+    lieferbar CDATA #IMPLIED
+    erstellt CDATA #REQUIRED
+    aktualisiert CDATA #REQUIRED
+>
+
+<!ELEMENT kunde EMPTY>
+<!ATTLIST kunde
+    k_id CDATA #REQUIRED
+    nachname CDATA #REQUIRED
+    vorname CDATA #IMPLIED
+    firma CDATA #IMPLIED
+    geschlecht CDATA #IMPLIED
+    telefon CDATA #IMPLIED
+    email CDATA #REQUIRED
+    password CDATA #IMPLIED
+    art CDATA #REQUIRED
+    erstellt CDATA #REQUIRED
+    aktualisiert CDATA #REQUIRED
+>
+
