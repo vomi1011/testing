@@ -6,8 +6,8 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.core.HttpHeaders;
@@ -40,13 +40,13 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@EJB
+	@Inject
 	private Kundenverwaltung kv;
 	
-	@EJB
+	@Inject
 	private Bestellverwaltung bv;
 
-	@EJB
+	@Inject
 	private BestellverwaltungResource bvResource;
 	
 	@Override

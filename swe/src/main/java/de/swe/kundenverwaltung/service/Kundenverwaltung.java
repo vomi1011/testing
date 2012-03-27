@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
@@ -40,10 +40,10 @@ public class Kundenverwaltung implements Serializable {
 	@PersistenceContext
 	private transient EntityManager em;
 	
-	@EJB
+	@Inject
 	private KundenverwaltungDao dao;
 	
-	@EJB
+	@Inject
 	private ValidationService validationService;
 	
 	public List<AbstractKunde> findAllKunden(Fetch fetch, Order order) {

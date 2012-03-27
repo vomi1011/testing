@@ -2,19 +2,18 @@
 
 import static de.swe.util.Dao.QueryParameter.with;
 import static de.swe.util.JpaConstants.UID;
-import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
+import javax.inject.Named;
 
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.Dao;
+import de.swe.util.Log;
 
-//TODO Zu CDI wechseln, @Log und JCache benutzen
-@Stateless
-@TransactionAttribute(MANDATORY)
+//TODO JCache benutzen
+@Named
+@Log
 public class KundenverwaltungDao extends Dao {
 	private static final long serialVersionUID = UID;
 	

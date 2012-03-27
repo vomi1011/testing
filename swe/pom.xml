@@ -173,7 +173,7 @@
 		<!-- Versionsnummern fuer verwendete Software -->
 		<maven.version>3.0.2</maven.version>
 		<java.version>1.7</java.version>
-		<java.minor.version>1.7.0-03</java.minor.version>
+		<java.minor.version>1.7.0-b219</java.minor.version>
 		<arquillian-bom.version>1.0.0.CR7</arquillian-bom.version>
 		<shrinkwrap-bom.version>1.0.0-cr-3</shrinkwrap-bom.version>
 		<shrinkwrap-resolver-bom.version>2.0.0-alpha-1</shrinkwrap-resolver-bom.version>

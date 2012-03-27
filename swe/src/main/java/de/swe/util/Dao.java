@@ -1,7 +1,6 @@
 package de.swe.util;
 
 import static de.swe.util.JpaConstants.UID;
-import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -10,15 +9,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-@Stateless
-@TransactionAttribute(MANDATORY)
+@Named
 public class Dao implements Serializable {
 	private static final long serialVersionUID = UID;
 	

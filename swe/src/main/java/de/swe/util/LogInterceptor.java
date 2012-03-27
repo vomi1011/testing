@@ -1,8 +1,7 @@
 package de.swe.util;
 
-import java.util.Arrays;
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -12,20 +11,19 @@ import org.jboss.logging.Logger;
 
 
 /**
- * Interceptor zum Tracing von public-Methoden der Session Beans.
+ * Interceptor zum Tracing von public-Methoden der CDI-faehigen Beans und der Session Beans.
  * Sowohl der Methodenaufruf als auch der Rueckgabewert (nicht: Exception) werden mit
  * Level DEBUG protokolliert.
  */
 @Interceptor
 @Log
-public class LogInterceptor {
+public class LogInterceptor implements Serializable {
+	private static final long serialVersionUID = 6225006198548883927L;
 	private static final String BEGIN = "BEGINN ";
 	private static final String END = "ENDE ";
 	
 	private static final String COUNT = "Anzahl = ";
 	private static final int MAX_ELEM = 4;  // bei Collections wird ab 5 Elementen nur die Anzahl ausgegeben
-	
-	private static final List<String> DONT_LOG = Arrays.asList("get", "is", "set", "toString");
 
 	@AroundInvoke
 	public Object log(InvocationContext ctx) throws Exception {
@@ -38,13 +36,19 @@ public class LogInterceptor {
 			return ctx.proceed();
 		}
 
-		final String methodName = ctx.getMethod().getName();
-
-		// Primitive Methoden nicht protokollieren
-		for (String prefixMethodName : DONT_LOG) {
-			if (methodName.startsWith(prefixMethodName)) {
-				return ctx.proceed();
-			}
+		String methodName = ctx.getMethod().getName();
+		
+		// getXy, setXy, isXy nicht protokollieren
+		if ((methodName.startsWith("get") || methodName.startsWith("set")) && Character.isUpperCase(methodName.charAt(3))) {
+			return ctx.proceed();
+		}
+		if ((methodName.startsWith("is")) && Character.isUpperCase(methodName.charAt(2))) {
+			return ctx.proceed();
+		}
+		
+		// Proxy-Klasse von Weld?
+		if (clazz.getSimpleName().endsWith("$Proxy$_$$_WeldSubclass")) {
+			methodName = clazz.getSuperclass().getSimpleName() + "." + methodName;
 		}
 		
 		final Object[] params = ctx.getParameters();
