@@ -70,6 +70,7 @@ public class Bestellposition implements Serializable {
 	@XmlElement(name = "fahrzeug")
 	private URI fahrzeugUri;
 	
+	//notwendig für Rest
 	public Bestellposition() {
 	}
 	
