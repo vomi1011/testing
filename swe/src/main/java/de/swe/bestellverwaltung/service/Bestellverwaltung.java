@@ -21,7 +21,6 @@ import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.domain.Bestellung.Status;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
-import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
 import de.swe.util.ValidationService;
 
@@ -60,7 +59,7 @@ public class Bestellverwaltung implements Serializable {
 		return bestellung;		
 	}
 	
-	//TODO Methode testen
+
 	public AbstractKunde findKundeByBestellid(Long id) {
 		final AbstractKunde kunde = dao.findKundeByBestellid(id);
 		return kunde;
@@ -120,7 +119,7 @@ public class Bestellverwaltung implements Serializable {
 		
 		validateBestellung(bestellung, locale, Default.class);
 		
-		if(bestellung.status.toString() != "ABGEHOLT")
+		if(!bestellung.status.toString().equals("ABGEHOLT"))
 				{
 					bestellung.setStatus(Status.STORNIERT);
 					bestellung = dao.update(bestellung);
