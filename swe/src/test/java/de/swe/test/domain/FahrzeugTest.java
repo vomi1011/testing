@@ -55,25 +55,25 @@ public class FahrzeugTest extends AbstractTest {
 	@Test
 	public void findFahrzeugByIdHerstellerVorhanden() {
 		
-		final Long hersteller_fk = HERSTELLER_ID_VORHANDEN;
+		final Long herstellerfk = HERSTELLER_ID_VORHANDEN;
 		
 		List<Fahrzeug> fahrzeug = em.createNamedQuery(Fahrzeug.FIND_FAHRZEUG_BY_HERSTELLER, Fahrzeug.class)
-				.setParameter("hersteller_fk", hersteller_fk)
+				.setParameter("hersteller_fk", herstellerfk)
 				.getResultList();
 		
 		assertThat(fahrzeug.isEmpty(), is(false));
 		for (Fahrzeug f : fahrzeug) {
-			assertThat(f.getHersteller().getAId(), is(hersteller_fk));
+			assertThat(f.getHersteller().getAId(), is(herstellerfk));
 		}
 	}
 	
 	@Test
 	public void findFahrzeugByIdHerstellerNichtVorhanden() {
 		
-		final Long hersteller_fk = HERSTELLER_ID_NICHT_VORHANDEN;
+		final Long herstellerfk = HERSTELLER_ID_NICHT_VORHANDEN;
 		
 		List<Fahrzeug> hersteller = em.createNamedQuery(Fahrzeug.FIND_FAHRZEUG_BY_HERSTELLER, Fahrzeug.class)
-				.setParameter("hersteller_fk", hersteller_fk)
+				.setParameter("hersteller_fk", herstellerfk)
 				.getResultList();
 		
 		assertThat(hersteller.isEmpty(), is(true));

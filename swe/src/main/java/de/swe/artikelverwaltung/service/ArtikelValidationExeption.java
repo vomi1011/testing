@@ -8,7 +8,10 @@ import javax.validation.ConstraintViolation;
 
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 
-
+/**
+ * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
+ */
+//@ApplicationException(rollback = true)
 public class ArtikelValidationExeption extends AbstractArtikelverwaltungExeption {
 	private static final long serialVersionUID = UID;
 	private final Fahrzeug fahrzeug;

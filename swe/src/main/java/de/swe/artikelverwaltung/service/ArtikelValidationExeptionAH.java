@@ -1,11 +1,17 @@
 package de.swe.artikelverwaltung.service;
 
 import static de.swe.util.JpaConstants.UID;
+
 import java.util.Collection;
+
 import javax.validation.ConstraintViolation;
+
 import de.swe.artikelverwaltung.domain.Autohersteller;
 
-
+/**
+ * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
+ */
+//@ApplicationException(rollback = true)
 public class ArtikelValidationExeptionAH extends AbstractArtikelverwaltungExeption {
 	private static final long serialVersionUID = UID;
 	private final Autohersteller autohersteller;

@@ -9,7 +9,6 @@ import static de.swe.util.JpaConstants.KEINE_ID;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import de.swe.artikelverwaltung.domain.Fahrzeug;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -80,7 +79,8 @@ public class Autohersteller implements Serializable {
 	@NotNull(message = "{artikelverwaltung.autohersteller.name.notNull}")
 	@Pattern(regexp = HERSTELLERNAME_PATTERN, message = "{artikelverwaltung.autohersteller.name.pattern}")
 	private String name;
-
+	
+	//bi-directional one-to-many association to Fahrzeug
 	@OneToMany(mappedBy = "hersteller", cascade = { PERSIST, REMOVE })
 //	@NotNull(message = "{artikelverwaltung.autohersteller.fahrzeug.notNull}")
 	@XmlTransient
