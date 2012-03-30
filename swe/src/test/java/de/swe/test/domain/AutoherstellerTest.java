@@ -3,6 +3,7 @@ package de.swe.test.domain;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.test.util.AbstractTest;
+
 
 @RunWith(Arquillian.class)
 public class AutoherstellerTest extends AbstractTest {

@@ -26,7 +26,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().getClass());
 	
 	@EJB
-	Artikelverwaltung av;
+	private Artikelverwaltung av;
 	
 	@Override
 	public Fahrzeug findFahrzeug(Long id, UriInfo uriInfo)
@@ -67,7 +67,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		LOGGER.tracef("%s", fahrzeug);
 		
 		final URI fahrzeugUri = getUriFahrzeug(fahrzeug, uriInfo);
-		final Response response =Response.created(fahrzeugUri).build();
+		final Response response = Response.created(fahrzeugUri).build();
 		
 		return response;
 	}
@@ -83,7 +83,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		LOGGER.tracef("%s", autohersteller);
 		
 		final URI autoherstellerUri = getUriAutohersteller(autohersteller, uriInfo);
-		final Response response =Response.created(autoherstellerUri).build();
+		final Response response = Response.created(autoherstellerUri).build();
 		
 		return response;
 	}

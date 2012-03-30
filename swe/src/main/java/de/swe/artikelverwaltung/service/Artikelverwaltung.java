@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -24,12 +24,14 @@ import de.swe.util.ValidationService;
 @TransactionAttribute(MANDATORY)
 public class Artikelverwaltung implements Serializable {
 	
-	private static final long serialVersionUID = UID;
-	
-	@EJB
+	private static final long serialVersionUID = UID;	
+
+//	TODO 
+	@Inject
 	private ArtikelverwaltungDao dao;
 	
-	@EJB
+//	TODO 
+	@Inject
 	private ValidationService validationService;
 	
 	public List<Fahrzeug> findAllFahrzeuge(Order order) {
