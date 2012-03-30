@@ -27,7 +27,7 @@ import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.test.util.AbstractTest;
 
 @RunWith(Arquillian.class)
-public class BestellungTest extends AbstractTest{
+public class BestellungTest extends AbstractTest {
 	private static final Long BID_VORHANDEN = Long.valueOf(5001);
 	private static final Long BID_NICHT_VORHANDEN =  Long.valueOf(100);
 	private static final Long KUNDE_VORHANDEN = Long.valueOf(1001);
@@ -43,12 +43,12 @@ public class BestellungTest extends AbstractTest{
 	@Test
 	public void findBestellungenByKunde() {
 		final Long kundenid = KUNDE_VORHANDEN;
-		final List<Bestellung> bestellungen = em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_KUNDEN_ID, Bestellung.class)
+		final List<Bestellung> bestellungen = 
+				em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_KUNDEN_ID, Bestellung.class)
 				.setParameter(Bestellung.PARAM_KUNDE_ID, kundenid).getResultList();
 		assertThat(bestellungen.isEmpty(), is(false));
 		
-		for(Bestellung b : bestellungen)
-		{
+		for (Bestellung b : bestellungen) {
 			assertThat(b.getKunde().getId(), is(kundenid));	
 		}
 	}
@@ -56,8 +56,9 @@ public class BestellungTest extends AbstractTest{
 	@Test
 	public void findBestellungenByKundeNichtVorhanden() {
 		final Long kundenid = KUNDE_NICHT_VORHANDEN;
-		final List<Bestellung> bestellungen = em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_KUNDEN_ID, Bestellung.class)
-		.setParameter(Bestellung.PARAM_KUNDE_ID, kundenid).getResultList();
+		final List<Bestellung> bestellungen = 
+			em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_KUNDEN_ID, Bestellung.class)
+			.setParameter(Bestellung.PARAM_KUNDE_ID, kundenid).getResultList();
 		
 		assertThat(bestellungen.isEmpty(), is(true));
 	}
@@ -66,7 +67,8 @@ public class BestellungTest extends AbstractTest{
 	public void findBestellungByDatumNichtVorhanden() {
 		final String bestelld = DATUM_NICHT_VORHANDEN;
 		
-		final List<Bestellung> bestellungen = em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_DATUM, Bestellung.class)
+		final List<Bestellung> bestellungen = 
+			em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_DATUM, Bestellung.class)
 			.setParameter(Bestellung.PARAM_DATUM, bestelld)
 			.getResultList();
 		
@@ -85,14 +87,14 @@ public class BestellungTest extends AbstractTest{
 		}
 	
 		
-		List<Bestellung> bestellungen = em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_DATUM, Bestellung.class)
+		List<Bestellung> bestellungen = 
+			em.createNamedQuery(Bestellung.FIND_BESTELLUNG_BY_DATUM, Bestellung.class)
 			.setParameter(Bestellung.PARAM_DATUM, bestelld)
 			.getResultList();
 		
 		assertThat(bestellungen.isEmpty(), is(false));
 		
-		for(Bestellung b : bestellungen)
-		{
+		for (Bestellung b : bestellungen) {
 			assertThat(b.getBestelldatum(), is(datum));	
 		}
 	}
@@ -118,7 +120,8 @@ public class BestellungTest extends AbstractTest{
 		
 		final Status status = STATUS;
 		
-		List<Bestellung> bestellungen = em.createNamedQuery(Bestellung.FIND_BESTELLUNGEN_BY_STATUS, Bestellung.class)
+		List<Bestellung> bestellungen = 
+				em.createNamedQuery(Bestellung.FIND_BESTELLUNGEN_BY_STATUS, Bestellung.class)
 				.setParameter(Bestellung.PARAM_STATUS_DEFAULT, status)
 				.getResultList();
 		
