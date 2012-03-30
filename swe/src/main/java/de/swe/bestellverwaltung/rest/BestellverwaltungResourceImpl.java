@@ -162,8 +162,9 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		}
 		
 		List<Fahrzeug> fahrzeuge = new ArrayList<Fahrzeug>();
-		for (Long id : fahrzeugIds)
+		for (Long id : fahrzeugIds) {
 			fahrzeuge.add(av.findFahrzeugById(id));
+		}
 		if (fahrzeuge.isEmpty()) {
 			final String msg = "Keine Artikel gefunden mit den IDs " + fahrzeugIds;
 			throw new NotFoundException(msg);
@@ -174,7 +175,8 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		// Fuer jede Bestellposition wird der Artikel passend zur Artikel-URL bzw. Artikel-ID gesetzt.
 		// Bestellpositionen mit nicht-gefundene Artikel werden eliminiert.
 		int i = 0;
-		final List<Bestellposition> neueBestellpositionen = new ArrayList<Bestellposition>(bestellpositionen.size());
+		final List<Bestellposition> neueBestellpositionen = 
+				new ArrayList<Bestellposition>(bestellpositionen.size());
 		for (Bestellposition bp : bestellpositionen) {
 			// Artikel-ID der aktuellen Bestellposition (s.o.):
 			// artikelIds haben gleiche Reihenfolge wie bestellpositionen
@@ -226,7 +228,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		final List<Bestellposition> bestellpositionen = bestellung.getBestellpositionen();
 		
 		if (bestellpositionen != null && !bestellpositionen.isEmpty()) {
-			for(Bestellposition bp : bestellpositionen) {			
+			for (Bestellposition bp : bestellpositionen) {			
 				if (bp != null) {
 					final URI fahrzeugUri = avResource.getUriFahrzeug(bp.getFahrzeug(), uriInfo);
 					bp.setFahrzeugUri(fahrzeugUri);

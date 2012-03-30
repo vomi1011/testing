@@ -44,7 +44,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.IdGroup;
@@ -79,7 +78,7 @@ public class Bestellung implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@XmlEnum
-	public enum Status{
+	public enum Status {
 		NEU,
 		BEARBEITET,
 		ABGEHOLT,
@@ -255,7 +254,8 @@ public class Bestellung implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Bestellung [Bestellnummer=" + bId + ", Kunde=" + kunde + ", Status= " + status + ", Bestelldatum=" + bestelldatum + "]";
+		return "Bestellung [Bestellnummer=" + bId + ", Kunde=" + kunde + ", Status= " 
+				+ status + ", Bestelldatum=" + bestelldatum + "]";
 	}
 
 	public Date getBestelldatum() {
@@ -275,12 +275,12 @@ public class Bestellung implements Serializable {
 	}
 	
 	@PrePersist
-	protected void prePersist(){
+	protected void prePersist() {
 		this.aktualisiert = new Date();
 	}
 	
 	@PreUpdate
-	protected void preUpdate(){
+	protected void preUpdate() {
 		this.aktualisiert = new Date();
 	}
 	

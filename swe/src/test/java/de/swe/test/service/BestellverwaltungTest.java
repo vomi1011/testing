@@ -1,6 +1,5 @@
 package de.swe.test.service;
 
-import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -12,7 +11,6 @@ import java.util.List;
 import javax.ejb.EJB;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,28 +30,25 @@ import de.swe.test.util.AbstractTest;
 @RunWith(Arquillian.class)
 public class BestellverwaltungTest extends AbstractTest {
 	private static final Long BESTELL_ID_VORHANDEN = Long.valueOf(5001);
-//	private static final Long BESTELL_ID_VORHANDEN2 = Long.valueOf(5002);
 	private static final Long BESTELL_ID_LOESCHEN = Long.valueOf(5005);
-//	private static final Long BPOS_ID = Long.valueOf(9002);
 	private static final Long BESTELL_ID_NICHT_VORHANDEN = Long.valueOf(5060);
 	private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(1001);
 	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1060);
-	private static final Long FId1_VORHANDEN = Long.valueOf(6004);
+	private static final Long FAHRZEUGID_VORHANDEN = Long.valueOf(6004);
 	private static final Short PRODUKT_X_ANZAHL = 1;
-	private static final Long FId2_VORHANDEN = Long.valueOf(6002);
-	private static final Short PRODUKT_Y_ANZAHL = 3;
 	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 01);
 	private static final Status STATUS = Bestellung.Status.NEU;
-	
-	
-	@EJB
-	Bestellverwaltung bv;
+	private static final int ANZAHL_BESTELLUNGEN = 5;
+	private static final int ANZAHL_BESTELLPOSITIONEN = 3;
 	
 	@EJB
-	Artikelverwaltung av;
+	private Bestellverwaltung bv;
 	
 	@EJB
-	Kundenverwaltung kv;
+	private Artikelverwaltung av;
+	
+	@EJB
+	private Kundenverwaltung kv;
 	
 	@Test
 	public void findBestellungenByKundenIdVorhanden() {
@@ -73,7 +68,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	public void findKundeByBestellid() {
 		long id = BESTELL_ID_VORHANDEN;
 		AbstractKunde kunde = bv.findKundeByBestellid(id);
-		assertThat(kunde.getId(), is((id)-4000));
+		assertThat(kunde.getId(), is(KUNDE_ID_VORHANDEN));
 	}
 	
 	@Test
@@ -93,7 +88,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	@Test
 	public void findAllBestellungen() {
 		List<Bestellung> bestellungen = bv.findAllBestellungen();
-		assertThat(bestellungen.size(), is(6));
+		assertThat(bestellungen.size() >= ANZAHL_BESTELLUNGEN, is(true));
 	}
 	
 	@Test
@@ -101,7 +96,7 @@ public class BestellverwaltungTest extends AbstractTest {
 		long id = BESTELL_ID_VORHANDEN;
 		Bestellung bestellung = bv.findBestellungById(id);
 		List<Bestellposition> bestellpositionen = bestellung.getBestellpositionen();
-		assertThat(bestellpositionen.size(), is(3));
+		assertThat(bestellpositionen.size(), is(ANZAHL_BESTELLPOSITIONEN));
 	}
 	
 	@Test
@@ -116,15 +111,12 @@ public class BestellverwaltungTest extends AbstractTest {
 		
 	}
 
-	//FIXME fahrzeug_fk ist null
-	@Ignore
+	
 	@Test
 	public void createBestellungTest() throws BestellungValidationException {
 		final Long kundeId = KUNDE_ID_VORHANDEN;
-		final Long fahrzeugId1 = FId1_VORHANDEN;
+		final Long fahrzeugId1 = FAHRZEUGID_VORHANDEN;
 		final short artikel1Anzahl = PRODUKT_X_ANZAHL;
-		final Long fahrzeugId2 = FId2_VORHANDEN;
-		final short artikel2Anzahl = PRODUKT_Y_ANZAHL;
 		final Status status = STATUS;
 
 		Bestellung bestellung = new Bestellung();
@@ -135,17 +127,13 @@ public class BestellverwaltungTest extends AbstractTest {
 		Bestellposition bpos1 = new Bestellposition(fahrzeug1, artikel1Anzahl);
 		bestellung.addBestellposition(bpos1);
 		
-		Fahrzeug fahrzeug2 = av.findFahrzeugById(fahrzeugId2);
-		Bestellposition bpos2 = new Bestellposition(fahrzeug2, artikel2Anzahl);
-		bestellung.addBestellposition(bpos2);
-		
 		AbstractKunde kunde = kv.findKundeById(kundeId, Fetch.MIT_BESTELLUNG);
 		
 		bestellung = bv.createBestellung(bestellung, kunde, LOCALE);
-		assertThat(bestellung.getBestellpositionen().size(), is(2));
+		assertThat(bestellung.getBestellpositionen().size(), is(1));
 		
 		for (Bestellposition bp : bestellung.getBestellpositionen()) {
-			assertThat(bp.getFahrzeug().getFId(), anyOf(is(fahrzeugId1), is(fahrzeugId2)));
+			assertThat(bp.getFahrzeug().getFId(), is(fahrzeugId1));
 		}
 			
 		kunde = bestellung.getKunde();
@@ -168,7 +156,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createBestellpositionTest() throws BestellungValidationException {
-		final Long fahrzeugId1 = FId1_VORHANDEN;
+		final Long fahrzeugId1 = FAHRZEUGID_VORHANDEN;
 		Bestellung bestellung = bv.findBestellungById(BESTELL_ID_VORHANDEN);
 		assertThat(bestellung, is(notNullValue()));
 		
@@ -182,7 +170,7 @@ public class BestellverwaltungTest extends AbstractTest {
 		
 		bestellung = bv.updateBestellung(bestellung, LOCALE);
 		
-		assertThat(bestellung.getBestellpositionen().size(), is(anzahlBestellpositionenVorher+1));
+		assertThat(bestellung.getBestellpositionen().size(), is(anzahlBestellpositionenVorher + 1));
 	}
 	
 	
@@ -196,7 +184,7 @@ public class BestellverwaltungTest extends AbstractTest {
 		
 		bestellung = bv.findBestellungById(BESTELL_ID_VORHANDEN);
 		
-		assertThat(bestellung.getBestellpositionen().size(), is(anzahlBestellpositionenVorher-1));
+		assertThat(bestellung.getBestellpositionen().size(), is(anzahlBestellpositionenVorher - 1));
 	}
 	
 	@Test
@@ -209,16 +197,4 @@ public class BestellverwaltungTest extends AbstractTest {
 		bestellung = bv.updateBestellung(bestellung, LOCALE);
 		assertThat(bestellung.getStatus(), is(status));
 	}	
-
-	
-//	@Test
-//	public void updateBestellpositionTest() throws BestellungValidationException {
-//		Bestellung bestellung = bv.findBestellungById(BESTELL_ID_VORHANDEN);
-//		
-//		bestellung.removeBestellposition(bestellung.getBestellpositionen().get(1));
-//		
-//		bestellung = bv.findBestellungById(BESTELL_ID_VORHANDEN);
-//		
-//		assertThat(bestellung.getBestellpositionen().size(), is(anzahlBestellpositionenVorher-1));
-//	}
 }
