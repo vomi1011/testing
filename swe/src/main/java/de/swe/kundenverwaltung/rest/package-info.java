@@ -1,3 +1,4 @@
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://swa.de/kundenverwaltung")
+@XmlSchema(namespace = "http://swe.de/kundenverwaltung")
 
 package de.swe.kundenverwaltung.rest;
+import javax.xml.bind.annotation.XmlSchema;

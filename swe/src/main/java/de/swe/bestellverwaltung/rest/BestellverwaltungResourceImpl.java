@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.WebApplicationException;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.logging.Logger;
 
 import de.swe.artikelverwaltung.domain.Fahrzeug;
+import de.swe.artikelverwaltung.rest.ArtikelverwaltungResource;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
@@ -31,7 +33,6 @@ import de.swe.kundenverwaltung.rest.KundenverwaltungResource;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
 import de.swe.util.NotFoundException;
-import de.swe.artikelverwaltung.rest.ArtikelverwaltungResource;
 
 
 @Stateless
@@ -42,19 +43,19 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	@PersistenceContext
 	private EntityManager em;
 	
-	@EJB
+	@Inject
 	private Bestellverwaltung bv;
 	
-	@EJB
+	@Inject
 	private Kundenverwaltung kv;
 	
-	@EJB
+	@Inject
 	private Artikelverwaltung av;
 	
 	@EJB
 	private KundenverwaltungResource kvResource;
 	
-	@EJB
+	@Inject
 	private ArtikelverwaltungResource avResource;
 	
 	/**

@@ -1,17 +1,25 @@
 package de.swe.kundenverwaltung.service;
 
+import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.ROLLE_ADMIN;
+import static de.swe.util.Constants.ROLLE_MITARBEITER;
+import static de.swe.util.Constants.SECURITY_DOMAIN;
+import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;
-import static de.swe.util.JpaConstants.KEINE_ID;
-import static de.swe.util.JpaConstants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.security.Principal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -21,6 +29,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import org.jboss.ejb3.annotation.SecurityDomain;
 import org.jboss.logging.Logger;
 
 import de.swe.kundenverwaltung.domain.AbstractKunde;
@@ -28,10 +37,14 @@ import de.swe.kundenverwaltung.domain.PasswordGroup;
 import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.service.KundenverwaltungDao.Order;
 import de.swe.util.IdGroup;
+import de.swe.util.RolleType;
 import de.swe.util.ValidationService;
+import de.swe.util.jboss.PasswordService;
+import de.swe.util.jboss.SecurityCache;
 
 @Stateless
 @TransactionAttribute(MANDATORY)
+@SecurityDomain(SECURITY_DOMAIN) //TODO entfernen wenn nachher Schutz fuer alle EJBs eingestellt wird
 public class Kundenverwaltung implements Serializable {
 	private static final long serialVersionUID = UID;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
@@ -45,6 +58,15 @@ public class Kundenverwaltung implements Serializable {
 	
 	@Inject
 	private ValidationService validationService;
+	
+	@Inject
+	private PasswordService passwordService;
+	
+	@Inject
+	private SecurityCache securityCache;
+	
+	@Resource
+	private SessionContext ctx;
 	
 	public List<AbstractKunde> findAllKunden(Fetch fetch, Order order) {
 		final List<AbstractKunde> kunden = dao.findAllKunden(fetch, order);
@@ -94,6 +116,7 @@ public class Kundenverwaltung implements Serializable {
 		}
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER })
 	public AbstractKunde createKunde(AbstractKunde kunde, Locale locale)
 			throws EmailExistsException, KundeValidationException {
 		if (kunde == null) {
@@ -110,7 +133,7 @@ public class Kundenverwaltung implements Serializable {
 			throw new EmailExistsException(kunde.getEmail());
 		}
 		
-		LOGGER.trace("E-Mail Adresse existiert noch nicht.");
+		passwordVerschluesseln(kunde);
 		
 		kunde.setId(KEINE_ID);
 		kunde = dao.create(kunde);
@@ -118,6 +141,7 @@ public class Kundenverwaltung implements Serializable {
 		return kunde;
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER })
 	public AbstractKunde updateKunde(AbstractKunde kunde, Locale locale)
 			throws EmailExistsException, KundeValidationException {
 		if (kunde == null) {
@@ -133,14 +157,19 @@ public class Kundenverwaltung implements Serializable {
 		if (vorhandenerKunde != null && vorhandenerKunde.getId().longValue() != kunde.getId().longValue()) {
 			throw new EmailExistsException(kunde.getEmail());
 		}
-		
-		LOGGER.trace("Email Adresse existiert noch nicht.");
+		else if (!kunde.getPassword().equals(vorhandenerKunde.getPassword())) {
+			passwordVerschluesseln(kunde);
+		}
 		
 		kunde = dao.update(kunde);
+		kunde.setPasswordWdh(kunde.getPassword());
 		
 		return kunde;
 	}
 	
+	//TODO Methode entfernen
+	@Deprecated
+	@RolesAllowed(ROLLE_ADMIN)
 	public void deleteKunde(AbstractKunde kunde, Locale locale) throws KundeDeleteBestellungException {
 		if (kunde == null) {
 			return;
@@ -152,10 +181,70 @@ public class Kundenverwaltung implements Serializable {
 			return;
 		}
 		
-		if (!kunde.getBestellungen().isEmpty()) {
+		if (kunde.getBestellungen() != null && !kunde.getBestellungen().isEmpty()) {
 			throw new KundeDeleteBestellungException(kunde);
 		}
 		
 		dao.delete(kunde);
+	}
+	
+	@RolesAllowed(ROLLE_ADMIN)
+	public void deleteKundeById(Long id) throws KundeDeleteBestellungException {
+		AbstractKunde kunde = findKundeById(id, Fetch.MIT_BESTELLUNG);
+		
+		if (kunde == null) {
+			return;
+		}
+		
+		if (kunde.getBestellungen() != null && !kunde.getBestellungen().isEmpty()) {
+			throw new KundeDeleteBestellungException(kunde);
+		}
+		
+		dao.delete(kunde);
+	}
+	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER })
+	public Principal whoAmI() {
+		final Principal principal = ctx.getCallerPrincipal();
+		return principal;
+	}
+
+	@RolesAllowed(ROLLE_ADMIN)
+	public void addRollen(Long kundeId, RolleType... rollen) {
+		final boolean ok = dao.addRollen(kundeId, rollen);
+		
+		if(!ok) {
+			ctx.setRollbackOnly();
+			
+			return;
+		}
+		
+		securityCache.remove(kundeId.toString());
+	}
+
+	@RolesAllowed(ROLLE_ADMIN)
+	public void removeRollen(Long kundeId, RolleType... rollen) {
+		dao.removeRollen(kundeId, rollen);
+		securityCache.remove(kundeId.toString());
+	}
+	
+	public List<RolleType> getEigeneRollen() {
+		List<RolleType> rollen = new LinkedList<>();
+
+		//TODO Methode fertigstellen
+		
+		return rollen;
+	}
+	
+	private void passwordVerschluesseln(AbstractKunde kunde) {
+		LOGGER.debugf("BEGINN passwordVerschluesseln: kunde=%s", kunde);
+		
+		final String unverschluesselt = kunde.getPassword();
+		final String verschluesselt = passwordService.verschluesseln(unverschluesselt);
+		
+		kunde.setPassword(verschluesselt);
+		kunde.setPasswordWdh(verschluesselt);
+
+		LOGGER.debugf("ENDE passwordVerschluesseln: kunde=%s", verschluesselt);
 	}
 }

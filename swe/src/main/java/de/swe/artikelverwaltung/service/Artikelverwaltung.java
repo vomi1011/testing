@@ -1,6 +1,6 @@
 package de.swe.artikelverwaltung.service;
 
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.io.Serializable;

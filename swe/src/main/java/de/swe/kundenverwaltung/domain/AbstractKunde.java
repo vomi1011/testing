@@ -1,9 +1,9 @@
 package de.swe.kundenverwaltung.domain;
 
-import static de.swe.util.JpaConstants.KEINE_ID;
-import static de.swe.util.JpaConstants.KUNDEN_ID;
-import static de.swe.util.JpaConstants.LONG_ANZ_ZIFFERN;
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.KUNDEN_ID;
+import static de.swe.util.Constants.LONG_ANZ_ZIFFERN;
+import static de.swe.util.Constants.UID;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.CascadeType.MERGE;

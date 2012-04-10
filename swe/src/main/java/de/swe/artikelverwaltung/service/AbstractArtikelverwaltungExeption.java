@@ -1,7 +1,7 @@
 package de.swe.artikelverwaltung.service;
 
 import de.swe.util.AbstractSweException;
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 
 public abstract class AbstractArtikelverwaltungExeption extends
 		AbstractSweException {

@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -46,9 +47,12 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	@Inject
 	private Bestellverwaltung bv;
 
-	@Inject
+	@EJB
 	private BestellverwaltungResource bvResource;
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public AbstractKunde findKunde(Long id, UriInfo uriInfo)
 			throws NotFoundException {
@@ -63,13 +67,16 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		
 		return kunde;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public KundeList findKunden(String nachname, UriInfo uriInfo)
 			throws NotFoundException {
 		List<AbstractKunde> kunden = null;
 		
-		if (nachname.equals("")) {
+		if ("".equals(nachname)) {
 			kunden = kv.findAllKunden(Fetch.NUR_KUNDE, Order.ID);
 
 			if (kunden.isEmpty()) {
@@ -94,7 +101,10 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		
 		return kundeList;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public BestellungList findBestellungenByKundeId(Long id, UriInfo uriInfo)
 			throws NotFoundException {
@@ -114,6 +124,9 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		return bestellungList;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Response createKunde(AbstractKunde kunde, UriInfo uriInfo,
 			HttpHeaders headers) throws EmailExistsException,
@@ -135,6 +148,9 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		return response;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Response createPrivatkunde(KundeForm kundeForm, UriInfo uriInfo,
 									  HttpHeaders headers)
@@ -164,6 +180,9 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		return respose;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Response updateKunde(AbstractKunde kunde, UriInfo uriInfo,
 								HttpHeaders headers)
@@ -192,21 +211,19 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		return Response.noContent().build();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Response deleteKunde(Long id, UriInfo uriInfo)
-			throws NotFoundException, KundeDeleteBestellungException {
-		final AbstractKunde kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
-		
-		if (kunde == null) {
-			String msg = "Kein Kunde gefunden mit ID " + id;
-			throw new NotFoundException(msg);
-		}
-		
-		kv.deleteKunde(kunde, null);
+			throws KundeDeleteBestellungException {
+		kv.deleteKundeById(id);
 		
 		return Response.noContent().build();
 	}
 
+	/**
+	 */
 	@Override
 	public void updateUriKunde(AbstractKunde kunde, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
@@ -216,6 +233,8 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 		kunde.setBestellungenUri(bestellungenUri);
 	}
 
+	/**
+	 */
 	@Override
 	public URI getUriKunde(AbstractKunde kunde, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()

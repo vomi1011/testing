@@ -1,6 +1,6 @@
 package de.swe.kundenverwaltung.service;
 
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 
 public class KundeDeleteBestellungException extends AbstractKundenverwaltungException {

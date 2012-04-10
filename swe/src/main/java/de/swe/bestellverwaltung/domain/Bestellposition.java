@@ -1,6 +1,6 @@
 package de.swe.bestellverwaltung.domain;
 
-import static de.swe.util.JpaConstants.BESTELLPOSITION_ID;
+import static de.swe.util.Constants.BESTELLPOSITION_ID;
 
 import java.io.Serializable;
 import java.net.URI;

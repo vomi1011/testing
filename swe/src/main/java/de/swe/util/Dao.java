@@ -1,6 +1,6 @@
 package de.swe.util;
 
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class Dao implements Serializable {
 	private static final long serialVersionUID = UID;
 	
 	@PersistenceContext
-	private transient EntityManager em;
+	protected transient EntityManager em;
 	
 	public <T> T find(Class<T> clazz, Object id) {
 		final T result = em.find(clazz, id);

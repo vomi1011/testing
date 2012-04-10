@@ -1,5 +1,5 @@
 package de.swe.bestellverwaltung.service;
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 
 import java.util.Collection;
 

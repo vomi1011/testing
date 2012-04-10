@@ -35,3 +35,9 @@ INTO TABLE fahrzeug
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'C:/Users/Nhat/eclipse-git/swe/src/test/resources/mysql/shop_role.csv'
+INTO TABLE shop_role
+FIELDS TERMINATED BY ';'
+OPTIONALLY ENCLOSED BY '"'
+IGNORE 1 LINES;

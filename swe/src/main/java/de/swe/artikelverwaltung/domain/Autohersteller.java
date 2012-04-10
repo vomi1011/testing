@@ -2,9 +2,9 @@ package de.swe.artikelverwaltung.domain;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
-import static de.swe.util.JpaConstants.UID;
-import static de.swe.util.JpaConstants.AUTOHERSTELLER_ID;
-import static de.swe.util.JpaConstants.KEINE_ID;
+import static de.swe.util.Constants.UID;
+import static de.swe.util.Constants.AUTOHERSTELLER_ID;
+import static de.swe.util.Constants.KEINE_ID;
 
 import java.io.Serializable;
 import java.util.ArrayList;

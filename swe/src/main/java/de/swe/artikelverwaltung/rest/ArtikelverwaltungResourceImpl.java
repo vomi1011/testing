@@ -5,8 +5,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -25,7 +25,7 @@ import de.swe.util.NotFoundException;
 public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().getClass());
 	
-	@EJB
+	@Inject
 	private Artikelverwaltung av;
 	
 	@Override

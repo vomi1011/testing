@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd
+                           http://jboss.org/schema/weld/beans http://jboss.org/schema/weld/beans_1_1.xsd"
+       xmlns:s="urn:java:ee" 
+       xmlns:u="urn:java:de.swe.util"
+       xmlns:jb="urn:java:de.swe.util.jboss"
+       xmlns:kv="urn:java:de.swe.kundenverwaltung.service">
+
+	<u:ValidationService>
+		<u:locales>
+			<s:value>en</s:value>
+			<s:value>de</s:value>
+		</u:locales>
+		<s:modifies/>
+	</u:ValidationService>
+	
+	<!--
+	<jb:FileStore filesWar="shopFiles.war">
+		<s:modifies/>
+	</jb:FileStore>
+	
+	<kv:KundenverwaltungObserver mailAbsender="Joe Doe&#60;abcd0011@hs-karlsruhe.de&#62;"
+	                             mailEmpfaenger="Joe Doe&#60;abcd0011@hs-karlsruhe.de&#62;">
+		<s:modifies/>
+	</kv:KundenverwaltungObserver>
+	-->
+</beans>

@@ -4,7 +4,8 @@
     bestellposition*,
     bestellung*,
     fahrzeug*,
-    kunde*)>
+    kunde*,
+    shop_role*)>
 
 <!ELEMENT adresse EMPTY>
 <!ATTLIST adresse
@@ -69,5 +70,11 @@
     art CDATA #REQUIRED
     erstellt CDATA #REQUIRED
     aktualisiert CDATA #REQUIRED
+>
+
+<!ELEMENT shop_role EMPTY>
+<!ATTLIST shop_role
+    role CDATA #REQUIRED
+    kunde_fk CDATA #REQUIRED
 >
 

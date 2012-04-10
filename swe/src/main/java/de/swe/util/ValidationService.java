@@ -1,24 +1,19 @@
 package de.swe.util;
 
 
-import static javax.ejb.LockType.READ;
-import static javax.ejb.TransactionAttributeType.SUPPORTS;
-
 import java.io.Serializable;
-import java.util.Arrays;
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Lock;
-import javax.ejb.Singleton;
-import javax.ejb.TransactionAttribute;
+import javax.inject.Singleton;
 import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.jboss.logging.Logger;
 
 
 /*
@@ -26,19 +21,38 @@ import javax.validation.ValidatorFactory;
  * Praesentationsschicht validiert.
  */
 @Singleton
-@Lock(READ)
-//@Startup
-@TransactionAttribute(SUPPORTS)
 public class ValidationService implements Serializable {
 	private static final long serialVersionUID = 7886864531128694923L;
-	private final List<Locale> locales = Arrays.asList(Locale.ENGLISH, Locale.GERMAN);
-	private final HashMap<Locale, Validator> validators = new HashMap<>();
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+
+	private String[] locales;   // META-INF\seam-beans.xml
+	
+	private Locale defaultLocale;
+	private transient HashMap<Locale, Validator> validators;
 	
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init() {
+		validators = new HashMap<>();
+
+		if (locales == null || locales.length == 0) {
+			LOGGER.error("In META-INF/seam-beans.xml sind keine Sprachen eingetragen");
+			return;
+		}
+		
 		final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-		for (Locale locale : locales) {
+
+		for (String localeStr : locales) {
+			if (localeStr == null || localeStr.isEmpty()) {
+				continue;
+			}
+			final Locale locale = new Locale(localeStr);
+			
+			// Erste Sprache als Default
+			if (defaultLocale == null) {
+				defaultLocale = locale;
+			}
+		
 			final MessageInterpolator interpolator = validatorFactory.getMessageInterpolator();
 			final MessageInterpolator localeInterpolator =
 				                      new LocaleSpecificMessageInterpolator(interpolator,
@@ -48,6 +62,12 @@ public class ValidationService implements Serializable {
                                                         .getValidator();
 			validators.put(locale, validator);
 		}
+
+		if (validators.keySet() == null || validators.keySet().isEmpty()) {
+			LOGGER.error("In META-INF/seam-beans.xml sind keine Sprachen eingetragen");
+			return;
+		}
+		LOGGER.infof("Locales fuer die Fehlermeldungen bei Bean Validation: %s", validators.keySet());
 	}
 	
 	/*
@@ -69,7 +89,7 @@ public class ValidationService implements Serializable {
 			}
 		}
 
-		return validators.get(locales.get(0));   // Default-Wert
+		return validators.get(defaultLocale);
 	}
 	
 	/**

@@ -86,3 +86,11 @@ CREATE TABLE bestellposition(
 ALTER TABLE bestellposition AUTO_INCREMENT = 9001;
 
 CREATE INDEX bestellposition_index ON bestellposition(bp_id);
+
+DROP TABLE IF EXISTS shop_role;
+
+CREATE TABLE shop_role(
+	role varchar(40) NOT NULL,
+	kunde_fk BIGINT NOT NULL REFERENCES kunde(k_id) ON DELETE CASCADE,
+	UNIQUE(role, kunde_fk)
+);

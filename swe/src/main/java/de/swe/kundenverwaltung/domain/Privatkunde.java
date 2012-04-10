@@ -1,6 +1,6 @@
 package de.swe.kundenverwaltung.domain;
 
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 
 import javax.persistence.Cacheable;
 import javax.persistence.DiscriminatorValue;

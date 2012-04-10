@@ -1,5 +1,5 @@
 package de.swe.artikelverwaltung.domain;
-import static de.swe.util.JpaConstants.FAHRZEUG_ID;
+import static de.swe.util.Constants.FAHRZEUG_ID;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;

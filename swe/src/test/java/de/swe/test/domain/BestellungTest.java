@@ -1,6 +1,6 @@
 package de.swe.test.domain;
 
-import static de.swe.util.JpaConstants.KEINE_ID;
+import static de.swe.util.Constants.KEINE_ID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;

@@ -3,8 +3,8 @@ package de.swe.test.domain;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static de.swe.util.JpaConstants.KUNDEN_ID;
-import static de.swe.util.JpaConstants.ADRESS_ID;
+import static de.swe.util.Constants.KUNDEN_ID;
+import static de.swe.util.Constants.ADRESS_ID;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

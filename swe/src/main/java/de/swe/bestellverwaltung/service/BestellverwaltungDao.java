@@ -1,7 +1,7 @@
 package de.swe.bestellverwaltung.service;
 
 import static javax.ejb.TransactionAttributeType.MANDATORY;
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;
 
 import java.util.List;

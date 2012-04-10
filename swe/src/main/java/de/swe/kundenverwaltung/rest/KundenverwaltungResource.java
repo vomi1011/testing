@@ -33,38 +33,63 @@ import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.util.NotFoundException;
 
-@Path("/kundenverwaltung")
+@Path("/kunden")
 @Produces({ APPLICATION_XML, TEXT_XML })
 public interface KundenverwaltungResource {
+	/**
+	 * Mit der URL /kunden/{id} einen Kunden ermitteln
+	 * @param id ID des Kunden
+	 * @return Objekt mit Kundendaten, falls die ID vorhanden ist
+	 */
 	@GET
-	@Path("/kunden/{id:[1-9][0-9]+}")
+	@Path("{id:[1-9][0-9]+}")
 	@Formatted
 	AbstractKunde findKunde(@PathParam("id") Long id, @Context UriInfo uriInfo)
 			throws NotFoundException;
 	
+	/**
+	 * Mit der URL /kunden werden alle Kunden ermittelt oder
+	 * mit kundenverwaltung/kunden?nachname=... diejenigen mit einem bestimmten Nachnamen.
+	 * @return Liste mit den gefundenen Kundendaten
+	 */
 	@GET
-	@Path("/kunden")
 	@Wrapped(element = "kunden")
 	KundeList findKunden(@QueryParam("nachname") @DefaultValue("") String nachname,
 						 @Context UriInfo uriInfo)
 			throws NotFoundException;
 	
+	/**
+	 * Mit der URL kunden/{id}/bestellungen die Bestellungen zu eine Kunden ermitteln
+	 * @param id ID des Kunden
+	 * @return Objekt mit Bestellungsdaten, falls die ID vorhanden ist
+	 */
 	@GET
-	@Path("/kunden/{id:[0-9]+}/bestellungen")
+	@Path("{id:[0-9]+}/bestellungen")
 	BestellungList findBestellungenByKundeId(@PathParam("id") Long id,
 			                                 @Context UriInfo uriInfo)
 			       throws NotFoundException;
 	
+	/**
+	 * Mit der URL /kunden einen Privatkunden per POST anlegen.
+	 * @param kunde neuer Kunde
+	 * @return Response-Objekt mit URL des neuen Privatkunden
+	 */
 	@POST
-	@Path("/kunden")
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	Response createKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
 						 @Context HttpHeaders headers)
 			throws EmailExistsException, KundeValidationException;
 	
+	/**
+	 * Mit der URL /kunden/form einen Privatkunden per POST anlegen wie in einem HTML-Formular.
+	 * @param kundeForm Form-Objekt mit den neuen Daten
+	 * @param headers
+	 * @param uriInfo
+	 * @return Response-Objekt mit URL des neuen Privatkunden
+	 */
 	@POST
-	@Path("/kunden/form")
+	@Path("form")
 	@Consumes(APPLICATION_FORM_URLENCODED)
 	@Produces
 	Response createPrivatkunde(@Form KundeForm kunde,
@@ -72,8 +97,11 @@ public interface KundenverwaltungResource {
 							  @Context HttpHeaders headers)
 			throws EmailExistsException, ParseException, KundeValidationException;
 	
+	/**
+	 * Mit der URL /kunden einen Kunden per PUT aktualisieren
+	 * @param kunde zu aktualisierende Daten des Kunden
+	 */
 	@PUT
-	@Path("/kunden")
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
 	Response updateKunde(AbstractKunde kunde,
@@ -81,8 +109,13 @@ public interface KundenverwaltungResource {
 						 @Context HttpHeaders headers)
 			throws NotFoundException, EmailExistsException, KundeValidationException;
 	
+	/**
+	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen
+	 * @param kundeId des zu l&ouml;schenden Kunden
+	 *         gel&ouml;scht wurde, weil es zur gegebenen id keinen Kunden gibt
+	 */
 	@DELETE
-	@Path("/kunden/{id:[1-9][0-9]+}")
+	@Path("{id:[1-9][0-9]+}")
 	@Produces
 	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo)
 			throws NotFoundException, KundeDeleteBestellungException;

@@ -1,6 +1,6 @@
 package de.swe.bestellverwaltung.domain;
 
-import static de.swe.util.JpaConstants.BESTELLUNG_ID;
+import static de.swe.util.Constants.BESTELLUNG_ID;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 

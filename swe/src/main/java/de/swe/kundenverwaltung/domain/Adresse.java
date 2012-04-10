@@ -1,9 +1,9 @@
 package de.swe.kundenverwaltung.domain;
 
-import static de.swe.util.JpaConstants.ADRESS_ID;
-import static de.swe.util.JpaConstants.KEINE_ID;
-import static de.swe.util.JpaConstants.LONG_ANZ_ZIFFERN;
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.ADRESS_ID;
+import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.LONG_ANZ_ZIFFERN;
+import static de.swe.util.Constants.UID;
 
 import java.io.Serializable;
 import java.util.Date;

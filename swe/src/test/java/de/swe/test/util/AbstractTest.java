@@ -39,8 +39,8 @@ public abstract class AbstractTest {
 	
 	protected static final Locale LOCALE = Locale.GERMAN;
 
-	protected static final String USERNAME = "2";
-	protected static final String PASSWORD = "2";
+	protected static final String USERNAME = "tester@test.de";
+	protected static final String PASSWORD = "p";
 	protected static final String USERNAME_ADMIN = "1";
 	protected static final String PASSWORD_ADMIN = "1";
 	

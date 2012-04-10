@@ -1,7 +1,7 @@
 package de.swe.bestellverwaltung.service;
 
-import static de.swe.util.JpaConstants.KEINE_ID;
-import static de.swe.util.JpaConstants.UID;
+import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.io.Serializable;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -29,13 +29,13 @@ import de.swe.util.ValidationService;
 public class Bestellverwaltung implements Serializable {
 	private static final long serialVersionUID = UID;
 	
-	@EJB
+	@Inject
 	private BestellverwaltungDao dao;
 	
-	@EJB
+	@Inject
 	private Kundenverwaltung kv;
 	
-	@EJB
+	@Inject
 	private ValidationService validationService;
 	
 	public List<Bestellung> findAllBestellungen() {

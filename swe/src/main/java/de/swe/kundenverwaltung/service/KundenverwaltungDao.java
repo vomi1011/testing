@@ -1,21 +1,30 @@
 	package de.swe.kundenverwaltung.service;
 
+import static de.swe.util.Constants.ROLLE_TABELLE;
+import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;
-import static de.swe.util.JpaConstants.UID;
 
+import java.lang.invoke.MethodHandles;
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.inject.Named;
+import javax.persistence.EntityExistsException;
+import javax.persistence.Query;
+
+import org.jboss.logging.Logger;
 
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.Dao;
 import de.swe.util.Log;
+import de.swe.util.RolleType;
 
 //TODO JCache benutzen
 @Named
 @Log
 public class KundenverwaltungDao extends Dao {
 	private static final long serialVersionUID = UID;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	public enum Fetch {
 		NUR_KUNDE,
@@ -95,5 +104,51 @@ public class KundenverwaltungDao extends Dao {
 		}
 		
 		return kunde;
+	}
+
+	public boolean addRollen(Long kundeId, RolleType... rollen) {
+		if (rollen == null || rollen.length == 0) {
+			return true;
+		}
+		
+		findKundeById(kundeId, Fetch.NUR_KUNDE);
+		
+		final String insertTemplate = "INSERT INTO " + ROLLE_TABELLE + " VALUES (" + kundeId + ", ''{0}'')";
+		for (RolleType rolle : rollen) {
+			final String rolleStr = rolle.getValue();
+			final String insertStr = MessageFormat.format(insertTemplate, rolleStr);
+			
+			LOGGER.tracef("INSERT string=%s", insertStr);
+			
+			final Query query = em.createNativeQuery(insertStr);
+			try {
+				query.executeUpdate();
+			}
+			catch(EntityExistsException e) {
+				LOGGER.warnf("Der Kunde mit der ID %s hat bereits die Rolle %s", kundeId, rolleStr);
+				
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public void removeRollen(Long kundeId, RolleType... rollen) {
+		if (rollen == null || rollen.length == 0) {
+			return;
+		}
+
+		findKundeById(kundeId, Fetch.NUR_KUNDE);
+
+		final String deleteTemplate = "DELETE FROM " + ROLLE_TABELLE + " WHERE kunde_fk = " + kundeId
+                                      + " AND role = ''{0}''";
+		for (RolleType rolle: rollen) {
+			final String rolleStr = rolle.getValue();
+			final String deleteStr = MessageFormat.format(deleteTemplate, rolleStr);
+			LOGGER.tracef("DELETE string = %s", deleteStr);
+			final Query query = em.createNativeQuery(deleteStr);
+			query.executeUpdate();
+		}
 	}
 }
