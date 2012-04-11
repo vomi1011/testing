@@ -19,9 +19,9 @@ import javax.validation.groups.Default;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.domain.Bestellung.Status;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
 import de.swe.util.ValidationService;
 
 @Stateless
@@ -107,7 +107,7 @@ public class Bestellverwaltung implements Serializable {
 		
 		validateBestellung(bestellung, locale, Default.class);
 		
-		bestellung = dao.update(bestellung);
+		bestellung = dao.update(bestellung, bestellung.getBId());
 		return bestellung;
 	}
 	
@@ -122,7 +122,7 @@ public class Bestellverwaltung implements Serializable {
 		if(!bestellung.status.toString().equals("ABGEHOLT"))
 				{
 					bestellung.setStatus(Status.STORNIERT);
-					bestellung = dao.update(bestellung);
+					bestellung = dao.update(bestellung, bestellung.getBId());
 				}
 		return bestellung;
 		

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
@@ -21,9 +21,9 @@ import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.domain.Bestellung.Status;
 import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
 import de.swe.test.util.AbstractTest;
 
 
@@ -41,13 +41,13 @@ public class BestellverwaltungTest extends AbstractTest {
 	private static final int ANZAHL_BESTELLUNGEN = 5;
 	private static final int ANZAHL_BESTELLPOSITIONEN = 3;
 	
-	@EJB
+	@Inject
 	private Bestellverwaltung bv;
 	
-	@EJB
+	@Inject
 	private Artikelverwaltung av;
 	
-	@EJB
+	@Inject
 	private Kundenverwaltung kv;
 	
 	@Test

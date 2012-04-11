@@ -26,11 +26,9 @@ public class Artikelverwaltung implements Serializable {
 	
 	private static final long serialVersionUID = UID;	
 
-//	TODO 
 	@Inject
 	private ArtikelverwaltungDao dao;
 	
-//	TODO 
 	@Inject
 	private ValidationService validationService;
 	
@@ -73,7 +71,7 @@ public class Artikelverwaltung implements Serializable {
 	public Fahrzeug updateFahrzeug(Fahrzeug fahrzeug, Locale locale)
 					throws ArtikelValidationExeption {
 		validate(fahrzeug, locale, Default.class);
-		fahrzeug = dao.update(fahrzeug);
+		fahrzeug = dao.update(fahrzeug, fahrzeug.getFId());
 		
 		return fahrzeug;
 	}
@@ -130,7 +128,7 @@ public class Artikelverwaltung implements Serializable {
 					throws ArtikelValidationExeptionAH {
 		validate(autohersteller, locale, Default.class);
 		
-		autohersteller = dao.update(autohersteller);
+		autohersteller = dao.update(autohersteller, autohersteller.getAId());
 		
 		return autohersteller;
 	}

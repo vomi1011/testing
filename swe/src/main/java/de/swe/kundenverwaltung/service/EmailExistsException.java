@@ -1,11 +1,13 @@
 package de.swe.kundenverwaltung.service;
 
+import static de.swe.util.Constants.UID;
+
 import javax.ejb.ApplicationException;
 
 
 @ApplicationException(rollback = true)
 public class EmailExistsException extends AbstractKundenverwaltungException {
-	private static final long serialVersionUID = 4867667611097919943L;
+	private static final long serialVersionUID = UID;
 	private final String email;
 
 	public EmailExistsException(String email) {

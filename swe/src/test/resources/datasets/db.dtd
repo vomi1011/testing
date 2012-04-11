@@ -10,6 +10,7 @@
 <!ELEMENT adresse EMPTY>
 <!ATTLIST adresse
     a_id CDATA #REQUIRED
+    version CDATA #IMPLIED
     strasse CDATA #IMPLIED
     hausnr CDATA #REQUIRED
     plz CDATA #REQUIRED
@@ -22,12 +23,14 @@
 <!ELEMENT autohersteller EMPTY>
 <!ATTLIST autohersteller
     a_id CDATA #REQUIRED
+    version CDATA #IMPLIED
     name CDATA #REQUIRED
 >
 
 <!ELEMENT bestellposition EMPTY>
 <!ATTLIST bestellposition
     bp_id CDATA #REQUIRED
+    version CDATA #IMPLIED
     bestellung_fk CDATA #REQUIRED
     fahrzeug_fk CDATA #REQUIRED
     anzahl CDATA #REQUIRED
@@ -37,6 +40,7 @@
 <!ELEMENT bestellung EMPTY>
 <!ATTLIST bestellung
     b_id CDATA #REQUIRED
+    version CDATA #IMPLIED
     kunde_fk CDATA #REQUIRED
     idx CDATA #REQUIRED
     status CDATA #IMPLIED
@@ -47,6 +51,7 @@
 <!ELEMENT fahrzeug EMPTY>
 <!ATTLIST fahrzeug
     f_id CDATA #REQUIRED
+    version CDATA #IMPLIED
     hersteller_fk CDATA #REQUIRED
     modell CDATA #REQUIRED
     baujahr CDATA #IMPLIED
@@ -60,6 +65,7 @@
 <!ELEMENT kunde EMPTY>
 <!ATTLIST kunde
     k_id CDATA #REQUIRED
+    version CDATA #IMPLIED
     nachname CDATA #REQUIRED
     vorname CDATA #IMPLIED
     firma CDATA #IMPLIED

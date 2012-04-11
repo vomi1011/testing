@@ -4,6 +4,7 @@ SHOW WARNINGS;
 DROP TABLE IF EXISTS kunde;
 CREATE TABLE kunde(
 	k_id SERIAL PRIMARY KEY,
+	version INTEGER DEFAULT 0,
 	nachname VARCHAR(40) NOT NULL,
 	vorname VARCHAR(40),
 	firma VARCHAR(100),
@@ -22,6 +23,7 @@ DROP TABLE IF EXISTS adresse;
 
 CREATE TABLE adresse(
 	a_id SERIAL PRIMARY KEY,
+	version INTEGER DEFAULT 0,
 	strasse VARCHAR(100),
 	hausnr VARCHAR(4) NOT NULL,
 	plz CHAR(5) NOT NULL,
@@ -37,6 +39,7 @@ DROP TABLE IF EXISTS autohersteller;
 
 CREATE TABLE autohersteller(
 	a_id SERIAL PRIMARY KEY,
+	version INTEGER DEFAULT 0,
 	name VARCHAR(100) NOT NULL
 );
 
@@ -46,11 +49,12 @@ DROP TABLE IF EXISTS fahrzeug;
 
 CREATE TABLE fahrzeug(
 	f_id SERIAL PRIMARY KEY,
+	version INTEGER DEFAULT 0,
 	hersteller_fk BIGINT NOT NULL REFERENCES autohersteller(a_id),
 	modell VARCHAR(50) NOT NULL,
 	baujahr SMALLINT,
 	beschreibung VARCHAR(200),
-	preis INT,
+	preis INTEGER,
 	lieferbar BOOL,
 	erstellt TIMESTAMP NOT NULL DEFAULT 0,
 	aktualisiert TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -62,6 +66,7 @@ DROP TABLE IF EXISTS bestellung;
 
 CREATE TABLE bestellung(
 	b_id SERIAL PRIMARY KEY,
+	version INTEGER DEFAULT 0,
 	kunde_fk BIGINT NOT NULL REFERENCES kunde(k_id) ON DELETE CASCADE,
 	idx SMALLINT NOT NULL,
 	status VARCHAR(50),
@@ -77,6 +82,7 @@ DROP TABLE IF EXISTS bestellposition;
 
 CREATE TABLE bestellposition(
 	bp_id SERIAL PRIMARY KEY,
+	version INTEGER DEFAULT 0,
 	bestellung_fk BIGINT NOT NULL REFERENCES bestellung(b_id) ON DELETE CASCADE,
 	fahrzeug_fk BIGINT NOT NULL REFERENCES fahrzeug(f_id) ON DELETE CASCADE,
 	anzahl SMALLINT NOT NULL,

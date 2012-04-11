@@ -1,5 +1,9 @@
 package de.swe.kundenverwaltung.service;
 
+
+
+import static de.swe.util.Constants.UID;
+
 import java.util.Collection;
 
 import javax.ejb.ApplicationException;
@@ -13,7 +17,7 @@ import de.swe.kundenverwaltung.domain.AbstractKunde;
  */
 @ApplicationException(rollback = true)
 public class KundeValidationException extends AbstractKundenverwaltungException {
-	private static final long serialVersionUID = 4255133082483647701L;
+	private static final long serialVersionUID = UID;
 	private final AbstractKunde kunde;
 	private final Collection<ConstraintViolation<AbstractKunde>> violations;
 

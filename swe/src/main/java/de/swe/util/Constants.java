@@ -4,6 +4,7 @@ public final class Constants {
 	//JPA
 	public static final Long KEINE_ID = null;
 	public static final long UID = 1L;
+	public static final int ERSTE_VERSION = 0;
 	public static final int INT_ANZ_ZIFFERN = 11;
 	public static final int LONG_ANZ_ZIFFERN = 20;
 	
@@ -22,9 +23,9 @@ public final class Constants {
 	public static final String ROLLE_TABELLE = "shop_role";
 	
 	// REST
-	public static final String ARTIKELVERWALTUNG_NS = "urn:shop:artikelverwaltung";
-	public static final String BESTELLVERWALTUNG_NS = "urn:shop:bestellverwaltung";
-	public static final String KUNDENVERWALTUNG_NS = "urn:shop:kundenverwaltung";
+	public static final String ARTIKELVERWALTUNG_NS = "urn:swe:artikelverwaltung";
+	public static final String BESTELLVERWALTUNG_NS = "urn:swe:bestellverwaltung";
+	public static final String KUNDENVERWALTUNG_NS = "urn:swe:kundenverwaltung";
 	
 	private Constants() {
 	}

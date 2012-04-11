@@ -1,7 +1,9 @@
 package de.swe.util;
 
-public abstract class AbstractSweException extends Exception {
-	private static final long serialVersionUID = -1030863258479949134L;
+import static de.swe.util.Constants.UID;
+
+public abstract class AbstractSweException extends RuntimeException {
+	private static final long serialVersionUID = UID;
 
 	public AbstractSweException(String msg) {
 		super(msg);

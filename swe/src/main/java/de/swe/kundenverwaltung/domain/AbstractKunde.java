@@ -1,14 +1,16 @@
 package de.swe.kundenverwaltung.domain;
 
+import static de.swe.util.Constants.ERSTE_VERSION;
 import static de.swe.util.Constants.KEINE_ID;
 import static de.swe.util.Constants.KUNDEN_ID;
 import static de.swe.util.Constants.LONG_ANZ_ZIFFERN;
 import static de.swe.util.Constants.UID;
+import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.CascadeType.MERGE;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,10 +32,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Min;
@@ -50,6 +55,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.validator.constraints.Email;
+import org.jboss.logging.Logger;
 
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.util.IdGroup;
@@ -123,6 +129,7 @@ import de.swe.util.XmlDateAdapter;
 })
 public abstract class AbstractKunde implements Serializable {
 	private static final long serialVersionUID = UID;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
 	private static final String PREFIX_ADEL = "(o'|von|von der|von und zu|van)?";
@@ -173,6 +180,10 @@ public abstract class AbstractKunde implements Serializable {
 	@Min(value = KUNDEN_ID, message = "{kundenverwaltung.kunde.id.min}", groups = IdGroup.class)
 	@XmlAttribute(name = "id")
 	private Long id = KEINE_ID;
+	
+	@Version
+	@XmlTransient
+	private int version = ERSTE_VERSION;
 
 	@Column(length = NACHNAME_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notnull}")
@@ -231,6 +242,16 @@ public abstract class AbstractKunde implements Serializable {
 	@XmlElement(name = "bestellungen")
 	private URI bestellungenUri;
 	
+	@PostPersist
+	protected void postPersist() {
+		LOGGER.tracef("Neuer Kunde mit ID=%d", id);
+	}
+	
+	@PostUpdate
+	protected void postUpdate() {
+		LOGGER.tracef("Kunde mit ID=%d aktualisiert: version=%d", id, version);
+	}
+	
 	@PostLoad
 	protected void postLoad() {
 		passwordWdh = password;
@@ -271,6 +292,14 @@ public abstract class AbstractKunde implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public String getNachname() {
@@ -438,7 +467,7 @@ public abstract class AbstractKunde implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AbstractKunde [id=" + id + ", nachname=" + nachname
+		return "AbstractKunde [id=" + id + ", version=" + version + ", nachname=" + nachname
 				+ ", vorname=" + vorname + ", email=" + email + ", telefon="
 				+ telefon + ", geschlecht=" + geschlecht + ", erstellt="
 				+ erstellt + ", aktualisiert=" + aktualisiert + "]";

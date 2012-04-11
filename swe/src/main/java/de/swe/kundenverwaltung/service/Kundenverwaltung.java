@@ -32,10 +32,11 @@ import javax.validation.groups.Default;
 import org.jboss.ejb3.annotation.SecurityDomain;
 import org.jboss.logging.Logger;
 
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.PasswordGroup;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Order;
 import de.swe.util.IdGroup;
 import de.swe.util.RolleType;
 import de.swe.util.ValidationService;
@@ -161,31 +162,19 @@ public class Kundenverwaltung implements Serializable {
 			passwordVerschluesseln(kunde);
 		}
 		
-		kunde = dao.update(kunde);
+		kunde = dao.update(kunde, kunde.getId());
 		kunde.setPasswordWdh(kunde.getPassword());
 		
 		return kunde;
 	}
 	
-	//TODO Methode entfernen
-	@Deprecated
 	@RolesAllowed(ROLLE_ADMIN)
-	public void deleteKunde(AbstractKunde kunde, Locale locale) throws KundeDeleteBestellungException {
+	public void deleteKunde(AbstractKunde kunde) throws KundeDeleteBestellungException {
 		if (kunde == null) {
 			return;
 		}
 		
-		kunde = findKundeById(kunde.getId(), Fetch.MIT_BESTELLUNG);
-		
-		if (kunde == null) {
-			return;
-		}
-		
-		if (kunde.getBestellungen() != null && !kunde.getBestellungen().isEmpty()) {
-			throw new KundeDeleteBestellungException(kunde);
-		}
-		
-		dao.delete(kunde);
+		deleteKundeById(kunde.getId());
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)

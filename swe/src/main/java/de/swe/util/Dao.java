@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -104,15 +105,31 @@ public class Dao implements Serializable {
 		return obj;
 	}
 	
-	public <T> T update(T obj) {
-		return em.merge(obj);
+	public <T> T update(T obj, Object id) {
+		if (obj == null) {
+			return null;
+		}
+		
+		Object tmp = em.find(obj.getClass(), id);
+		if (tmp == null) {
+			throw new ConcurrentDeleteException(id);
+		}
+		
+		try {
+			obj = em.merge(obj);
+		}
+		catch (OptimisticLockException e) {
+			throw new ConcurrentUpdateException(id, e);
+		}
+		
+		return obj;
 	}
 	
 	public void delete(Object obj) {
 		if (!em.contains(obj)) {
 			final Object id = em.getEntityManagerFactory()
-					.getPersistenceUnitUtil()
-					.getIdentifier(obj);
+								.getPersistenceUnitUtil()
+								.getIdentifier(obj);
 			em.find(obj.getClass(), id);
 		}
 		

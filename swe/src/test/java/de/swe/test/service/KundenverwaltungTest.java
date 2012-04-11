@@ -1,23 +1,27 @@
 package de.swe.test.service;
 
 import static de.swe.kundenverwaltung.domain.AbstractKunde.FIRMENKUNDE;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static de.swe.kundenverwaltung.domain.AbstractKunde.PRIVATKUNDE;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.either;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.swe.bestellverwaltung.domain.Bestellung;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.Adresse;
 import de.swe.kundenverwaltung.domain.Privatkunde;
@@ -25,12 +29,12 @@ import de.swe.kundenverwaltung.service.EmailExistsException;
 import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Order;
 import de.swe.test.util.AbstractTest;
 
 @RunWith(Arquillian.class)
 public class KundenverwaltungTest extends AbstractTest {
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	
 	private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(1007);
 	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(0);
 	private static final String EMAIL_VORHANDEN = "abc@def.de";
@@ -49,7 +53,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	private static final String PLZ_NEU = "76133";
 	private static final String ORT_NEU = "Karlsruhe";
 	
-	@EJB
+	@Inject
 	private Kundenverwaltung kv;
 	
 	@Test
@@ -221,7 +225,7 @@ public class KundenverwaltungTest extends AbstractTest {
 		assertThat(kunde, is(notNullValue()));
 		assertThat(kunde.getBestellungen().isEmpty(), is(true));
 		
-		kv.deleteKunde(kunde, LOCALE);
+		kv.deleteKunde(kunde);
 		
 		final List<AbstractKunde> kundenNachher = kv.findAllKunden(Fetch.NUR_KUNDE, Order.ID);
 		assertThat(kundenVorher.size() - 1, is(kundenNachher.size()));

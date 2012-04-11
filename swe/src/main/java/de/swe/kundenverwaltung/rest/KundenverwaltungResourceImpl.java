@@ -22,6 +22,8 @@ import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.rest.BestellungList;
 import de.swe.bestellverwaltung.rest.BestellverwaltungResource;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.Adresse;
 import de.swe.kundenverwaltung.domain.Privatkunde;
@@ -29,8 +31,6 @@ import de.swe.kundenverwaltung.service.EmailExistsException;
 import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Order;
 import de.swe.util.NotFoundException;
 
 @Stateless

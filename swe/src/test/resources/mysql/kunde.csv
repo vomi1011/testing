@@ -1,8 +1,8 @@
-kunde_id;name;vorname;firma;geschlecht;telefon;email;password;art;erstellt;aktualisiert
-1001;Volz;Michael;;M;72112312312;vomi1011@web.de;11111;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1002;Stroemsdoerfer;Priscila;;W;72112312313;prsa@web.de;22222;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1003;Nguyen;Nhat;;M;72112312314;ngnh@google.com;33333;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1004;Remizova;Elena;;W;72112312315;rmel@gmx.de;44444;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1005;Abc;;Firma Abc;M;123;abc@def.de;55555;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1006;Def;;Firma Def;W;72112312315;def@ghi.de;66666;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1007;Tester;;;W;72112312315;tester@test.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+kunde_id;version;name;vorname;firma;geschlecht;telefon;email;password;art;erstellt;aktualisiert
+1001;;Volz;Michael;;M;72112312312;vomi1011@web.de;11111;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1002;;Stroemsdoerfer;Priscila;;W;72112312313;prsa@web.de;22222;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1003;;Nguyen;Nhat;;M;72112312314;ngnh@google.com;33333;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1004;;Remizova;Elena;;W;72112312315;rmel@gmx.de;44444;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1005;;Abc;;Firma Abc;M;123;abc@def.de;55555;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1006;;Def;;Firma Def;W;72112312315;def@ghi.de;66666;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1007;;Tester;;;W;72112312315;tester@test.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;P;2011-10-11 19:27:00;2011-10-11 19:27:00

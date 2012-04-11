@@ -28,10 +28,10 @@ import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.rest.KundenverwaltungResource;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
-import de.swe.kundenverwaltung.service.KundenverwaltungDao.Fetch;
 import de.swe.util.NotFoundException;
 
 

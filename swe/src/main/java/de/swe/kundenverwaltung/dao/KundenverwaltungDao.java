@@ -1,4 +1,4 @@
-	package de.swe.kundenverwaltung.service;
+	package de.swe.kundenverwaltung.dao;
 
 import static de.swe.util.Constants.ROLLE_TABELLE;
 import static de.swe.util.Constants.UID;

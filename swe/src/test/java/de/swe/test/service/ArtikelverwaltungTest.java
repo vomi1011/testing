@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Ignore;
@@ -36,8 +36,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	private static final String MODELL = "Modell 3";
 	private static final String MODELL2 = "Modell 2";
 
-	
-	@EJB
+	@Inject
 	private Artikelverwaltung av;
 	
 	@Test

@@ -1,11 +1,13 @@
 package de.swe.kundenverwaltung.domain;
 
 import static de.swe.util.Constants.ADRESS_ID;
+import static de.swe.util.Constants.ERSTE_VERSION;
 import static de.swe.util.Constants.KEINE_ID;
 import static de.swe.util.Constants.LONG_ANZ_ZIFFERN;
 import static de.swe.util.Constants.UID;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,8 +17,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -26,6 +31,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.jboss.logging.Logger;
 
 import de.swe.util.IdGroup;
 
@@ -38,6 +45,7 @@ import de.swe.util.IdGroup;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Adresse implements Serializable {
 	private static final long serialVersionUID = UID;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	public static final int PLZ_LENGTH_MAX = 5;
 	public static final int ORT_LENGTH_MIN = 2;
@@ -52,6 +60,10 @@ public class Adresse implements Serializable {
 	@Min(value = ADRESS_ID, message = "{kundenverwaltung.adresse.id.min}", groups = IdGroup.class)
 	@XmlAttribute(name = "id")
 	private Long id = KEINE_ID;
+	
+	@Version
+	@XmlTransient
+	private int version = ERSTE_VERSION;
 
 	@Column(length = STRASSE_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
@@ -89,6 +101,18 @@ public class Adresse implements Serializable {
 	@XmlTransient
 	private Date aktualisiert;
 	
+	@PostPersist
+	@SuppressWarnings("unused")
+	private void postPersist() {
+		LOGGER.tracef("Neue Adresse mit ID=%d", id);
+	}
+	
+	@PostUpdate
+	@SuppressWarnings("unused")
+	private void postUpdate() {
+		LOGGER.tracef("Adresse mit ID=%d aktualisiert: version=%d", id, version);
+	}
+	
 	public Adresse() {
 		super();
 	}
@@ -111,6 +135,14 @@ public class Adresse implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public void setId(Long id) {
