@@ -21,7 +21,7 @@ import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.NotFoundException;
 
-@Path("/bestellverwaltung")
+@Path("/bestellungen")
 @Produces({ APPLICATION_XML, TEXT_XML })
 @Consumes
 public interface BestellverwaltungResource {
@@ -33,13 +33,12 @@ public interface BestellverwaltungResource {
 	 * @throws NotFoundExceptionRest 
 	 */
 	@GET
-	@Path("/bestellungen/{id:[0-9]+}")
+	@Path("/{id:[5][0-9]+}")
 	Bestellung findBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo)
 			throws NotFoundException;
 
 	
 	@GET
-	@Path("/bestellungen")
 	BestellungList findBestellungen(@Context UriInfo uriInfo)
 			throws NotFoundException;
 	
@@ -50,7 +49,7 @@ public interface BestellverwaltungResource {
 	 * @throws NotFoundExceptionRest 
 	 */
 	@GET
-	@Path("/bestellungen/{id:[0-9]+}/kunde")
+	@Path("/{id:[5][0-9]+}/kunde")
 	AbstractKunde findKundeByBid(@PathParam("id") Long id, @Context UriInfo uriInfo)
 			throws NotFoundException;
 
@@ -67,7 +66,6 @@ public interface BestellverwaltungResource {
 	@POST
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	@Path("/bestellungen")
 	Response createBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 			 throws NotFoundException, BestellungValidationException;
 
