@@ -1,6 +1,7 @@
 package de.swe.bestellverwaltung.service;
 
 import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
@@ -9,12 +10,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
+
+import org.jboss.ejb3.annotation.SecurityDomain;
 
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
@@ -23,9 +27,12 @@ import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.util.ValidationService;
+import static de.swe.util.Constants.ROLLE_KUNDE;
+import static de.swe.util.Constants.ROLLE_ADMIN;
 
 @Stateless
 @TransactionAttribute(MANDATORY)
+@SecurityDomain(SECURITY_DOMAIN) //TODO entfernen wenn nachher Schutz fuer alle EJBs eingestellt wird
 public class Bestellverwaltung implements Serializable {
 	private static final long serialVersionUID = UID;
 	
@@ -59,7 +66,6 @@ public class Bestellverwaltung implements Serializable {
 		return bestellung;		
 	}
 	
-
 	public AbstractKunde findKundeByBestellid(Long id) {
 		final AbstractKunde kunde = dao.findKundeByBestellid(id);
 		return kunde;
@@ -77,6 +83,7 @@ public class Bestellverwaltung implements Serializable {
 		}
 	}
 
+	@RolesAllowed(ROLLE_KUNDE)
 	public Bestellung createBestellung(Bestellung bestellung,
 			AbstractKunde kunde, Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
@@ -98,7 +105,8 @@ public class Bestellverwaltung implements Serializable {
 		bestellung = dao.create(bestellung);
 		return bestellung;
 	}
-	
+
+	@RolesAllowed(ROLLE_KUNDE)
 	public Bestellung updateBestellung(Bestellung bestellung, 
 			Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
@@ -110,7 +118,8 @@ public class Bestellverwaltung implements Serializable {
 		bestellung = dao.update(bestellung, bestellung.getBId());
 		return bestellung;
 	}
-	
+
+	@RolesAllowed(ROLLE_KUNDE)
 	public Bestellung stornierenBestellung(Bestellung bestellung, Status status,
 			Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
@@ -128,7 +137,7 @@ public class Bestellverwaltung implements Serializable {
 		
 	}
 	
-	
+	@RolesAllowed(ROLLE_ADMIN)
 	public void deleteBestellung(Bestellung bestellung, Locale locale) 
 			throws BestellungValidationException {
 		if (bestellung == null) {
