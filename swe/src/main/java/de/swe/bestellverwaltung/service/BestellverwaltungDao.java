@@ -1,12 +1,10 @@
 package de.swe.bestellverwaltung.service;
 
-import static javax.ejb.TransactionAttributeType.MANDATORY;
 import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;
 
 import java.util.List;
 
-import javax.ejb.TransactionAttribute;
 import javax.inject.Named;
 
 import de.swe.bestellverwaltung.domain.Bestellung;
@@ -15,7 +13,6 @@ import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.Dao;
 
 @Named
-@TransactionAttribute(MANDATORY)
 public class BestellverwaltungDao extends Dao {
 	private static final long serialVersionUID = UID;
 	
