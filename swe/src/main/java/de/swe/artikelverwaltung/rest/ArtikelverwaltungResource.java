@@ -7,14 +7,12 @@ import java.net.URI;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -28,31 +26,50 @@ import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
 import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.util.NotFoundException;
 
-@Path("/artikelverwaltung")
+//@Path("/artikelverwaltung")
 @Produces({ APPLICATION_XML, TEXT_XML })
 public interface ArtikelverwaltungResource {
-	@GET
-	@Path("/fahrzeuge/{id:[6][0-9]+}")
-	@Formatted
-	Fahrzeug findFahrzeug(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
-	
+
+	/**
+	 * Mit der URL /fahrzeuge werden alle Fahrzeuge ermittelt
+	 * @return Liste mit den gefundenen Fahrzeugdaten
+	 */
 	@GET
 	@Path("/fahrzeuge")
 	@Formatted
 	FahrzeugList findFahrzeuge(@Context UriInfo uriInfo)
 			throws NotFoundException;
 	
+	/**
+	 * Mit der URL /fahrzeuge/{id} einen Fahrzeug ermittelt
+	 * @param id ID des Fahrzeuges
+	 * @return Objekt mit Fahrzeugdaten, falls die ID vorhanden ist
+	 */
+	@GET
+	@Path("/fahrzeuge/{id:[6][0-9]+}")
+	@Formatted
+	Fahrzeug findFahrzeug(@PathParam("id") Long id, @Context UriInfo uriInfo)
+			throws NotFoundException;
+
+	/**
+	 * Mit der URL /autohersteller werden alle Autohersteller ermittelt
+	 * @return Liste mit den gefundenen Autoherstellern
+	 */
+	@GET
+	@Path("/autohersteller")
+	@Formatted
+	AutoherstellerList findAutohersteller(@Context UriInfo uriInfo)
+			throws NotFoundException;	
+
+	/**
+	 * Mit der URL /autohersteller/{id} einen Autohersteller ermittelt
+	 * @param id ID des Autoherstellers
+	 * @return Objekt mit Autoherstellerdaten, falls die ID vorhanden ist
+	 */
 	@GET
 	@Path("/autohersteller/{id:[7][0-9]+}")
 	@Formatted
 	Autohersteller findAutohersteller(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
-
-	@GET
-	@Path("/autohersteller")
-	@Formatted
-	AutoherstellerList findAutohersteller(@QueryParam("name") @DefaultValue("") String name, @Context UriInfo uriInfo)
 			throws NotFoundException;
 	
 	@POST

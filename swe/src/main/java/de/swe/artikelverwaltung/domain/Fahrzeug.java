@@ -1,4 +1,5 @@
 package de.swe.artikelverwaltung.domain;
+import static de.swe.util.Constants.ERSTE_VERSION;
 import static de.swe.util.Constants.FAHRZEUG_ID;
 import java.io.Serializable;
 import java.net.URI;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -82,6 +84,10 @@ public class Fahrzeug implements Serializable {
 	@Column(name = "f_id")
 	@Min(value = FAHRZEUG_ID, message = "{artikelverwaltung.fahrzeug.id.min}", groups = IdGroup.class)
 	private Long id;
+	
+	@Version
+	@XmlTransient
+	private int version = ERSTE_VERSION;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "hersteller_fk", nullable = false)
@@ -126,6 +132,14 @@ public class Fahrzeug implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public Date getAktualisiert() {

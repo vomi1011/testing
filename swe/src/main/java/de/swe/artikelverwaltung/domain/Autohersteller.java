@@ -2,6 +2,7 @@ package de.swe.artikelverwaltung.domain;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
+import static de.swe.util.Constants.ERSTE_VERSION;
 import static de.swe.util.Constants.UID;
 import static de.swe.util.Constants.AUTOHERSTELLER_ID;
 import static de.swe.util.Constants.KEINE_ID;
@@ -19,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -75,6 +77,10 @@ public class Autohersteller implements Serializable {
 	@Min(value = AUTOHERSTELLER_ID, message = "{artikelverwaltung.autohersteller.id.min}", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 	
+	@Version
+	@XmlTransient
+	private int version = ERSTE_VERSION;
+	
 	@XmlElement(required = true)
 	@NotNull(message = "{artikelverwaltung.autohersteller.name.notNull}")
 	@Pattern(regexp = HERSTELLERNAME_PATTERN, message = "{artikelverwaltung.autohersteller.name.pattern}")
@@ -92,6 +98,14 @@ public class Autohersteller implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	@Deprecated

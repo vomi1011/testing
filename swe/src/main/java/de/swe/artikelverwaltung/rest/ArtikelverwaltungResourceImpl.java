@@ -197,7 +197,8 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	}
 
 	@Override
-	public FahrzeugList findFahrzeuge(UriInfo uriInfo) throws NotFoundException {
+	public FahrzeugList findFahrzeuge(UriInfo uriInfo) 
+			throws NotFoundException {
 		List<Fahrzeug> fahrzeuge = av.findAllFahrzeuge(Order.ID);
 		final FahrzeugList fahrzeugliste = new FahrzeugList(fahrzeuge);
 		return fahrzeugliste;
@@ -205,28 +206,10 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 
 
 	@Override
-	public AutoherstellerList findAutohersteller(String name, UriInfo uriInfo)
+	public AutoherstellerList findAutohersteller(UriInfo uriInfo)
 			throws NotFoundException {
-		// TODO Auto-generated method stub
-		List<Autohersteller> autohersteller = null;
-		
-		if (name.equals("")) {
-			autohersteller = av.findAllAutohersteller(Order.ID);
-			
-			if (autohersteller.isEmpty()) {
-				throw new NotFoundException("Kein Autohersteller gefunden.");
-			}
-		}
-		else {
-			autohersteller = av.findAllAutoherstellerByName(Order.NAME);
-			if (autohersteller.isEmpty()) {
-				throw new NotFoundException("Kein Autohersteller gefunden.");
-			}
-		}
-		
-		AutoherstellerList autoherstellerliste = new AutoherstellerList(autohersteller);
-		
-		
+		List<Autohersteller> autohersteller = av.findAllAutohersteller(Order.ID);
+		final AutoherstellerList autoherstellerliste = new AutoherstellerList(autohersteller);
 		return autoherstellerliste;
 	}
 }

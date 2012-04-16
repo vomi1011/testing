@@ -20,6 +20,7 @@ public final class Constants {
 	public static final String ROLLE_MITARBEITER = "mitarbeiter";
 	public static final String ROLLE_ADMIN = "admin";
 	public static final String ROLLE_KUNDE = "kunde";
+	public static final String ROLLE_ARTIKELVERWALTER = "artikelverwalter";
 	public static final String ROLLE_TABELLE = "shop_role";
 	
 	// REST

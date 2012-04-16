@@ -1,5 +1,9 @@
 package de.swe.artikelverwaltung.service;
 
+import static de.swe.util.Constants.ROLLE_ADMIN;
+import static de.swe.util.Constants.ROLLE_MITARBEITER;
+import static de.swe.util.Constants.ROLLE_ARTIKELVERWALTER;
+import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
@@ -8,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -15,13 +20,17 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import org.jboss.ejb3.annotation.SecurityDomain;
+
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
 import de.swe.util.ValidationService;
 
+//TODO Code kommentieren
 @Stateless
 @TransactionAttribute(MANDATORY)
+@SecurityDomain(SECURITY_DOMAIN) //TODO entfernen wenn nachher Schutz fuer alle EJBs eingestellt wird
 public class Artikelverwaltung implements Serializable {
 	
 	private static final long serialVersionUID = UID;	
@@ -60,6 +69,7 @@ public class Artikelverwaltung implements Serializable {
 		}
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER, ROLLE_ARTIKELVERWALTER })
 	public Fahrzeug createFahrzeug(Fahrzeug fahrzeug, Locale locale) 
 					throws ArtikelValidationExeption {
 		validate(fahrzeug, locale, Default.class);	
@@ -68,6 +78,7 @@ public class Artikelverwaltung implements Serializable {
 		return fahrzeug;
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER, ROLLE_ARTIKELVERWALTER })
 	public Fahrzeug updateFahrzeug(Fahrzeug fahrzeug, Locale locale)
 					throws ArtikelValidationExeption {
 		validate(fahrzeug, locale, Default.class);
@@ -76,6 +87,7 @@ public class Artikelverwaltung implements Serializable {
 		return fahrzeug;
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
 	public void deleteFahrzeug(Fahrzeug fahrzeug) {
 		if (fahrzeug == null) {
 			return;
@@ -121,6 +133,7 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
 	public Autohersteller createAutohersteller(Autohersteller autohersteller, Locale locale)
 					throws ArtikelValidationExeptionAH {
 		validate(autohersteller, locale, Default.class);
@@ -130,6 +143,7 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 	
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
 	public Autohersteller updateAutohersteller(Autohersteller autohersteller, Locale locale)
 					throws ArtikelValidationExeptionAH {
 		validate(autohersteller, locale, Default.class);
@@ -138,7 +152,8 @@ public class Artikelverwaltung implements Serializable {
 		
 		return autohersteller;
 	}
-	
+
+	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
 	public void deleteAutohersteller(Autohersteller autohersteller) {
 		if (autohersteller == null) {
 			return;
