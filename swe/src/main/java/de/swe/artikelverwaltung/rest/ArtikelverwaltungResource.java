@@ -40,7 +40,7 @@ public interface ArtikelverwaltungResource {
 	@GET
 	@Path("/fahrzeuge")
 	@Formatted
-	Fahrzeug findFahrzeuge(@Context UriInfo uriInfo)
+	FahrzeugList findFahrzeuge(@Context UriInfo uriInfo)
 			throws NotFoundException;
 	
 	@GET
@@ -52,7 +52,7 @@ public interface ArtikelverwaltungResource {
 	@GET
 	@Path("/autohersteller")
 	@Formatted
-	Fahrzeug findFahrzeuge(@QueryParam("name") @DefaultValue("") String name, @Context UriInfo uriInfo)
+	AutoherstellerList findAutohersteller(@QueryParam("name") @DefaultValue("") String name, @Context UriInfo uriInfo)
 			throws NotFoundException;
 	
 	@POST

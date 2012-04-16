@@ -73,7 +73,7 @@ public class Autohersteller implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "a_id")
 	@Min(value = AUTOHERSTELLER_ID, message = "{artikelverwaltung.autohersteller.id.min}", groups = IdGroup.class)
-	private Long aId = KEINE_ID;
+	private Long id = KEINE_ID;
 	
 	@XmlElement(required = true)
 	@NotNull(message = "{artikelverwaltung.autohersteller.name.notNull}")
@@ -86,12 +86,22 @@ public class Autohersteller implements Serializable {
 	@XmlTransient
 	private List<Fahrzeug> fahrzeuge;
 
-	public Long getAId() {
-		return aId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setAId(Long aId) {
-		this.aId = aId;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Deprecated
+	public Long getAId() {
+		return id;
+	}
+
+	@Deprecated
+	public void setAId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -115,7 +125,7 @@ public class Autohersteller implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((aId == null) ? 0 : aId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -131,12 +141,12 @@ public class Autohersteller implements Serializable {
 			return false;
 		}
 		Autohersteller other = (Autohersteller) obj;
-		if (aId == null) {
-			if (other.aId != null) {
+		if (id == null) {
+			if (other.id != null) {
 				return false;
 			}
 		}
-		else if (!aId.equals(other.aId)) {
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;
@@ -144,7 +154,7 @@ public class Autohersteller implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Autohersteller [aId=" + aId + ", name=" + name + "]";
+		return "Autohersteller [id=" + id + ", name=" + name + "]";
 	}
 
 	public void addFahrzeug(Fahrzeug fahrzeug) {

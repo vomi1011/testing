@@ -22,7 +22,8 @@ public class ArtikelverwaltungDao extends Dao {
 	
 	public enum Order {
 		KEINE,
-		ID
+		ID,
+		NAME
 	}
 	
 	public List<Fahrzeug> findAllFahrzeuge(Order order) {
@@ -58,6 +59,20 @@ public class ArtikelverwaltungDao extends Dao {
 		
 		if (order.equals(Order.ID)) {
 			autohersteller = find(Autohersteller.class, Autohersteller.FIND_AUTOHERSTELLER_ORDER_BY_ID);
+		}
+		
+		else {
+			autohersteller = find(Autohersteller.class, Autohersteller.FIND_AUTOHERSTELLER);
+		}
+		
+		return autohersteller;
+	}
+	
+	public List<Autohersteller> findAllAutoherstellerByName(Order order) {
+		List<Autohersteller> autohersteller = null;
+		
+		if (order.equals(Order.NAME)) {
+			autohersteller = find(Autohersteller.class, Autohersteller.FIND_AUTOHERSTELLER_BY_NAME);
 		}
 		
 		else {

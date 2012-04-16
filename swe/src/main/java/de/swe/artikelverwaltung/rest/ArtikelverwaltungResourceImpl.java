@@ -19,6 +19,7 @@ import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
 import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
+import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
 import de.swe.util.NotFoundException;
 
 @Stateless
@@ -92,10 +93,10 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	public Response updateFahrzeug(Fahrzeug fahrzeug, UriInfo uriInfo)
 			throws NotFoundException, ArtikelValidationExeption {
 		
-		final Fahrzeug fahrzeugAlt = av.findFahrzeugById(fahrzeug.getFId());
+		final Fahrzeug fahrzeugAlt = av.findFahrzeugById(fahrzeug.getId());
 		
 		if (fahrzeugAlt == null) {
-			String msg = "Kein Fahrzeug gefunden mit ID " + fahrzeug.getFId();
+			String msg = "Kein Fahrzeug gefunden mit ID " + fahrzeug.getId();
 			throw new NotFoundException(msg);
 		}
 		
@@ -107,7 +108,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		fahrzeug = av.updateFahrzeug(fahrzeug, Locale.getDefault());
 		
 		if (fahrzeug == null) {
-			String msg = "Kein Fahrzeug gefunden mit ID " + fahrzeugAlt.getFId();
+			String msg = "Kein Fahrzeug gefunden mit ID " + fahrzeugAlt.getId();
 			throw new NotFoundException(msg);
 		}
 		
@@ -118,10 +119,10 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	public Response updateAutohersteller(Autohersteller autohersteller,
 			UriInfo uriInfo) throws NotFoundException,
 			ArtikelValidationExeptionAH {
-		final Autohersteller autoherstellerAlt = av.findAutoherstellerById(autohersteller.getAId());
+		final Autohersteller autoherstellerAlt = av.findAutoherstellerById(autohersteller.getId());
 		
 		if (autoherstellerAlt == null) {
-			String msg = "Kein Autohersteller gefunden mit ID " + autohersteller.getAId();
+			String msg = "Kein Autohersteller gefunden mit ID " + autohersteller.getId();
 			throw new NotFoundException(msg);
 		}
 		
@@ -131,7 +132,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		autohersteller = av.updateAutohersteller(autohersteller, Locale.getDefault());
 		
 		if (autohersteller == null) {
-			String msg = "Kein Autohersteller gefunden mit ID " + autoherstellerAlt.getAId();
+			String msg = "Kein Autohersteller gefunden mit ID " + autoherstellerAlt.getId();
 			throw new NotFoundException(msg);
 		}
 		
@@ -172,7 +173,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
 		                             .path(ArtikelverwaltungResource.class)
 		                             .path(ArtikelverwaltungResource.class, "findFahrzeug");
-		final URI fahrzeugUri = ub.build(fahrzeug.getFId());
+		final URI fahrzeugUri = ub.build(fahrzeug.getId());
 		return fahrzeugUri;
 	}
 
@@ -182,7 +183,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
                 .path(ArtikelverwaltungResource.class)
                 .path(ArtikelverwaltungResource.class, "findFahrzeugbyAutoherstellerId");
-		final URI autoherstellerUri = ub.build(fahrzeug.getFId());
+		final URI autoherstellerUri = ub.build(fahrzeug.getId());
 		fahrzeug.setHersteller(autoherstellerUri);
 	}
 
@@ -191,20 +192,41 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
                 .path(ArtikelverwaltungResource.class)
                 .path(ArtikelverwaltungResource.class, "findAutohersteller");
-		final URI autoherstellerUri = ub.build(autohersteller.getAId());
+		final URI autoherstellerUri = ub.build(autohersteller.getId());
 		return autoherstellerUri;
 	}
 
 	@Override
-	public Fahrzeug findFahrzeuge(UriInfo uriInfo) throws NotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public FahrzeugList findFahrzeuge(UriInfo uriInfo) throws NotFoundException {
+		List<Fahrzeug> fahrzeuge = av.findAllFahrzeuge(Order.ID);
+		final FahrzeugList fahrzeugliste = new FahrzeugList(fahrzeuge);
+		return fahrzeugliste;
 	}
 
+
 	@Override
-	public Fahrzeug findFahrzeuge(String name, UriInfo uriInfo)
+	public AutoherstellerList findAutohersteller(String name, UriInfo uriInfo)
 			throws NotFoundException {
 		// TODO Auto-generated method stub
-		return null;
+		List<Autohersteller> autohersteller = null;
+		
+		if (name.equals("")) {
+			autohersteller = av.findAllAutohersteller(Order.ID);
+			
+			if (autohersteller.isEmpty()) {
+				throw new NotFoundException("Kein Autohersteller gefunden.");
+			}
+		}
+		else {
+			autohersteller = av.findAllAutoherstellerByName(Order.NAME);
+			if (autohersteller.isEmpty()) {
+				throw new NotFoundException("Kein Autohersteller gefunden.");
+			}
+		}
+		
+		AutoherstellerList autoherstellerliste = new AutoherstellerList(autohersteller);
+		
+		
+		return autoherstellerliste;
 	}
 }

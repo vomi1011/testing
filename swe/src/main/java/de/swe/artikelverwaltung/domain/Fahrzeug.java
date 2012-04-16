@@ -81,7 +81,7 @@ public class Fahrzeug implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "f_id")
 	@Min(value = FAHRZEUG_ID, message = "{artikelverwaltung.fahrzeug.id.min}", groups = IdGroup.class)
-	private Long fId;
+	private Long id;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "hersteller_fk", nullable = false)
@@ -110,12 +110,22 @@ public class Fahrzeug implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date aktualisiert;
 
+	@Deprecated
 	public Long getFId() {
-		return this.fId;
+		return this.id;
 	}
 
-	public void setFId(Long fId) {
-		this.fId = fId;
+	@Deprecated
+	public void setFId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Date getAktualisiert() {
@@ -192,7 +202,7 @@ public class Fahrzeug implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Fahrzeug [fId=" + fId + ", modell=" + modell + ", baujahr="
+		return "Fahrzeug [id=" + id + ", modell=" + modell + ", baujahr="
 				+ baujahr + ", beschreibung=" + beschreibung + ", lieferbar="
 				+ lieferbar + ", preis=" + preis + ", erstellt=" + erstellt
 				+ ", aktualisiert=" + aktualisiert + "]";
@@ -204,7 +214,7 @@ public class Fahrzeug implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((erstellt == null) ? 0 : erstellt.hashCode());
-		result = prime * result + ((fId == null) ? 0 : fId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -228,19 +238,19 @@ public class Fahrzeug implements Serializable {
 		else if (!erstellt.equals(other.erstellt)) {
 			return false;
 		}
-		if (fId == null) {
-			if (other.fId != null) {
+		if (id == null) {
+			if (other.id != null) {
 				return false;
 			}
 		} 
-		else if (!fId.equals(other.fId)) {
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;
 	}
 	
 	public void setValues(Fahrzeug fahrzeug) {
-		fId = fahrzeug.getFId();
+		id = fahrzeug.getFId();
 		hersteller = fahrzeug.getHersteller();
 		modell = fahrzeug.getModell();
 		baujahr = fahrzeug.getBaujahr();

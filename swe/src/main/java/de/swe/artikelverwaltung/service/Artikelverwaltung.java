@@ -71,7 +71,7 @@ public class Artikelverwaltung implements Serializable {
 	public Fahrzeug updateFahrzeug(Fahrzeug fahrzeug, Locale locale)
 					throws ArtikelValidationExeption {
 		validate(fahrzeug, locale, Default.class);
-		fahrzeug = dao.update(fahrzeug, fahrzeug.getFId());
+		fahrzeug = dao.update(fahrzeug, fahrzeug.getId());
 		
 		return fahrzeug;
 	}
@@ -88,6 +88,12 @@ public class Artikelverwaltung implements Serializable {
 //	Autohersteller
 	
 	public List<Autohersteller> findAllAutohersteller(Order order) {
+		final List<Autohersteller> autohersteller = dao.findAllAutohersteller(order);
+		
+		return autohersteller;
+	}
+	
+	public List<Autohersteller> findAllAutoherstellerByName(Order order) {
 		final List<Autohersteller> autohersteller = dao.findAllAutohersteller(order);
 		
 		return autohersteller;
@@ -128,7 +134,7 @@ public class Artikelverwaltung implements Serializable {
 					throws ArtikelValidationExeptionAH {
 		validate(autohersteller, locale, Default.class);
 		
-		autohersteller = dao.update(autohersteller, autohersteller.getAId());
+		autohersteller = dao.update(autohersteller, autohersteller.getId());
 		
 		return autohersteller;
 	}
