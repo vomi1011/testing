@@ -1,21 +1,18 @@
 package de.swe.bestellverwaltung.service;
 
-import static javax.ejb.TransactionAttributeType.MANDATORY;
 import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
+import javax.inject.Named;
 
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.domain.Bestellung.Status;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.Dao;
 
-@Stateless
-@TransactionAttribute(MANDATORY)
+@Named
 public class BestellverwaltungDao extends Dao {
 	private static final long serialVersionUID = UID;
 	
@@ -36,8 +33,6 @@ public class BestellverwaltungDao extends Dao {
 		return best;
 	}
 	
-	//TODO 
-	//Methode testen
 	public List<Bestellung> findAllBestellungen()  {
 		List<Bestellung> bestellungen = find(Bestellung.class, Bestellung.FIND_BESTELLUNGEN);
 		
