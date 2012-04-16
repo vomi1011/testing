@@ -117,7 +117,6 @@ public class Kundenverwaltung implements Serializable {
 		}
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER })
 	public AbstractKunde createKunde(AbstractKunde kunde, Locale locale)
 			throws EmailExistsException, KundeValidationException {
 		if (kunde == null) {
@@ -142,7 +141,6 @@ public class Kundenverwaltung implements Serializable {
 		return kunde;
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER })
 	public AbstractKunde updateKunde(AbstractKunde kunde, Locale locale)
 			throws EmailExistsException, KundeValidationException {
 		if (kunde == null) {
@@ -158,7 +156,7 @@ public class Kundenverwaltung implements Serializable {
 		if (vorhandenerKunde != null && vorhandenerKunde.getId().longValue() != kunde.getId().longValue()) {
 			throw new EmailExistsException(kunde.getEmail());
 		}
-		else if (!kunde.getPassword().equals(vorhandenerKunde.getPassword())) {
+		else if (kunde.getPassword() != null && !kunde.getPassword().equals(vorhandenerKunde.getPassword())) {
 			passwordVerschluesseln(kunde);
 		}
 		
@@ -220,7 +218,7 @@ public class Kundenverwaltung implements Serializable {
 	public List<RolleType> getEigeneRollen() {
 		List<RolleType> rollen = new LinkedList<>();
 
-		//TODO Methode fertigstellen
+		//TODO Methode getEigeneRollen fertigstellen
 		
 		return rollen;
 	}

@@ -1,10 +1,12 @@
 package de.swe.test.domain;
 
+import static de.swe.util.Constants.ADRESS_ID;
+import static de.swe.util.Constants.KUNDEN_ID;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static de.swe.util.Constants.KUNDEN_ID;
-import static de.swe.util.Constants.ADRESS_ID;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,12 +15,16 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -219,9 +225,40 @@ public class KundeTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
-	public void createPrivatkundeOhneAdresse() {
-		//TODO Test-Methode schreiben createPrivatkundeOhneAdresse
+	public void createPrivatkundeOhneAdresse() throws RollbackException, HeuristicMixedException,
+    												  HeuristicRollbackException, SystemException {
+		final String nachname = PRIVATKUNDE_NACHNAME_NEU;
+		final String email = PRIVATKUNDE_EMAIL_NEU;
+		
+		final Privatkunde kunde = new Privatkunde();
+		kunde.setNachname(nachname);
+		kunde.setEmail(email);
+		em.persist(kunde);
+		
+		try {
+			trans.commit();
+			fail();
+		}
+		catch (RollbackException e) {
+			final PersistenceException pe = (PersistenceException) e.getCause();
+			final ConstraintViolationException cve = (ConstraintViolationException) pe.getCause();
+			final Set<ConstraintViolation<?>> violations = cve.getConstraintViolations();
+			
+			assertThat(violations, is(notNullValue()));
+			assertThat(violations.isEmpty(), is(false));
+			
+			for (ConstraintViolation<?> v : violations) {
+				final String property = v.getPropertyPath().toString();
+				if ("adresse".equals(property)) {
+					continue;
+				}
+
+				fail("Unerwartete Verletzung: " + v.getMessage() + " bei der Property "
+				     + v.getPropertyPath());
+			}
+			
+			trans = null;
+		}
 	}
 	
 	@Test

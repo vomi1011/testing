@@ -39,10 +39,10 @@ public abstract class AbstractTest {
 	
 	protected static final Locale LOCALE = Locale.GERMAN;
 
-	protected static final String USERNAME = "tester@test.de";
+	protected static final String USERNAME = "def@ghi.de";
 	protected static final String PASSWORD = "p";
-	protected static final String USERNAME_ADMIN = "1";
-	protected static final String PASSWORD_ADMIN = "1";
+	protected static final String USERNAME_ADMIN = "tester@test.de";
+	protected static final String PASSWORD_ADMIN = "p";
 	
 	@Resource(mappedName = "java:jboss/UserTransaction")
 	protected UserTransaction trans;
