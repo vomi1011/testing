@@ -133,7 +133,7 @@ public class BestellverwaltungTest extends AbstractTest {
 		assertThat(bestellung.getBestellpositionen().size(), is(1));
 		
 		for (Bestellposition bp : bestellung.getBestellpositionen()) {
-			assertThat(bp.getFahrzeug().getFId(), is(fahrzeugId1));
+			assertThat(bp.getFahrzeug().getId(), is(fahrzeugId1));
 		}
 			
 		kunde = bestellung.getKunde();

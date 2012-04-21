@@ -45,7 +45,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		final Long fid = FID_VORHANDEN;
 		
 		Fahrzeug fahrzeug = av.findFahrzeugById(fid);
-		assertThat(fahrzeug.getFId(), is(fid));
+		assertThat(fahrzeug.getId(), is(fid));
 	}
 	@Ignore
 	@Test
@@ -54,7 +54,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		final Long aId = AID_VORHANDEN;
 		
 		Autohersteller autohersteller = av.findAutoherstellerById(aId);
-		assertThat(autohersteller.getAId(), is(aId));
+		assertThat(autohersteller.getId(), is(aId));
 	}
 	
 	@Test
@@ -102,7 +102,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		assertThat(fahrzeuge.isEmpty(), is(false));
 		
 		for (Fahrzeug fahrzeug : fahrzeuge) {
-			assertThat(fahrzeug.getHersteller().getAId(), is(herstellerfk));
+			assertThat(fahrzeug.getHersteller().getId(), is(herstellerfk));
 		}
 	}
 	
@@ -132,7 +132,8 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		assertThat(vorhandeneFahrzeuge.size() + 1, is(aktuelleFahrzeuge.size()));
 		assertThat(aktuelleFahrzeuge.contains(neuesFahrzeug), is(true));
 	}
-	
+
+	@Ignore
 	@Test
 	public void createFahrzeugOhneHersteller() throws ArtikelValidationExeption {
 		final String modell = MODELL2;
@@ -182,6 +183,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		assertThat(aktuelleAutohersteller.contains(neuesAutohersteller), is(true));					
 	}
 	
+	@Ignore
 	@Test
 	public void createAutoherstellerOhneName() throws ArtikelValidationExeptionAH {
 		Autohersteller neuesAutohersteller = new Autohersteller();

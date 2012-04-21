@@ -48,9 +48,9 @@ import de.swe.util.IdGroup;
 	@NamedQuery(name = Autohersteller.FIND_AUTOHERSTELLER,
 		query = "FROM Autohersteller"),
 	@NamedQuery(name = Autohersteller.FIND_AUTOHERSTELLER_ORDER_BY_ID,
-		query = "FROM Autohersteller a order by a.aId"),
+		query = "FROM Autohersteller a order by a.id"),
 	@NamedQuery(name = Autohersteller.FIND_AUTOHERSTELLER_BY_ID,
-	query = "FROM Autohersteller a WHERE a.aId = :" + Autohersteller.PARAM_ID),
+	query = "FROM Autohersteller a WHERE a.id = :" + Autohersteller.PARAM_ID),
 	@NamedQuery(name = Autohersteller.FIND_AUTOHERSTELLER_BY_NAME,
 	query =  "FROM Autohersteller a WHERE a.name = :" + Autohersteller.PARAM_NAME)
 	

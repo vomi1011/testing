@@ -27,7 +27,7 @@ public class AutoherstellerTest extends AbstractTest {
 		final Long aId = AID_VORHANDEN;
 		
 		Autohersteller autohersteller = em.find(Autohersteller.class, aId);
-		assertThat(autohersteller.getAId(), is(aId));
+		assertThat(autohersteller.getId(), is(aId));
 	}
 	
 	@Test

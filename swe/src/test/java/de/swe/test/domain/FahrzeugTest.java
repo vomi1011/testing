@@ -40,7 +40,7 @@ public class FahrzeugTest extends AbstractTest {
 		final Long fId = FID_VORHANDEN;
 		
 		Fahrzeug fahrzeug = em.find(Fahrzeug.class, fId);
-		assertThat(fahrzeug.getFId(), is(fId));
+		assertThat(fahrzeug.getId(), is(fId));
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class FahrzeugTest extends AbstractTest {
 		
 		assertThat(fahrzeug.isEmpty(), is(false));
 		for (Fahrzeug f : fahrzeug) {
-			assertThat(f.getHersteller().getAId(), is(herstellerfk));
+			assertThat(f.getHersteller().getId(), is(herstellerfk));
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class FahrzeugTest extends AbstractTest {
 	@Test
 	public void checkFahrzeug() {
 		Fahrzeug f1 = new Fahrzeug();
-		f1.setFId(KEINE_ID);
+		f1.setId(KEINE_ID);
 		f1.setModell(MODELL);
 		f1.setBaujahr(BAUJAHR);
 		f1.setBeschreibung(BESCHREIBUNG);
