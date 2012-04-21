@@ -4,5 +4,5 @@ kunde_id;version;name;vorname;firma;geschlecht;telefon;email;password;art;erstel
 1003;;Nguyen;Nhat;;M;72112312314;ngnh@google.com;33333;P;2011-10-11 19:27:00;2011-10-11 19:27:00
 1004;;Remizova;Elena;;W;72112312315;rmel@gmx.de;44444;P;2011-10-11 19:27:00;2011-10-11 19:27:00
 1005;;Abc;;Firma Abc;M;123;abc@def.de;55555;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1006;;Def;;Firma Def;W;72112312315;def@ghi.de;66666;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1006;;Def;;Firma Def;W;72112312315;def@ghi.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;F;2011-10-11 19:27:00;2011-10-11 19:27:00
 1007;;Tester;;;W;72112312315;tester@test.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;P;2011-10-11 19:27:00;2011-10-11 19:27:00

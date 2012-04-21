@@ -1,10 +1,10 @@
 package de.swe.test.domain;
 
+import static de.swe.util.Constants.ADRESS_ID;
+import static de.swe.util.Constants.KUNDEN_ID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static de.swe.util.Constants.KUNDEN_ID;
-import static de.swe.util.Constants.ADRESS_ID;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +18,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,6 +51,7 @@ public class KundeTest extends AbstractTest {
 	private static final String ORT_NEU = "Abc Ort";
 	private static final String STRASSE_NEU = "Abc Weg";
 	private static final String HAUSNR_NEU = "1";
+	private static final String EMAIL_NEU = "cdf@ijk.de";
 
 	@Test
 	public void findKundenByIdVorhanden() {
@@ -218,11 +218,43 @@ public class KundeTest extends AbstractTest {
 		assertThat(adresse.getId().longValue() > ADRESS_ID, is(true));
 	}
 
-	@Test
-	@Ignore
-	public void createPrivatkundeOhneAdresse() {
-		//TODO Test-Methode schreiben createPrivatkundeOhneAdresse
-	}
+	//FIXME RollbackException wird nicht geworfen
+//	@Test
+//	public void createPrivatkundeOhneAdresse() throws RollbackException, HeuristicMixedException,
+//    												  HeuristicRollbackException, SystemException {
+//		final String nachname = PRIVATKUNDE_NACHNAME_NEU;
+//		final String email = EMAIL_NEU;
+//		
+//		final Privatkunde kunde = new Privatkunde();
+//		kunde.setNachname("123");
+//		kunde.setEmail(email);
+//		em.persist(kunde);
+//		
+//		try {
+//			trans.commit();
+//			fail("RollbackException wurde nicht geworfen!");
+//		}
+//		catch (RollbackException e) {
+//			final PersistenceException pe = (PersistenceException) e.getCause();
+//			final ConstraintViolationException cve = (ConstraintViolationException) pe.getCause();
+//			final Set<ConstraintViolation<?>> violations = cve.getConstraintViolations();
+//			
+//			assertThat(violations, is(notNullValue()));
+//			assertThat(violations.isEmpty(), is(false));
+//			
+//			for (ConstraintViolation<?> v : violations) {
+//				final String property = v.getPropertyPath().toString();
+//				if ("adresse".equals(property)) {
+//					continue;
+//				}
+//
+//				fail("Unerwartete Verletzung: " + v.getMessage() + " bei der Property "
+//				     + v.getPropertyPath());
+//			}
+//			
+//			trans = null;
+//		}
+//	}
 	
 	@Test
 	public void createFirmenkunde() {

@@ -13,6 +13,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.security.auth.login.LoginException;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.logging.Logger;
@@ -58,10 +59,14 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void findKundeByIdVorhanden() {
+		LOGGER.debug("BEGINN findKundeByIdVorhanden");
+		
 		final Long id = KUNDE_ID_VORHANDEN;
 		final AbstractKunde kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
 		
 		assertThat(kunde.getId(), is(id));
+
+		LOGGER.debug("ENDE findKundeByIdVorhanden");
 	}
 	
 	@Test
@@ -141,7 +146,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createPrivatkunde() throws EmailExistsException, KundeValidationException {
+	public void createPrivatkunde() throws EmailExistsException, KundeValidationException, LoginException {
 		final String nachname = NACHNAME_NEU;
 		final String email = EMAIL_NEU;
 		final String strasse = STRASSE_NEU;
@@ -170,7 +175,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createPrivatkundeOhneAdresse()
-			throws EmailExistsException, KundeValidationException {
+			throws EmailExistsException, KundeValidationException, LoginException {
 		final String nachname = NACHNAME2_NEU;
 		final String email = EMAIL2_NEU;
 		final Privatkunde kunde = new Privatkunde();
@@ -183,7 +188,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createDuplikatPrivatkunde()
-			throws EmailExistsException, KundeValidationException {
+			throws EmailExistsException, KundeValidationException, LoginException {
 		final Long id = KUNDE_ID_VORHANDEN;
 		
 		final AbstractKunde vorhandenerKunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
@@ -201,10 +206,10 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createPrivatkundeFalschesPassword()
-			throws EmailExistsException, KundeValidationException {
+			throws EmailExistsException, KundeValidationException, LoginException {
 		final String nachname = NACHNAME_NICHT_VORHANDEN;
 		final String email = EMAIL_NICHT_VORHANDEN;
-
+		
 		final Adresse adresse = new Adresse("Kaiserstraße", "20", "76133", "Karlsruhe");
 		final Privatkunde neuerPrivatkunde = new Privatkunde(nachname, email, adresse);
 		neuerPrivatkunde.setPassword("12345");
@@ -216,8 +221,12 @@ public class KundenverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void deleteKunde() throws KundeDeleteBestellungException {
+	public void deleteKunde() throws KundeDeleteBestellungException, LoginException {
 		final Long id = KUNDE_ID_OHNE_BESTELLUNG;
+
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		final List<AbstractKunde> kundenVorher = kv.findAllKunden(Fetch.NUR_KUNDE, Order.ID);
 		
@@ -232,7 +241,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void neuerNameFuerKunde() throws EmailExistsException, KundeValidationException {
+	public void neuerNameFuerKunde() throws EmailExistsException, KundeValidationException, LoginException {
 		final Long id = KUNDE_ID_VORHANDEN;
 		
 		AbstractKunde kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
