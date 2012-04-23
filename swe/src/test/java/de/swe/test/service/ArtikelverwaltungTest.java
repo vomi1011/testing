@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.security.auth.login.LoginException;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Ignore;
@@ -116,13 +117,18 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createFahrzeug() throws ArtikelValidationExeption {
+	public void createFahrzeug() throws ArtikelValidationExeption, LoginException {
 		final String modell = MODELL;
 		final Long id = Long.valueOf(7001);
 		List<Fahrzeug> vorhandeneFahrzeuge = av.findAllFahrzeuge(Order.ID);
 
 		final Autohersteller hersteller = av.findAutoherstellerById(id);
 		assertThat(hersteller, is(notNullValue()));
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Fahrzeug neuesFahrzeug = new Fahrzeug();
 		neuesFahrzeug.setModell(modell);
 		neuesFahrzeug.setHersteller(hersteller);
@@ -138,6 +144,8 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	public void createFahrzeugOhneHersteller() throws ArtikelValidationExeption {
 		final String modell = MODELL2;
 		
+		
+		
 		final Fahrzeug neuesFahrzeug = new Fahrzeug();
 		neuesFahrzeug.setModell(modell);
 		
@@ -146,9 +154,13 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void updateFahrzeug() throws ArtikelValidationExeption {
+	public void updateFahrzeug() throws ArtikelValidationExeption, LoginException {
 		final Long id = FID_VORHANDEN;
 		final String modell = MODELL;
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		Fahrzeug fahrzeug = av.findFahrzeugById(id);
 		fahrzeug.setModell(modell);
@@ -158,8 +170,12 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void deleteFahrzeug() throws ArtikelValidationExeption {
+	public void deleteFahrzeug() throws ArtikelValidationExeption, LoginException {
 		final Long id = FID_VORHANDEN;
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		Fahrzeug fahrzeug = av.findFahrzeugById(id);
 		av.deleteFahrzeug(fahrzeug);
@@ -170,9 +186,13 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createAutohersteller() throws  ArtikelValidationExeptionAH {
+	public void createAutohersteller() throws  ArtikelValidationExeptionAH, LoginException {
 		final String name = AUTOHERSTELLER_NAME2;
 		List<Autohersteller> vorhandeneAutohersteller = av.findAllAutohersteller(Order.ID);
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		Autohersteller neuesAutohersteller = new Autohersteller();
 		assertThat(neuesAutohersteller, is(notNullValue()));
@@ -195,9 +215,13 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void updateAutohersteller() throws ArtikelValidationExeptionAH {
+	public void updateAutohersteller() throws ArtikelValidationExeptionAH, LoginException {
 		final Long id = AID_VORHANDEN;
 		final String name = AUTOHERSTELLER_NAME2;
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		Autohersteller autohersteller = av.findAutoherstellerById(id);
 		autohersteller.setName(name);
@@ -207,9 +231,13 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void deleteAutohersteller() throws ArtikelValidationExeptionAH {
+	public void deleteAutohersteller() throws ArtikelValidationExeptionAH, LoginException {
 		final Long id = AID_VORHANDEN;
 		Autohersteller autohersteller = av.findAutoherstellerById(id);
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		av.deleteAutohersteller(autohersteller);
 		autohersteller = av.findAutoherstellerById(id);
