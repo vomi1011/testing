@@ -8,6 +8,10 @@ import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.cache.annotation.CachePut;
+import javax.cache.annotation.CacheRemoveEntry;
+import javax.cache.annotation.CacheResult;
+import javax.cache.annotation.CacheValue;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import javax.persistence.Query;
@@ -19,7 +23,6 @@ import de.swe.util.Dao;
 import de.swe.util.Log;
 import de.swe.util.RolleType;
 
-//TODO JCache benutzen
 @Named
 @Log
 public class KundenverwaltungDao extends Dao {
@@ -76,6 +79,7 @@ public class KundenverwaltungDao extends Dao {
 		return kunden;
 	}
 	
+	@CacheResult(cacheName = "kunde-cache")
 	public AbstractKunde findKundeById(Long id, Fetch fetch) {
 		AbstractKunde kunde = null;
 		
@@ -91,6 +95,7 @@ public class KundenverwaltungDao extends Dao {
 		return kunde;
 	}
 
+	@CacheResult(cacheName = "kunde-cache")
 	public AbstractKunde findKundeByEmail(String email, Fetch fetch) {
 		AbstractKunde kunde = null;
 		
@@ -104,6 +109,16 @@ public class KundenverwaltungDao extends Dao {
 		}
 		
 		return kunde;
+	}
+	
+	@CachePut(cacheName = "kunde-cache")
+	public void createKunde(Long id, @CacheValue AbstractKunde kunde) {
+		create(kunde);
+	}
+
+	@CacheRemoveEntry(cacheName = "kunde-cache")
+	public void removeKunde(Long id) {
+		delete(AbstractKunde.class, id);
 	}
 
 	public boolean addRollen(Long kundeId, RolleType... rollen) {
