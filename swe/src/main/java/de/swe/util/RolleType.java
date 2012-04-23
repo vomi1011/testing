@@ -3,7 +3,8 @@ package de.swe.util;
 public enum RolleType {
 	ADMIN("admin"),
 	MITARBEITER("mitarbeiter"),
-	KUNDE("kunde");
+	KUNDE("kunde"),
+	ARTIKELVERWALTUNG("artikelverwalter");
 	
 	private String value;
 	
