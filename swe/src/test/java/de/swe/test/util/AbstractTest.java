@@ -43,6 +43,8 @@ public abstract class AbstractTest {
 	protected static final String PASSWORD = "p";
 	protected static final String USERNAME_ADMIN = "tester@test.de";
 	protected static final String PASSWORD_ADMIN = "p";
+	protected static final String USERNAME_ARTIKELVERWALTER = "artikel@test.de";
+	protected static final String PASSWORD_ARTIKELVERWALTER = "p";
 	
 	@Resource(mappedName = "java:jboss/UserTransaction")
 	protected UserTransaction trans;
