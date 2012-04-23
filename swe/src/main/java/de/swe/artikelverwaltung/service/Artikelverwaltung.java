@@ -1,7 +1,6 @@
 package de.swe.artikelverwaltung.service;
 
 import static de.swe.util.Constants.ROLLE_ADMIN;
-import static de.swe.util.Constants.ROLLE_MITARBEITER;
 import static de.swe.util.Constants.ROLLE_ARTIKELVERWALTER;
 import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
@@ -69,7 +68,7 @@ public class Artikelverwaltung implements Serializable {
 		}
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER, ROLLE_ARTIKELVERWALTER })
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
 	public Fahrzeug createFahrzeug(Fahrzeug fahrzeug, Locale locale) 
 					throws ArtikelValidationExeption {
 		validate(fahrzeug, locale, Default.class);	
@@ -78,7 +77,7 @@ public class Artikelverwaltung implements Serializable {
 		return fahrzeug;
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_MITARBEITER, ROLLE_ARTIKELVERWALTER })
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
 	public Fahrzeug updateFahrzeug(Fahrzeug fahrzeug, Locale locale)
 					throws ArtikelValidationExeption {
 		validate(fahrzeug, locale, Default.class);
@@ -87,14 +86,26 @@ public class Artikelverwaltung implements Serializable {
 		return fahrzeug;
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
 	public void deleteFahrzeug(Fahrzeug fahrzeug) {
+		
+		if (fahrzeug == null) {
+			return;
+		}
+		
+		deleteFahrzeugById(fahrzeug.getId());
+		
+	}
+	
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
+	public void deleteFahrzeugById(Long id){
+		Fahrzeug fahrzeug = findFahrzeugById(id);
+		
 		if (fahrzeug == null) {
 			return;
 		}
 		
 		dao.delete(fahrzeug);
-		
 	}
 
 //	Autohersteller
@@ -133,7 +144,7 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	@RolesAllowed(ROLLE_ADMIN)
 	public Autohersteller createAutohersteller(Autohersteller autohersteller, Locale locale)
 					throws ArtikelValidationExeptionAH {
 		validate(autohersteller, locale, Default.class);
@@ -143,7 +154,7 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 	
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
 	public Autohersteller updateAutohersteller(Autohersteller autohersteller, Locale locale)
 					throws ArtikelValidationExeptionAH {
 		validate(autohersteller, locale, Default.class);
@@ -153,14 +164,24 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 
-	@RolesAllowed({ ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	@RolesAllowed(ROLLE_ADMIN)
 	public void deleteAutohersteller(Autohersteller autohersteller) {
 		if (autohersteller == null) {
 			return;
 		}
 		
-		dao.delete(autohersteller);
+		deleteAutoherstellerById(autohersteller.getId());
 		
+	}
+	
+	@RolesAllowed(ROLLE_ADMIN)
+	public void deleteAutoherstellerById(Long id){
+		Autohersteller autohersteller = findAutoherstellerById(id);
+		if (autohersteller == null) {
+			return;
+		}
+		
+		dao.delete(autohersteller);
 	}
 
 }
