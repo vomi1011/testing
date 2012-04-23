@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.security.Principal;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -25,12 +26,16 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.security.auth.Subject;
+import javax.security.jacc.PolicyContext;
+import javax.security.jacc.PolicyContextException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 import org.jboss.ejb3.annotation.SecurityDomain;
 import org.jboss.logging.Logger;
+import org.jboss.security.SimpleGroup;
 
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
@@ -75,7 +80,7 @@ public class Kundenverwaltung implements Serializable {
 		return kunden;
 	}
 	
-	public AbstractKunde findKundeById(long id, Fetch fetch) {
+	public AbstractKunde findKundeById(Long id, Fetch fetch) {
 		final AbstractKunde kunde = dao.findKundeById(id, fetch);
 		
 		return kunde;
@@ -217,8 +222,39 @@ public class Kundenverwaltung implements Serializable {
 	
 	public List<RolleType> getEigeneRollen() {
 		List<RolleType> rollen = new LinkedList<>();
+		
+		Subject subject = null;
+		try {
+			subject = (Subject) PolicyContext.getContext("javax.security.auth.Subject.container");
+		}
+		catch (PolicyContextException e) {
+			final InternalError error = new InternalError(e.getMessage());
+			LOGGER.error(error.getMessage(), error);
+			throw error;
+		}
+		if (subject == null) {
+			return null;
+		}
+		
+		final Set<Principal> principals = subject.getPrincipals(Principal.class);
+		for (Principal p : principals) {
+			if (!(p instanceof SimpleGroup)) {
+				continue;
+			}
 
-		//TODO Methode getEigeneRollen fertigstellen
+			final SimpleGroup sg = (SimpleGroup) p;
+			if (!"Roles".equals(sg.getName())) {
+				continue;
+			}
+			
+			final Enumeration<Principal> members = sg.members();
+			while (members.hasMoreElements()) {
+				final String rolle = members.nextElement().toString();
+				if (rolle != null) {
+					rollen.add(RolleType.valueOf(rolle.toUpperCase()));
+				}
+			}
+		}
 		
 		return rollen;
 	}
