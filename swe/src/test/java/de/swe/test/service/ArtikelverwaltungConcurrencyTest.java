@@ -60,7 +60,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(autohersteller, is(notNullValue()));
 		
 		securityClient.logout();
-		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.setSimple(USERNAME_ARTIKELVERWALTER, PASSWORD_ARTIKELVERWALTER);
 		securityClient.login();
 		
 		Fahrzeug fahrzeug = new Fahrzeug();
