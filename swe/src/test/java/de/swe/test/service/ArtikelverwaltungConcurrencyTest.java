@@ -1,6 +1,7 @@
 package de.swe.test.service;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -39,7 +40,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final String AUTOHERSTELLER_NAME = "Eclipse";
-	private static final String MODELL = "Modell 9";
+	private static final String MODELL_NAME_NEU = "Modell 9";
 	
 	@Inject
 	Artikelverwaltung av;
@@ -52,10 +53,19 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 				   SystemException, NotSupportedException {
 		LOGGER.debug("BEGINN updateUpdateFahrzeug");
 		
-		final String modell = MODELL;
+		final Long id = Long.valueOf(7001);
+		final String modell = MODELL_NAME_NEU;
 		final String modellUpdated = "updated";
+		final Autohersteller autohersteller = av.findAutoherstellerById(id);
+		assertThat(autohersteller, is(notNullValue()));
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		Fahrzeug fahrzeug = new Fahrzeug();
+		fahrzeug.setModell(modell);
+		fahrzeug.setHersteller(autohersteller);
 		fahrzeug = av.createFahrzeug(fahrzeug, LOCALE);
 		assertThat(fahrzeug.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -87,7 +97,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		LOGGER.debug("ENDE updateUpdateFahrzeug");
 	}
 
-//Test update Autohersteller währen update
+//Test update Autohersteller waehrend update
 	@Test
 	public void updateUpdateAutohersteller()
 			throws InterruptedException, LoginException, ExecutionException, SecurityException,
@@ -95,10 +105,15 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 				   SystemException, NotSupportedException {
 		LOGGER.debug("BEGINN updateUpdateAutohersteller");
 		
-		final String autohersteller_name = AUTOHERSTELLER_NAME;
+		final String name = AUTOHERSTELLER_NAME;
 		final String nameUpdated = "updated";
 		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Autohersteller autohersteller = new Autohersteller();
+		autohersteller.setName(name);
 		autohersteller = av.createAutohersteller(autohersteller, LOCALE);
 		assertThat(autohersteller.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -110,7 +125,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		future.get();
 		
 		trans.begin();
-		autohersteller.setName(autohersteller_name + nameUpdated);
+		autohersteller.setName(name + nameUpdated);
 		
 		try {
 			av.updateAutohersteller(autohersteller, LOCALE);
@@ -135,13 +150,21 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 	public void updateDeleteFahrzeug()
 			throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
 				   HeuristicRollbackException, SystemException, InterruptedException, ExecutionException, 
-				   NotSupportedException {
+				   NotSupportedException, LoginException {
 		LOGGER.debug("BEGINN updateDeleteFahrzeug");	
 		
-		final String modell = MODELL;
+		final Long id = Long.valueOf(7001);
+		final Autohersteller autohersteller = av.findAutoherstellerById(id);
+		final String modell = MODELL_NAME_NEU;
 		final String modellUpdate = "updated";
 		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Fahrzeug fahrzeug = new Fahrzeug();
+		fahrzeug.setHersteller(autohersteller);
+		fahrzeug.setModell(modell);
 		fahrzeug = av.createFahrzeug(fahrzeug, LOCALE);
 		assertThat(fahrzeug.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -166,13 +189,18 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 	public void updateDeleteAutohersteller()
 			throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
 				   HeuristicRollbackException, SystemException, InterruptedException, ExecutionException, 
-				   NotSupportedException {
+				   NotSupportedException, LoginException {
 		LOGGER.debug("BEGINN updateDeleteAutohersteller");		
 		
-		final String autohersteller_name = AUTOHERSTELLER_NAME;
+		final String name = AUTOHERSTELLER_NAME;
 		final String nameUpdated = "updated";
 		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Autohersteller autohersteller = new Autohersteller();
+		autohersteller.setName(name);
 		autohersteller = av.createAutohersteller(autohersteller, LOCALE);
 		assertThat(autohersteller.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -183,7 +211,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		future.get();
 		
 		trans.begin();
-		autohersteller.setName(autohersteller_name + nameUpdated);
+		autohersteller.setName(name + nameUpdated);
 		
 		thrown.expect(ConcurrentDeleteException.class);
 		av.updateAutohersteller(autohersteller, LOCALE);
@@ -200,7 +228,17 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 				   LoginException, NotSupportedException {
 		LOGGER.debug("BEGINN deleteUpdateFahrzeug");
 
+		final Long id = Long.valueOf(7002);
+		final Autohersteller autohersteller = av.findAutoherstellerById(id);
+		final String modell = MODELL_NAME_NEU;
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Fahrzeug fahrzeug = new Fahrzeug();
+		fahrzeug.setHersteller(autohersteller);
+		fahrzeug.setModell(modell);
 		fahrzeug = av.createFahrzeug(fahrzeug, LOCALE);
 		assertThat(fahrzeug.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -211,10 +249,6 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
 
-		securityClient.logout();
-		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
-		securityClient.login();
-		
 		trans.begin();
 		av.deleteFahrzeug(fahrzeug);
 		
@@ -233,8 +267,14 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 				   HeuristicRollbackException, SystemException, InterruptedException, ExecutionException,
 				   LoginException, NotSupportedException {
 		LOGGER.debug("BEGINN deleteUpdateAutohersteller");
+		final String name = AUTOHERSTELLER_NAME;
 
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Autohersteller autohersteller = new Autohersteller();
+		autohersteller.setName(name);
 		autohersteller = av.createAutohersteller(autohersteller, LOCALE);
 		assertThat(autohersteller.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -244,10 +284,6 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
-
-		securityClient.logout();
-		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
-		securityClient.login();
 		
 		trans.begin();
 		av.deleteAutohersteller(autohersteller);
@@ -261,26 +297,33 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 
 	private class ArtikelverwaltungConcurrencyHelper extends
 			AbstractConcurrencyHelper {
+		private Long artikelId;
 		private Long fahrzeugId;
 		private Long autoherstellerId;
 	
 		protected ArtikelverwaltungConcurrencyHelper(Cmd cmd, Long id) {
 			super(cmd);
-			fahrzeugId = id;
-			autoherstellerId = id;
+			artikelId = id;
 		}
 	
 		@Override
 		protected void update() {
 			LOGGER.debug("BEGINN update");
-			
+	
 			try {
-				final Fahrzeug fahrzeug = av.findFahrzeugById(fahrzeugId);
-				final Autohersteller autohersteller = av.findAutoherstellerById(autoherstellerId);
-				fahrzeug.setModell(fahrzeug.getModell() + "concurrent");
-				autohersteller.setName(autohersteller.getName() + "concurrent");
-				av.updateFahrzeug(fahrzeug, LOCALE);
-				av.updateAutohersteller(autohersteller, LOCALE);
+				
+				if (artikelId > 6000 && artikelId < 7000){
+					fahrzeugId = artikelId;
+					final Fahrzeug fahrzeug = av.findFahrzeugById(fahrzeugId);
+					fahrzeug.setModell(fahrzeug.getModell() + "concurrent");
+					av.updateFahrzeug(fahrzeug, LOCALE);
+				}
+				else {
+					autoherstellerId =artikelId;
+					final Autohersteller autohersteller = av.findAutoherstellerById(autoherstellerId);
+					autohersteller.setName(autohersteller.getName() + "concurrent");
+					av.updateAutohersteller(autohersteller, LOCALE);
+				}
 			}
 			catch (ConcurrentUpdateException |
 				   ConcurrentDeleteException | 
@@ -306,8 +349,14 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 			}
 			
 			try {
+				if (artikelId > 6000 && artikelId < 7000){
+					fahrzeugId = artikelId;
 				av.deleteFahrzeug(av.findFahrzeugById(fahrzeugId));
+				}
+				else {
+					autoherstellerId = artikelId;
 				av.deleteAutohersteller(av.findAutoherstellerById(autoherstellerId));
+				}
 			}
 
 			catch (ArtikelValidationExeption e) {
