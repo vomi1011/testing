@@ -87,7 +87,18 @@
   </security-constraint>
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>Autohersteller erzeugen und modifizieren</web-resource-name>
+      <web-resource-name>Autohersteller erzeugen</web-resource-name>
+      <url-pattern>/rest/autohersteller</url-pattern>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Autohersteller modifizieren</web-resource-name>
       <url-pattern>/rest/autohersteller</url-pattern>
       <http-method>POST</http-method>
       <http-method>PUT</http-method>
@@ -107,7 +118,6 @@
     <auth-constraint>
       <role-name>admin</role-name>
       <role-name>artikelverwalter</role-name>
-      <role-name>mitarbeiter</role-name>
     </auth-constraint>
   </security-constraint>
   <security-constraint>
@@ -129,7 +139,6 @@
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
-      <role-name>artikelverwalter</role-name>
     </auth-constraint>
   </security-constraint>
   <security-role>
