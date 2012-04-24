@@ -85,6 +85,16 @@
       <role-name>kunde</role-name>
     </auth-constraint>
   </security-constraint>
+   <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Bestellung loeschen</web-resource-name>
+      <url-pattern>/rest/bestellungen/*</url-pattern>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Autohersteller erzeugen</web-resource-name>
