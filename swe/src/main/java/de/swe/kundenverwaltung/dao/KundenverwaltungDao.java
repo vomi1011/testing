@@ -79,7 +79,7 @@ public class KundenverwaltungDao extends Dao {
 		return kunden;
 	}
 	
-	@CacheResult(cacheName = "kunde-cache")
+//	@CacheResult(cacheName = "kunde-cache")
 	public AbstractKunde findKundeById(Long id, Fetch fetch) {
 		AbstractKunde kunde = null;
 		
