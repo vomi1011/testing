@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.security.auth.login.LoginException;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
@@ -113,12 +114,16 @@ public class BestellverwaltungTest extends AbstractTest {
 
 	
 	@Test
-	public void createBestellungTest() throws BestellungValidationException {
+	public void createBestellungTest() throws BestellungValidationException, LoginException {
 		final Long kundeId = KUNDE_ID_VORHANDEN;
 		final Long fahrzeugId1 = FAHRZEUGID_VORHANDEN;
 		final short artikel1Anzahl = PRODUKT_X_ANZAHL;
 		final Status status = STATUS;
 
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
+		
 		Bestellung bestellung = new Bestellung();
 		bestellung.setBestelldatum(DATUM_NEU.getTime());
 		bestellung.setStatus(status);
@@ -142,14 +147,18 @@ public class BestellverwaltungTest extends AbstractTest {
 	
 
 	@Test
-	public void deleteBestellungTest() throws BestellungValidationException {
+	public void deleteBestellungTest() throws BestellungValidationException, LoginException {
 		final Long id = BESTELL_ID_LOESCHEN;
+		
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();
 		
 		Bestellung bestellung = bv.findBestellungById(id);
 		
 		assertThat(bestellung, is(notNullValue()));
 		
-		bv.deleteBestellung(bestellung, LOCALE);
+		bv.deleteBestellung(bestellung);
 		
 		assertThat(bv.findBestellungById(id), is(nullValue()));
 	}
