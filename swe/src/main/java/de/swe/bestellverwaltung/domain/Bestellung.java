@@ -1,5 +1,6 @@
 package de.swe.bestellverwaltung.domain;
 
+import static de.swe.util.Constants.ERSTE_VERSION;
 import static de.swe.util.Constants.BESTELLUNG_ID;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -31,6 +32,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -103,6 +105,10 @@ public class Bestellung implements Serializable {
 	@XmlAttribute(name = "id")
 	private Long bId;
 	
+	@Version
+	@XmlTransient
+	private int version = ERSTE_VERSION;
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "kunde_fk", nullable = false, insertable = false, updatable = false)
 	@NotNull(message = "{bestellverwaltung.bestellung.kunde.notNull}")
@@ -149,6 +155,14 @@ public class Bestellung implements Serializable {
 
 	public void setKunde(AbstractKunde kunde) {
 		this.kunde = kunde;
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	/* (non-Javadoc)
