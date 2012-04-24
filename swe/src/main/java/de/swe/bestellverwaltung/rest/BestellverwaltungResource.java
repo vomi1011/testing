@@ -6,6 +6,7 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 import java.net.URI;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -73,5 +74,10 @@ public interface BestellverwaltungResource {
 	
 	URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException;
 
+	@DELETE
+	@Path("/bestellungen/{id:[5][0-9]+}")
+	@Produces
+	Response deleteBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo)
+			throws NotFoundException;
 
 }

@@ -185,7 +185,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 			
 			// Wurde der Artikel beim DB-Zugriff gefunden?
 			for (Fahrzeug fahrzeug : fahrzeuge) {
-				if (fahrzeug.getFId().longValue() == fId) {
+				if (fahrzeug.getId().longValue() == fId) {
 					// Der Artikel wurde gefunden
 					bp.setFahrzeug(fahrzeug);
 					neueBestellpositionen.add(bp);
@@ -251,6 +251,20 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		final URI uri = ub.build(bestellung.getBId());
 		
 		return uri;
+	}
+	
+	@Override
+	public Response deleteBestellung(Long id, UriInfo uriInfo)
+			throws NotFoundException {
+		final Bestellung bestellung = bv.findBestellungById(id);
+		if (bestellung == null) {
+			final String msg = "Keine Bestellung gefunden mit der ID " + id;
+			throw new NotFoundException(msg);
+		}
+		
+		bv.deleteBestellung(bestellung);
+		
+		return Response.noContent().build();
 	}
 
 }
