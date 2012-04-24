@@ -29,6 +29,7 @@ import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.util.ValidationService;
 import static de.swe.util.Constants.ROLLE_KUNDE;
 import static de.swe.util.Constants.ROLLE_ADMIN;
+import static de.swe.util.Constants.ROLLE_MITARBEITER;
 
 @Stateless
 @TransactionAttribute(MANDATORY)
@@ -83,7 +84,7 @@ public class Bestellverwaltung implements Serializable {
 		}
 	}
 
-	@RolesAllowed(ROLLE_KUNDE)
+	@RolesAllowed({ROLLE_KUNDE, ROLLE_ADMIN})
 	public Bestellung createBestellung(Bestellung bestellung,
 			AbstractKunde kunde, Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
@@ -106,7 +107,7 @@ public class Bestellverwaltung implements Serializable {
 		return bestellung;
 	}
 
-	@RolesAllowed(ROLLE_KUNDE)
+
 	public Bestellung updateBestellung(Bestellung bestellung, 
 			Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
@@ -119,7 +120,7 @@ public class Bestellverwaltung implements Serializable {
 		return bestellung;
 	}
 
-	@RolesAllowed(ROLLE_KUNDE)
+	
 	public Bestellung stornierenBestellung(Bestellung bestellung, Status status,
 			Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
@@ -138,7 +139,7 @@ public class Bestellverwaltung implements Serializable {
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
-	public void deleteBestellung(Bestellung bestellung, Locale locale) 
+	public void deleteBestellung(Bestellung bestellung) 
 			throws BestellungValidationException {
 		if (bestellung == null) {
 			return;
