@@ -21,11 +21,14 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.logging.Logger;
 
+import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.rest.ArtikelverwaltungResource;
+import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
+import de.swe.bestellverwaltung.domain.Bestellung.Status;
 import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
@@ -216,13 +219,12 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		
 	@Override
 	public void updateUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException {
-	
-		// URL fuer Kunde setzen
 		if (bestellung == null) {
 			final String msg = "Kein Bestellung vorhanden";
 			throw new NotFoundException(msg);
 		}
-			
+		
+		// URL fuer Kunde setzen	
 		final URI kundeUri = kvResource.getUriKunde(bestellung.getKunde(), uriInfo);
 		bestellung.setKundeUri(kundeUri);
 		
@@ -266,5 +268,19 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		
 		return Response.noContent().build();
 	}
+	
+	@Override
+	public Response stornierenBestellung(Long id,
+			UriInfo uriInfo) throws NotFoundException {
+		Bestellung bestellung = bv.findBestellungById(id);
+		
+		if (bestellung == null) {
+			String msg = "Kein Bestellung gefunden mit ID " + id;
+			throw new NotFoundException(msg);
+		}
 
+		bestellung = bv.stornierenBestellung(bestellung, Locale.getDefault());
+		
+		return Response.noContent().build();
+	}
 }
