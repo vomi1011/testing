@@ -64,7 +64,7 @@ import de.swe.util.XmlDateAdapter;
 	@NamedQuery(name = Bestellung.FIND_BESTELLUNGEN,
 			query = "FROM Bestellung"),
 	@NamedQuery(name = Bestellung.FIND_BESTELLUNG_BY_ID,
-			query = "FROM Bestellung b where b.bId = :" + Bestellung.PARAM_BESTELL_ID),	
+			query = "FROM Bestellung b where b.id = :" + Bestellung.PARAM_BESTELL_ID),	
 	@NamedQuery(name = Bestellung.FIND_BESTELLUNG_BY_KUNDEN_ID,
 			query = "FROM Bestellung b where b.kunde.id = :" + Bestellung.PARAM_KUNDE_ID),
 	@NamedQuery(name = Bestellung.FIND_BESTELLUNG_BY_DATUM,
