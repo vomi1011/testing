@@ -52,7 +52,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 01);
 	
 	@Inject
-	Bestellverwaltung bv;
+	private Bestellverwaltung bv;
 	
 	@Inject
 	private Artikelverwaltung av;
@@ -63,7 +63,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	@Test
 	public void updateUpdateBestellung() throws 
 	NotSupportedException, SystemException, LoginException, 
-	SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
+	RollbackException, HeuristicMixedException, 
 	HeuristicRollbackException, InterruptedException, ExecutionException {
 		LOGGER.debug("BEGINN updateUpdateBestellung");
 		
@@ -122,7 +122,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	@Test
 	public void deleteUpdateBestellung() throws 
 	NotSupportedException, SystemException, LoginException, 
-	SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
+	RollbackException, HeuristicMixedException, 
 	HeuristicRollbackException, InterruptedException, ExecutionException {
 		LOGGER.debug("BEGINN updateUpdateBestellung");
 		

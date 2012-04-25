@@ -114,7 +114,7 @@ public class BestellverwaltungTest extends AbstractTest {
 
 	
 	@Test
-	public void createBestellungTest() throws BestellungValidationException, LoginException {
+	public void createBestellungTest() throws LoginException {
 		final Long kundeId = KUNDE_ID_VORHANDEN;
 		final Long fahrzeugId1 = FAHRZEUGID_VORHANDEN;
 		final short artikel1Anzahl = PRODUKT_X_ANZAHL;
@@ -147,7 +147,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	
 
 	@Test
-	public void deleteBestellungTest() throws BestellungValidationException, LoginException {
+	public void deleteBestellungTest() throws LoginException {
 		final Long id = BESTELL_ID_LOESCHEN;
 		
 		securityClient.logout();
@@ -164,7 +164,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createBestellpositionTest() throws BestellungValidationException {
+	public void createBestellpositionTest() {
 		final Long fahrzeugId1 = FAHRZEUGID_VORHANDEN;
 		Bestellung bestellung = bv.findBestellungById(BESTELL_ID_VORHANDEN);
 		assertThat(bestellung, is(notNullValue()));
@@ -184,7 +184,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	
 	
 	@Test
-	public void deleteBestellpositionTest() throws BestellungValidationException {
+	public void deleteBestellpositionTest() {
 		Bestellung bestellung = bv.findBestellungById(BESTELL_ID_VORHANDEN);
 		
 		int anzahlBestellpositionenVorher = bestellung.getBestellpositionen().size();
@@ -197,7 +197,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void stornierenBestellungTest() throws BestellungValidationException, LoginException {
+	public void stornierenBestellungTest() throws LoginException {
 		final Long id = BESTELL_ID_VORHANDEN;
 		Bestellung bestellung = bv.findBestellungById(id);
 		
