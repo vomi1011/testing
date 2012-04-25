@@ -2,7 +2,6 @@ package de.swe.kundenverwaltung.rest;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,8 +50,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AbstractKunde findKunde(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public AbstractKunde findKunde(Long id, UriInfo uriInfo) {
 		AbstractKunde kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
 		
 		if (kunde == null) {
@@ -69,8 +67,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public KundeList findKunden(String nachname, UriInfo uriInfo)
-			throws NotFoundException {
+	public KundeList findKunden(String nachname, UriInfo uriInfo) {
 		List<AbstractKunde> kunden = null;
 		
 		if ("".equals(nachname)) {
@@ -103,8 +100,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BestellungList findBestellungenByKundeId(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public BestellungList findBestellungenByKundeId(Long id, UriInfo uriInfo) {
 		List<Bestellung> bestellungen = bv.findBestellungenByKundenId(id);
 		
 		if (bestellungen.isEmpty()) {
@@ -149,8 +145,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 */
 	@Override
 	public Response createPrivatkunde(KundeForm kundeForm, UriInfo uriInfo,
-									  HttpHeaders headers)
-			throws ParseException {
+									  HttpHeaders headers) {
 		AbstractKunde kunde = new Privatkunde();
 		kunde.setNachname(kundeForm.getNachname());
 		kunde.setVorname(kundeForm.getVorname());
@@ -181,8 +176,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 */
 	@Override
 	public Response updateKunde(AbstractKunde kunde, UriInfo uriInfo,
-								HttpHeaders headers)
-			throws NotFoundException {
+								HttpHeaders headers) {
 		AbstractKunde kundeVorher = kv.findKundeById(kunde.getId(), Fetch.NUR_KUNDE);
 		
 		if (kundeVorher == null) {

@@ -5,7 +5,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.net.URI;
-import java.text.ParseException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -41,8 +40,7 @@ public interface KundenverwaltungResource {
 	@GET
 	@Path("{id:[1-9][0-9]+}")
 	@Formatted
-	AbstractKunde findKunde(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	AbstractKunde findKunde(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	/**
 	 * Mit der URL /kunden werden alle Kunden ermittelt oder
@@ -52,8 +50,7 @@ public interface KundenverwaltungResource {
 	@GET
 	@Wrapped(element = "kunden")
 	KundeList findKunden(@QueryParam("nachname") @DefaultValue("") String nachname,
-						 @Context UriInfo uriInfo)
-			throws NotFoundException;
+						 @Context UriInfo uriInfo);
 	
 	/**
 	 * Mit der URL kunden/{id}/bestellungen die Bestellungen zu eine Kunden ermitteln
@@ -63,8 +60,7 @@ public interface KundenverwaltungResource {
 	@GET
 	@Path("{id:[0-9]+}/bestellungen")
 	BestellungList findBestellungenByKundeId(@PathParam("id") Long id,
-			                                 @Context UriInfo uriInfo)
-			       throws NotFoundException;
+			                                 @Context UriInfo uriInfo);
 	
 	/**
 	 * Mit der URL /kunden einen Privatkunden per POST anlegen.
@@ -90,8 +86,7 @@ public interface KundenverwaltungResource {
 	@Produces
 	Response createPrivatkunde(@Form KundeForm kunde,
 							  @Context UriInfo uriInfo,
-							  @Context HttpHeaders headers)
-			throws ParseException;
+							  @Context HttpHeaders headers);
 	
 	/**
 	 * Mit der URL /kunden einen Kunden per PUT aktualisieren
@@ -113,8 +108,7 @@ public interface KundenverwaltungResource {
 	@DELETE
 	@Path("{id:[1-9][0-9]+}")
 	@Produces
-	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	void updateUriKunde(AbstractKunde kunde, UriInfo uriInfo);
 	
