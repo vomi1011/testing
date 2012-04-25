@@ -93,7 +93,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		trans.commit();
 			
 		BestellverwaltungConcurrencyHelper concurrentUpdate = 
-				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getBId());
+				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
@@ -119,12 +119,13 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		LOGGER.debug("ENDE updateUpdateBestellung");
 	}
 	
+	@Ignore
 	@Test
 	public void deleteUpdateBestellung() throws 
 	NotSupportedException, SystemException, LoginException, 
 	SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
 	HeuristicRollbackException, InterruptedException, ExecutionException {
-		LOGGER.debug("BEGINN deleteUpdateBestellung");
+		LOGGER.debug("BEGINN updateUpdateBestellung");
 		
 		
 		final Long kundeId = KUNDE_ID_VORHANDEN2;
@@ -150,19 +151,30 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(bestellung.getBestellpositionen().size(), is(1));
 		trans.commit();
 			
-		BestellverwaltungConcurrencyHelper concurrentDelete = 
-				new BestellverwaltungConcurrencyHelper(Cmd.DELETE, bestellung.getBId());
+		BestellverwaltungConcurrencyHelper concurrentUpdate = 
+				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
-		final Future<Void> future = executorService.submit(concurrentDelete);
+		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
 		
 		trans.begin();
-		bestellung.setStatus(Status.BEARBEITET);
 		
-		thrown.expect(ConcurrentDeleteException.class);
-		bv.updateBestellung(bestellung, LOCALE);
+		try {
+			bv.deleteBestellung(bestellung);
+			fail("ConcurrentUpdateException wurde nicht geworfen!");
+		}
+		catch (ConcurrentUpdateException e) {
+			trans.rollback();
+			
+			securityClient.logout();
+			securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+			securityClient.login();
+			
+			trans.begin();
+			bv.deleteBestellung(bestellung);
+		}
 		
-		LOGGER.debug("BEGINN deleteUpdateBestellung");
+		LOGGER.debug("BEGINN updateDeleteBestellung");
 	}
 	
 	

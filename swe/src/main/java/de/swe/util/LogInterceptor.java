@@ -24,7 +24,8 @@ public class LogInterceptor implements Serializable {
 	
 	private static final String COUNT = "Anzahl = ";
 	private static final int MAX_ELEM = 4;  // bei Collections wird ab 5 Elementen nur die Anzahl ausgegeben
-
+	private static final int ELEM = 3;
+	
 	@AroundInvoke
 	public Object log(InvocationContext ctx) throws Exception {
 		
@@ -39,7 +40,7 @@ public class LogInterceptor implements Serializable {
 		String methodName = ctx.getMethod().getName();
 		
 		// getXy, setXy, isXy nicht protokollieren
-		if ((methodName.startsWith("get") || methodName.startsWith("set")) && Character.isUpperCase(methodName.charAt(3))) {
+		if ((methodName.startsWith("get") || methodName.startsWith("set")) && Character.isUpperCase(methodName.charAt(ELEM))) {
 			return ctx.proceed();
 		}
 		if ((methodName.startsWith("is")) && Character.isUpperCase(methodName.charAt(2))) {

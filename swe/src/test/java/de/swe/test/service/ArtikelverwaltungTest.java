@@ -118,7 +118,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createFahrzeug() throws ArtikelValidationExeption, LoginException {
+	public void createFahrzeug() throws LoginException {
 		final String modell = MODELL;
 		final Long id = Long.valueOf(7001);
 		List<Fahrzeug> vorhandeneFahrzeuge = av.findAllFahrzeuge(Order.ID);
@@ -142,7 +142,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 
 	@Ignore
 	@Test
-	public void createFahrzeugOhneHersteller() throws ArtikelValidationExeption {
+	public void createFahrzeugOhneHersteller() {
 		final String modell = MODELL2;
 		
 		
@@ -155,7 +155,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void updateFahrzeug() throws ArtikelValidationExeption, LoginException {
+	public void updateFahrzeug() throws LoginException {
 		final Long id = FID_VORHANDEN;
 		final String modell = MODELL;
 		
@@ -171,7 +171,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void deleteFahrzeug() throws ArtikelValidationExeption, LoginException {
+	public void deleteFahrzeug() throws LoginException {
 		final Long id = FID_VORHANDEN;
 		
 		securityClient.logout();
@@ -187,7 +187,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createAutohersteller() throws  ArtikelValidationExeptionAH, LoginException {
+	public void createAutohersteller() throws LoginException {
 		final String name = AUTOHERSTELLER_NAME2;
 		List<Autohersteller> vorhandeneAutohersteller = av.findAllAutohersteller(Order.ID);
 		
@@ -206,7 +206,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	
 	@Ignore
 	@Test
-	public void createAutoherstellerOhneName() throws ArtikelValidationExeptionAH {
+	public void createAutoherstellerOhneName() {
 		Autohersteller neuesAutohersteller = new Autohersteller();
 		neuesAutohersteller.setName(null);
 		
@@ -216,7 +216,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void updateAutohersteller() throws ArtikelValidationExeptionAH, LoginException {
+	public void updateAutohersteller() throws LoginException {
 		final Long id = AID_VORHANDEN;
 		final String name = AUTOHERSTELLER_NAME2;
 		
@@ -232,7 +232,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void deleteAutohersteller() throws ArtikelValidationExeptionAH, LoginException {
+	public void deleteAutohersteller() throws LoginException {
 		final Long id = AID_VORHANDEN;
 		Autohersteller autohersteller = av.findAutoherstellerById(id);
 		

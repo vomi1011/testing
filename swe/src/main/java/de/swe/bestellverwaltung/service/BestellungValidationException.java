@@ -13,11 +13,11 @@ public class BestellungValidationException extends
 	private final Bestellung bestellung;
 	private final Collection<ConstraintViolation<Bestellung>> violations;
 	
-	public BestellungValidationException(Bestellung bestellung, 
+	public BestellungValidationException(Bestellung b, 
 			Collection<ConstraintViolation<Bestellung>> violations) {
-		super("Ungueltige Bestelluung: " + bestellung + "Violations: " + violations);
-		this.bestellung = bestellung;
-		this.bestellung.status = this.bestellung.status;
+		super("Ungueltige Bestelluung: " + b + "Violations: " + violations);
+		this.bestellung = b;
+		this.bestellung.setStatus(b.getStatus());
 		this.violations = violations;
 	}
 	

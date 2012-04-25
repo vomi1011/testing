@@ -50,11 +50,11 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 	private static final String ORT_NEU = "Karlsruhe";
 	
 	@Inject
-	Kundenverwaltung kv;
+	private Kundenverwaltung kv;
 	
 	@Test
 	public void updateUpdateKunde()
-			throws InterruptedException, LoginException, ExecutionException, SecurityException,
+			throws InterruptedException, LoginException, ExecutionException,
 				   RollbackException, HeuristicMixedException, HeuristicRollbackException, 
 				   SystemException, NotSupportedException {
 		LOGGER.debug("BEGINN updateUpdateKunde");
@@ -102,9 +102,8 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 	
 	@Test
 	public void updateDeleteKunde()
-			throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
-				   HeuristicRollbackException, SystemException, InterruptedException, ExecutionException, 
-				   NotSupportedException {
+			throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
+			SystemException, InterruptedException, ExecutionException, NotSupportedException {
 		LOGGER.debug("BEGINN updateDeleteKunde");
 		
 		final String nachname = NACHNAME_NEU;
@@ -137,8 +136,8 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 	
 	@Test
 	public void deleteUpdateKunde()
-			throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException,
-				   HeuristicRollbackException, SystemException, InterruptedException, ExecutionException,
+			throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
+			SystemException, InterruptedException, ExecutionException,
 				   LoginException, NotSupportedException {
 		LOGGER.debug("BEGINN deleteUpdateKunde");
 
