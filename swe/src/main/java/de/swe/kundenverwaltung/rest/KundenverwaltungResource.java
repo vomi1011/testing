@@ -5,6 +5,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.net.URI;
+import java.text.ParseException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,6 +28,9 @@ import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.swe.bestellverwaltung.rest.BestellungList;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
+import de.swe.kundenverwaltung.service.EmailExistsException;
+import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
+import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.util.NotFoundException;
 
 @Path("/kunden")
@@ -74,7 +78,8 @@ public interface KundenverwaltungResource {
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	Response createKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
-						 @Context HttpHeaders headers);
+						 @Context HttpHeaders headers)
+			throws EmailExistsException, KundeValidationException;
 	
 	/**
 	 * Mit der URL /kunden/form einen Privatkunden per POST anlegen wie in einem HTML-Formular.
@@ -89,7 +94,8 @@ public interface KundenverwaltungResource {
 	@Produces
 	Response createPrivatkunde(@Form KundeForm kunde,
 							  @Context UriInfo uriInfo,
-							  @Context HttpHeaders headers);
+							  @Context HttpHeaders headers)
+			throws EmailExistsException, ParseException, KundeValidationException;
 	
 	/**
 	 * Mit der URL /kunden einen Kunden per PUT aktualisieren
@@ -100,7 +106,8 @@ public interface KundenverwaltungResource {
 	@Produces
 	Response updateKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
-						 @Context HttpHeaders headers);
+						 @Context HttpHeaders headers)
+			throws NotFoundException, EmailExistsException, KundeValidationException;
 	
 	/**
 	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen
@@ -110,7 +117,8 @@ public interface KundenverwaltungResource {
 	@DELETE
 	@Path("{id:[1-9][0-9]+}")
 	@Produces
-	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo);
+	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo)
+			throws NotFoundException, KundeDeleteBestellungException;
 	
 	void updateUriKunde(AbstractKunde kunde, UriInfo uriInfo);
 	
