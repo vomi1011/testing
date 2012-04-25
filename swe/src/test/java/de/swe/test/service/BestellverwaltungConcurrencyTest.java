@@ -11,11 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.logging.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 import javax.transaction.HeuristicMixedException;
@@ -23,6 +18,11 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
+
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.logging.Logger;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
@@ -33,15 +33,10 @@ import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-import de.swe.kundenverwaltung.domain.Adresse;
-import de.swe.kundenverwaltung.domain.Privatkunde;
-import de.swe.kundenverwaltung.service.EmailExistsException;
-import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
-import de.swe.test.util.AbstractTest;
 import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
+import de.swe.test.util.AbstractTest;
 import de.swe.util.ConcurrentDeleteException;
 import de.swe.util.ConcurrentUpdateException;
 
@@ -56,9 +51,8 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	private static final Status STATUS = Bestellung.Status.NEU;
 	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 01);
 	
-	//Kommentar
 	@Inject
-	Bestellverwaltung bv;
+	private Bestellverwaltung bv;
 	
 	@Inject
 	private Artikelverwaltung av;
@@ -69,7 +63,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	@Test
 	public void updateUpdateBestellung() throws 
 	NotSupportedException, SystemException, LoginException, 
-	SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
+	RollbackException, HeuristicMixedException, 
 	HeuristicRollbackException, InterruptedException, ExecutionException {
 		LOGGER.debug("BEGINN updateUpdateBestellung");
 		
@@ -98,7 +92,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		trans.commit();
 			
 		BestellverwaltungConcurrencyHelper concurrentUpdate = 
-				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getBId());
+				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
@@ -127,7 +121,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	@Test
 	public void deleteUpdateBestellung() throws 
 	NotSupportedException, SystemException, LoginException, 
-	SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
+	RollbackException, HeuristicMixedException, 
 	HeuristicRollbackException, InterruptedException, ExecutionException {
 		LOGGER.debug("BEGINN deleteUpdateBestellung");
 		
@@ -156,7 +150,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		trans.commit();
 			
 		BestellverwaltungConcurrencyHelper concurrentDelete = 
-				new BestellverwaltungConcurrencyHelper(Cmd.DELETE, bestellung.getBId());
+				new BestellverwaltungConcurrencyHelper(Cmd.DELETE, bestellung.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentDelete);
 		future.get();
