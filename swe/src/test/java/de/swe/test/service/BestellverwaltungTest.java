@@ -197,13 +197,15 @@ public class BestellverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void stornierenBestellungTest() throws BestellungValidationException {
+	public void stornierenBestellungTest() throws BestellungValidationException, LoginException {
 		final Long id = BESTELL_ID_VORHANDEN;
 		Bestellung bestellung = bv.findBestellungById(id);
-		final Status status = Status.STORNIERT;
 		
-		bestellung.setStatus(status);
-		bestellung = bv.updateBestellung(bestellung, LOCALE);
-		assertThat(bestellung.getStatus(), is(status));
+		securityClient.logout();
+		securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
+		securityClient.login();		
+		
+		bestellung = bv.stornierenBestellung(bestellung, LOCALE);
+		assertThat(bestellung.getStatus(), is(Status.STORNIERT));
 	}	
 }

@@ -120,8 +120,8 @@ public class Bestellverwaltung implements Serializable {
 		return bestellung;
 	}
 
-	
-	public Bestellung stornierenBestellung(Bestellung bestellung, Status status,
+	@RolesAllowed({ROLLE_KUNDE, ROLLE_ADMIN})
+	public Bestellung stornierenBestellung(Bestellung bestellung,
 			Locale locale) throws BestellungValidationException {
 		if (bestellung == null) {
 			return bestellung;
@@ -135,7 +135,6 @@ public class Bestellverwaltung implements Serializable {
 					bestellung = dao.update(bestellung, bestellung.getBId());
 				}
 		return bestellung;
-		
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
