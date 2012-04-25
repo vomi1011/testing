@@ -11,11 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.logging.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 import javax.transaction.HeuristicMixedException;
@@ -23,6 +18,11 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
+
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.logging.Logger;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
@@ -33,15 +33,10 @@ import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-import de.swe.kundenverwaltung.domain.Adresse;
-import de.swe.kundenverwaltung.domain.Privatkunde;
-import de.swe.kundenverwaltung.service.EmailExistsException;
-import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
-import de.swe.test.util.AbstractTest;
 import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
+import de.swe.test.util.AbstractTest;
 import de.swe.util.ConcurrentDeleteException;
 import de.swe.util.ConcurrentUpdateException;
 
