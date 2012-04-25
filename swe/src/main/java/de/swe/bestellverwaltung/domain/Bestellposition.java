@@ -1,6 +1,7 @@
 package de.swe.bestellverwaltung.domain;
 
 import static de.swe.util.Constants.BESTELLPOSITION_ID;
+import static de.swe.util.Constants.ERSTE_VERSION;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -57,6 +59,10 @@ public class Bestellposition implements Serializable {
 	@XmlElement(required = true)
 	//@Min(value = 1, message = "{bestellverwaltung.bestellposition.anzahl.min}")
 	private short anzahl;
+	
+	@Version
+	@XmlTransient
+	private int version = ERSTE_VERSION;
 	
 	//one-directional one-to-one association to Fahrzeug
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -150,6 +156,14 @@ public class Bestellposition implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 }

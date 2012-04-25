@@ -28,9 +28,6 @@ import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.swe.bestellverwaltung.rest.BestellungList;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-import de.swe.kundenverwaltung.service.EmailExistsException;
-import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.util.NotFoundException;
 
 @Path("/kunden")
@@ -78,8 +75,7 @@ public interface KundenverwaltungResource {
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	Response createKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
-						 @Context HttpHeaders headers)
-			throws EmailExistsException, KundeValidationException;
+						 @Context HttpHeaders headers);
 	
 	/**
 	 * Mit der URL /kunden/form einen Privatkunden per POST anlegen wie in einem HTML-Formular.
@@ -95,7 +91,7 @@ public interface KundenverwaltungResource {
 	Response createPrivatkunde(@Form KundeForm kunde,
 							  @Context UriInfo uriInfo,
 							  @Context HttpHeaders headers)
-			throws EmailExistsException, ParseException, KundeValidationException;
+			throws ParseException;
 	
 	/**
 	 * Mit der URL /kunden einen Kunden per PUT aktualisieren
@@ -107,7 +103,7 @@ public interface KundenverwaltungResource {
 	Response updateKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
 						 @Context HttpHeaders headers)
-			throws NotFoundException, EmailExistsException, KundeValidationException;
+			throws NotFoundException;
 	
 	/**
 	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen
@@ -118,7 +114,7 @@ public interface KundenverwaltungResource {
 	@Path("{id:[1-9][0-9]+}")
 	@Produces
 	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException, KundeDeleteBestellungException;
+			throws NotFoundException;
 	
 	void updateUriKunde(AbstractKunde kunde, UriInfo uriInfo);
 	

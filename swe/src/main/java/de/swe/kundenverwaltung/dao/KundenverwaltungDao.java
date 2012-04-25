@@ -139,7 +139,7 @@ public class KundenverwaltungDao extends Dao {
 			try {
 				query.executeUpdate();
 			}
-			catch(EntityExistsException e) {
+			catch (EntityExistsException e) {
 				LOGGER.warnf("Der Kunde mit der ID %s hat bereits die Rolle %s", kundeId, rolleStr);
 				
 				return false;

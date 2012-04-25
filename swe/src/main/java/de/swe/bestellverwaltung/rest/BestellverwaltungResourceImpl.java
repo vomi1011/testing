@@ -21,15 +21,11 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.logging.Logger;
 
-import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.rest.ArtikelverwaltungResource;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
-import de.swe.bestellverwaltung.domain.Bestellung.Status;
-import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
@@ -124,8 +120,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response createBestellung(Bestellung bestellung, UriInfo uriInfo, HttpHeaders headers)
-	                throws NotFoundException, BestellungValidationException {
+	public Response createBestellung(Bestellung bestellung, UriInfo uriInfo, HttpHeaders headers) {
 		// Schluessel des Kunden extrahieren - weil beim XML kein Kunde vorliegt
 		final String kundeUriStr = bestellung.getKundeUri().toString();
 		int startPos = kundeUriStr.lastIndexOf('/') + 1;
@@ -144,7 +139,12 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		// final AbstractKunde kunde = kv.findKundeById(kundeId);
 		if (kunde == null) {
 			final String msg = "Kein Kunde gefunden mit der ID " + kundeId;
-			throw new NotFoundException(msg);
+			try {
+				throw new NotFoundException(msg);
+			} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		// persistente Artikel ermitteln
@@ -171,7 +171,12 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		}
 		if (fahrzeuge.isEmpty()) {
 			final String msg = "Keine Artikel gefunden mit den IDs " + fahrzeugIds;
-			throw new NotFoundException(msg);
+			try {
+				throw new NotFoundException(msg);
+			} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		// Bestellpositionen haben URLs fuer persistente Artikel.
@@ -210,7 +215,13 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		bestellung = bv.createBestellung(bestellung, kunde, locale);
 
-		final URI bestellungUri = getUriBestellung(bestellung, uriInfo);
+		URI bestellungUri = null;
+		try {
+			bestellungUri = getUriBestellung(bestellung, uriInfo);
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		final Response response = Response.created(bestellungUri).build();
 		LOGGER.trace(bestellungUri);
 		
@@ -250,7 +261,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
 		                             .path(BestellverwaltungResource.class)
 		                             .path(BestellverwaltungResource.class, "findBestellung");
-		final URI uri = ub.build(bestellung.getBId());
+		final URI uri = ub.build(bestellung.getId());
 		
 		return uri;
 	}

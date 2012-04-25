@@ -16,8 +16,6 @@ import org.jboss.logging.Logger;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
 import de.swe.util.NotFoundException;
@@ -46,16 +44,11 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 			throws NotFoundException {
 		Autohersteller autohersteller = av.findAutoherstellerById(id);
 		
-		if (autohersteller == null) {
-			String msg = "Kein Autohersteller gefunden mit ID " + id;
-			throw new NotFoundException(msg);			
-		}
 		return autohersteller;
 	}
 	
 	@Override
-	public Response createFahrzeug(Fahrzeug fahrzeug, UriInfo uriInfo, HttpHeaders headers)
-			throws ArtikelValidationExeption {
+	public Response createFahrzeug(Fahrzeug fahrzeug, UriInfo uriInfo, HttpHeaders headers) {
 		Autohersteller autohersteller = fahrzeug.getHersteller();
 		
 		if (autohersteller != null) {
@@ -76,8 +69,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	@Override
 	public Response createAutohersteller(Autohersteller autohersteller,
 										 UriInfo uriInfo,
-										 HttpHeaders headers)
-			throws ArtikelValidationExeptionAH {
+										 HttpHeaders headers) {
 		List<Locale> locales = headers.getAcceptableLanguages();
 		Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		av.createAutohersteller(autohersteller, locale);
@@ -90,15 +82,9 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	}
 
 	@Override
-	public Response updateFahrzeug(Fahrzeug fahrzeug, UriInfo uriInfo)
-			throws NotFoundException, ArtikelValidationExeption {
+	public Response updateFahrzeug(Fahrzeug fahrzeug, UriInfo uriInfo) {
 		
 		final Fahrzeug fahrzeugAlt = av.findFahrzeugById(fahrzeug.getId());
-		
-		if (fahrzeugAlt == null) {
-			String msg = "Kein Fahrzeug gefunden mit ID " + fahrzeug.getId();
-			throw new NotFoundException(msg);
-		}
 		
 		LOGGER.tracef("%s", fahrzeugAlt);
 		
@@ -107,63 +93,35 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		
 		fahrzeug = av.updateFahrzeug(fahrzeug, Locale.getDefault());
 		
-		if (fahrzeug == null) {
-			String msg = "Kein Fahrzeug gefunden mit ID " + fahrzeugAlt.getId();
-			throw new NotFoundException(msg);
-		}
-		
 		return Response.noContent().build();
 	}
 	
 	@Override
 	public Response updateAutohersteller(Autohersteller autohersteller,
-			UriInfo uriInfo) throws NotFoundException,
-			ArtikelValidationExeptionAH {
+			UriInfo uriInfo) {
 		final Autohersteller autoherstellerAlt = av.findAutoherstellerById(autohersteller.getId());
-		
-		if (autoherstellerAlt == null) {
-			String msg = "Kein Autohersteller gefunden mit ID " + autohersteller.getId();
-			throw new NotFoundException(msg);
-		}
 		
 		LOGGER.tracef("%s", autoherstellerAlt);
 		autoherstellerAlt.setValues(autohersteller);
 		LOGGER.tracef("%s", autoherstellerAlt);
 		autohersteller = av.updateAutohersteller(autohersteller, Locale.getDefault());
 		
-		if (autohersteller == null) {
-			String msg = "Kein Autohersteller gefunden mit ID " + autoherstellerAlt.getId();
-			throw new NotFoundException(msg);
-		}
-		
 		return Response.noContent().build();
 	}
 
 	@Override
-	public Response deleteFahrzeug(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public Response deleteFahrzeug(Long id, UriInfo uriInfo) {
 		final Fahrzeug fahrzeug = av.findFahrzeugById(id);
-		
-		if (fahrzeug == null) {
-			String msg = "Kein Fahrzeug gefunden mit ID " + id;
-			throw new NotFoundException(msg);
-		}
-		
+
 		av.deleteFahrzeug(fahrzeug);
 		
 		return Response.noContent().build();
 	}
 	
 	@Override
-	public Response deleteAutohersteller(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public Response deleteAutohersteller(Long id, UriInfo uriInfo) {
 		final Autohersteller autohersteller = av.findAutoherstellerById(id);
-		
-		if (autohersteller == null) {
-			String msg = "Kein Autohersteller gefunden mit ID " + id;
-			throw new NotFoundException(msg);
-		}
-		
+
 		av.deleteAutohersteller(autohersteller);
 		return Response.noContent().build();
 	}

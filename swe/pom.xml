@@ -135,7 +135,7 @@
 	</developers>
 
 	<properties>
-		<testklassen>**/*Test.java</testklassen>
+		<testklassen>**/KundenverwaltungConcurrencyTest.java</testklassen>
 		<domainklassen>**/domain/*.java</domainklassen>
 		
 		<dbname.postgresql>shopdb</dbname.postgresql>

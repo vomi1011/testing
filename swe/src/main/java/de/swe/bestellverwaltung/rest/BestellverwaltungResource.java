@@ -18,10 +18,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import de.swe.artikelverwaltung.domain.Autohersteller;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.bestellverwaltung.domain.Bestellung;
-import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.util.NotFoundException;
 
@@ -70,8 +67,7 @@ public interface BestellverwaltungResource {
 	@POST
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	Response createBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
-			 throws NotFoundException, BestellungValidationException;
+	Response createBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers);
 
 	void updateUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException;
 	
