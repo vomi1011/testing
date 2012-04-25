@@ -79,7 +79,7 @@ public class KundenverwaltungDao extends Dao {
 		return kunden;
 	}
 	
-	@CacheResult(cacheName = "kunde-cache")
+	//@CacheResult(cacheName = "kunde-cache")
 	public AbstractKunde findKundeById(Long id, Fetch fetch) {
 		AbstractKunde kunde = null;
 		
@@ -139,7 +139,7 @@ public class KundenverwaltungDao extends Dao {
 			try {
 				query.executeUpdate();
 			}
-			catch(EntityExistsException e) {
+			catch (EntityExistsException e) {
 				LOGGER.warnf("Der Kunde mit der ID %s hat bereits die Rolle %s", kundeId, rolleStr);
 				
 				return false;

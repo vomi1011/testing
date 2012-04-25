@@ -40,6 +40,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 	@Inject
 	private Artikelverwaltung av;
 	
+	@Ignore
 	@Test
 	public void findFahrzeugByIdVorhanden() {
 		

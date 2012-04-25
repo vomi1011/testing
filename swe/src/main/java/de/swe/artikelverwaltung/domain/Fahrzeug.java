@@ -116,16 +116,6 @@ public class Fahrzeug implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date aktualisiert;
 
-	@Deprecated
-	public Long getFId() {
-		return this.id;
-	}
-
-	@Deprecated
-	public void setFId(Long id) {
-		this.id = id;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -264,7 +254,7 @@ public class Fahrzeug implements Serializable {
 	}
 	
 	public void setValues(Fahrzeug fahrzeug) {
-		id = fahrzeug.getFId();
+		id = fahrzeug.getId();
 		hersteller = fahrzeug.getHersteller();
 		modell = fahrzeug.getModell();
 		baujahr = fahrzeug.getBaujahr();

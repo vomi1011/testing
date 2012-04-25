@@ -108,16 +108,6 @@ public class Autohersteller implements Serializable {
 		this.version = version;
 	}
 
-	@Deprecated
-	public Long getAId() {
-		return id;
-	}
-
-	@Deprecated
-	public void setAId(Long id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}

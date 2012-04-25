@@ -58,8 +58,7 @@ public class Artikelverwaltung implements Serializable {
 		return fahrzeuge;
 	}
 	
-	private void validate(Fahrzeug fahrzeug, Locale locale, Class<?>... groups) 
-				  throws ArtikelValidationExeption {
+	private void validate(Fahrzeug fahrzeug, Locale locale, Class<?>... groups) {
 		Validator validator = (Validator) validationService.getValidator(locale);
 		Set<ConstraintViolation<Fahrzeug>> violations = validator.validate(fahrzeug, groups);				
 		
@@ -68,25 +67,23 @@ public class Artikelverwaltung implements Serializable {
 		}
 	}
 	
-	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
-	public Fahrzeug createFahrzeug(Fahrzeug fahrzeug, Locale locale) 
-					throws ArtikelValidationExeption {
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	public Fahrzeug createFahrzeug(Fahrzeug fahrzeug, Locale locale) {
 		validate(fahrzeug, locale, Default.class);	
 		fahrzeug = dao.create(fahrzeug);
 		
 		return fahrzeug;
 	}
 	
-	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
-	public Fahrzeug updateFahrzeug(Fahrzeug fahrzeug, Locale locale)
-					throws ArtikelValidationExeption {
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	public Fahrzeug updateFahrzeug(Fahrzeug fahrzeug, Locale locale) {
 		validate(fahrzeug, locale, Default.class);
 		fahrzeug = dao.update(fahrzeug, fahrzeug.getId());
 		
 		return fahrzeug;
 	}
 	
-	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
 	public void deleteFahrzeug(Fahrzeug fahrzeug) {
 		
 		if (fahrzeug == null) {
@@ -97,8 +94,8 @@ public class Artikelverwaltung implements Serializable {
 		
 	}
 	
-	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
-	public void deleteFahrzeugById(Long id){
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	public void deleteFahrzeugById(Long id) {
 		Fahrzeug fahrzeug = findFahrzeugById(id);
 		
 		if (fahrzeug == null) {
@@ -128,8 +125,7 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 	
-	private void validate(Autohersteller autohersteller, Locale locale, Class<?>... groups) 
-				  throws ArtikelValidationExeptionAH {
+	private void validate(Autohersteller autohersteller, Locale locale, Class<?>... groups) {
 		Validator validator = (Validator) validationService.getValidator(locale);
 		Set<ConstraintViolation<Autohersteller>> violations = validator.validate(autohersteller, groups);				
 		
@@ -145,8 +141,7 @@ public class Artikelverwaltung implements Serializable {
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
-	public Autohersteller createAutohersteller(Autohersteller autohersteller, Locale locale)
-					throws ArtikelValidationExeptionAH {
+	public Autohersteller createAutohersteller(Autohersteller autohersteller, Locale locale) {
 		validate(autohersteller, locale, Default.class);
 		
 		autohersteller = dao.create(autohersteller);
@@ -154,9 +149,8 @@ public class Artikelverwaltung implements Serializable {
 		return autohersteller;
 	}
 	
-	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER})
-	public Autohersteller updateAutohersteller(Autohersteller autohersteller, Locale locale)
-					throws ArtikelValidationExeptionAH {
+	@RolesAllowed({ROLLE_ADMIN, ROLLE_ARTIKELVERWALTER })
+	public Autohersteller updateAutohersteller(Autohersteller autohersteller, Locale locale) {
 		validate(autohersteller, locale, Default.class);
 		
 		autohersteller = dao.update(autohersteller, autohersteller.getId());
@@ -175,7 +169,7 @@ public class Artikelverwaltung implements Serializable {
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
-	public void deleteAutoherstellerById(Long id){
+	public void deleteAutoherstellerById(Long id) {
 		Autohersteller autohersteller = findAutoherstellerById(id);
 		if (autohersteller == null) {
 			return;

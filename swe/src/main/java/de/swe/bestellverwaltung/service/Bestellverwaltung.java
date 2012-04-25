@@ -1,6 +1,8 @@
 package de.swe.bestellverwaltung.service;
 
 import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.ROLLE_ADMIN;
+import static de.swe.util.Constants.ROLLE_KUNDE;
 import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
@@ -20,6 +22,7 @@ import javax.validation.groups.Default;
 
 import org.jboss.ejb3.annotation.SecurityDomain;
 
+import de.swe.bestellverwaltung.Dao.BestellverwaltungDao;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.domain.Bestellung.Status;
@@ -27,9 +30,6 @@ import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.util.ValidationService;
-import static de.swe.util.Constants.ROLLE_KUNDE;
-import static de.swe.util.Constants.ROLLE_ADMIN;
-import static de.swe.util.Constants.ROLLE_MITARBEITER;
 
 @Stateless
 @TransactionAttribute(MANDATORY)
@@ -73,7 +73,7 @@ public class Bestellverwaltung implements Serializable {
 	}
 	
 	private void validateBestellung(Bestellung bestellung, Locale locale, 
-			Class<?>... groups) throws BestellungValidationException {
+			Class<?>... groups) {
 		Validator validator = (Validator) validationService.getValidator(locale);
 		
 		Set<ConstraintViolation<Bestellung>> violations = 
@@ -84,9 +84,9 @@ public class Bestellverwaltung implements Serializable {
 		}
 	}
 
-	@RolesAllowed({ROLLE_KUNDE, ROLLE_ADMIN})
+	@RolesAllowed({ROLLE_KUNDE, ROLLE_ADMIN })
 	public Bestellung createBestellung(Bestellung bestellung,
-			AbstractKunde kunde, Locale locale) throws BestellungValidationException {
+			AbstractKunde kunde, Locale locale) {
 		if (bestellung == null) {
 			return bestellung;
 		}
@@ -109,7 +109,7 @@ public class Bestellverwaltung implements Serializable {
 
 
 	public Bestellung updateBestellung(Bestellung bestellung, 
-			Locale locale) throws BestellungValidationException {
+			Locale locale) {
 		if (bestellung == null) {
 			return bestellung;
 		}
@@ -120,17 +120,16 @@ public class Bestellverwaltung implements Serializable {
 		return bestellung;
 	}
 
-	@RolesAllowed({ROLLE_KUNDE, ROLLE_ADMIN})
+	@RolesAllowed({ROLLE_KUNDE, ROLLE_ADMIN })
 	public Bestellung stornierenBestellung(Bestellung bestellung,
-			Locale locale) throws BestellungValidationException {
+			Locale locale) {
 		if (bestellung == null) {
 			return bestellung;
 		}
 		
 		validateBestellung(bestellung, locale, Default.class);
 		
-		if(!bestellung.status.toString().equals("ABGEHOLT"))
-				{
+		if (!bestellung.status.toString().equals("ABGEHOLT")) {
 					bestellung.setStatus(Status.STORNIERT);
 					bestellung = dao.update(bestellung, bestellung.getBId());
 				}
@@ -138,8 +137,7 @@ public class Bestellverwaltung implements Serializable {
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
-	public void deleteBestellung(Bestellung bestellung) 
-			throws BestellungValidationException {
+	public void deleteBestellung(Bestellung bestellung) {
 		if (bestellung == null) {
 			return;
 		}

@@ -22,8 +22,6 @@ import org.jboss.resteasy.annotations.providers.jaxb.Formatted;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
 import de.swe.util.NotFoundException;
 
 //@Path("/artikelverwaltung")
@@ -78,42 +76,36 @@ public interface ArtikelverwaltungResource {
 	@Produces
 	Response createFahrzeug(Fahrzeug fahrzeug,
 							@Context UriInfo uriInfo,
-							@Context HttpHeaders headers)
-			throws ArtikelValidationExeption;
+							@Context HttpHeaders headers);
 	
 	@POST
 	@Path("/autohersteller")
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	Response createAutohersteller(Autohersteller autohersteller,
 								  @Context UriInfo uriInfo,
-								  @Context HttpHeaders headers)
-			throws ArtikelValidationExeptionAH;
+								  @Context HttpHeaders headers);
 	
 	@PUT
 	@Path("/fahrzeuge")
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	Response updateFahrzeug(Fahrzeug fahrzeug, @Context UriInfo uriInfo)
-			throws NotFoundException, ArtikelValidationExeption;
+	Response updateFahrzeug(Fahrzeug fahrzeug, @Context UriInfo uriInfo);
 	
 	@PUT
 	@Path("/autohersteller")
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	Response updateAutohersteller(Autohersteller autohersteller, @Context UriInfo uriInfo)
-			throws NotFoundException, ArtikelValidationExeptionAH;
+	Response updateAutohersteller(Autohersteller autohersteller, @Context UriInfo uriInfo);
 	
 	@DELETE
 	@Path("/fahrzeuge/{id:[6][0-9]+}")
 	@Produces
-	Response deleteFahrzeug(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Response deleteFahrzeug(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	@DELETE
 	@Path("/autohersteller/{id:[7][0-9]+}")
 	@Produces
-	Response deleteAutohersteller(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Response deleteAutohersteller(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	void updateUriFahrzeug(Fahrzeug fahrzeug, UriInfo uriInfo);
 	

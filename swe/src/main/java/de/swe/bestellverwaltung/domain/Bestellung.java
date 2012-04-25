@@ -139,10 +139,6 @@ public class Bestellung implements Serializable {
 	@XmlElement(name = "bestellurl")
 	private URI bestellungUri;
 
-	public Long getBId() {
-		return this.bId;
-	}
-
 	public AbstractKunde getKunde() {
 		return kunde;
 	}
@@ -200,6 +196,10 @@ public class Bestellung implements Serializable {
 
 	public void setBId(Long bId) {
 		this.bId = bId;
+	}
+	
+	public Long getBId() {
+		return this.bId;
 	}
 
 	public Date getAktualisiert() {
