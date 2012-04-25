@@ -27,9 +27,6 @@ import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.Adresse;
 import de.swe.kundenverwaltung.domain.Privatkunde;
-import de.swe.kundenverwaltung.service.EmailExistsException;
-import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.util.NotFoundException;
 
@@ -129,8 +126,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 */
 	@Override
 	public Response createKunde(AbstractKunde kunde, UriInfo uriInfo,
-			HttpHeaders headers) throws EmailExistsException,
-			KundeValidationException {
+			HttpHeaders headers) {
 		final Adresse adresse = kunde.getAdresse();
 		
 		if (adresse != null) {
@@ -154,7 +150,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	@Override
 	public Response createPrivatkunde(KundeForm kundeForm, UriInfo uriInfo,
 									  HttpHeaders headers)
-			throws EmailExistsException, ParseException, KundeValidationException {
+			throws ParseException {
 		AbstractKunde kunde = new Privatkunde();
 		kunde.setNachname(kundeForm.getNachname());
 		kunde.setVorname(kundeForm.getVorname());
@@ -186,7 +182,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	@Override
 	public Response updateKunde(AbstractKunde kunde, UriInfo uriInfo,
 								HttpHeaders headers)
-			throws NotFoundException, EmailExistsException, KundeValidationException {
+			throws NotFoundException {
 		AbstractKunde kundeVorher = kv.findKundeById(kunde.getId(), Fetch.NUR_KUNDE);
 		
 		if (kundeVorher == null) {
@@ -215,8 +211,7 @@ public class KundenverwaltungResourceImpl implements KundenverwaltungResource {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response deleteKunde(Long id, UriInfo uriInfo)
-			throws KundeDeleteBestellungException {
+	public Response deleteKunde(Long id, UriInfo uriInfo) {
 		kv.deleteKundeById(id);
 		
 		return Response.noContent().build();

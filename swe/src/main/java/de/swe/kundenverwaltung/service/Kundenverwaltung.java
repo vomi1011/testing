@@ -112,8 +112,7 @@ public class Kundenverwaltung implements Serializable {
 		return kunden;
 	}
 	
-	private void validateKunde(AbstractKunde kunde, Locale locale, Class<?>... groups)
-			throws KundeValidationException {
+	private void validateKunde(AbstractKunde kunde, Locale locale, Class<?>... groups) {
 		final Validator validator = validationService.getValidator(locale);
 		final Set<ConstraintViolation<AbstractKunde>> violations = validator.validate(kunde, groups);
 		
@@ -122,8 +121,7 @@ public class Kundenverwaltung implements Serializable {
 		}
 	}
 	
-	public AbstractKunde createKunde(AbstractKunde kunde, Locale locale)
-			throws EmailExistsException, KundeValidationException {
+	public AbstractKunde createKunde(AbstractKunde kunde, Locale locale) {
 		if (kunde == null) {
 			return kunde;
 		}
@@ -146,8 +144,7 @@ public class Kundenverwaltung implements Serializable {
 		return kunde;
 	}
 	
-	public AbstractKunde updateKunde(AbstractKunde kunde, Locale locale)
-			throws EmailExistsException, KundeValidationException {
+	public AbstractKunde updateKunde(AbstractKunde kunde, Locale locale) {
 		if (kunde == null) {
 			return kunde;
 		}
@@ -172,7 +169,7 @@ public class Kundenverwaltung implements Serializable {
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
-	public void deleteKunde(AbstractKunde kunde) throws KundeDeleteBestellungException {
+	public void deleteKunde(AbstractKunde kunde) {
 		if (kunde == null) {
 			return;
 		}
@@ -181,7 +178,7 @@ public class Kundenverwaltung implements Serializable {
 	}
 	
 	@RolesAllowed(ROLLE_ADMIN)
-	public void deleteKundeById(Long id) throws KundeDeleteBestellungException {
+	public void deleteKundeById(Long id) {
 		AbstractKunde kunde = findKundeById(id, Fetch.MIT_BESTELLUNG);
 		
 		if (kunde == null) {
@@ -205,7 +202,7 @@ public class Kundenverwaltung implements Serializable {
 	public void addRollen(Long kundeId, RolleType... rollen) {
 		final boolean ok = dao.addRollen(kundeId, rollen);
 		
-		if(!ok) {
+		if (!ok) {
 			ctx.setRollbackOnly();
 			
 			return;

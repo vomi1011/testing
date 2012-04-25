@@ -27,7 +27,6 @@ import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.Adresse;
 import de.swe.kundenverwaltung.domain.Privatkunde;
 import de.swe.kundenverwaltung.service.EmailExistsException;
-import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.test.util.AbstractTest;
@@ -146,7 +145,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void createPrivatkunde() throws EmailExistsException, KundeValidationException, LoginException {
+	public void createPrivatkunde() throws LoginException {
 		final String nachname = NACHNAME_NEU;
 		final String email = EMAIL_NEU;
 		final String strasse = STRASSE_NEU;
@@ -175,7 +174,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createPrivatkundeOhneAdresse()
-			throws EmailExistsException, KundeValidationException, LoginException {
+			throws LoginException {
 		final String nachname = NACHNAME2_NEU;
 		final String email = EMAIL2_NEU;
 		final Privatkunde kunde = new Privatkunde();
@@ -188,7 +187,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createDuplikatPrivatkunde()
-			throws EmailExistsException, KundeValidationException, LoginException {
+			throws LoginException {
 		final Long id = KUNDE_ID_VORHANDEN;
 		
 		final AbstractKunde vorhandenerKunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
@@ -206,7 +205,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	
 	@Test
 	public void createPrivatkundeFalschesPassword()
-			throws EmailExistsException, KundeValidationException, LoginException {
+			throws LoginException {
 		final String nachname = NACHNAME_NICHT_VORHANDEN;
 		final String email = EMAIL_NICHT_VORHANDEN;
 		
@@ -221,7 +220,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void deleteKunde() throws KundeDeleteBestellungException, LoginException {
+	public void deleteKunde() throws LoginException {
 		final Long id = KUNDE_ID_OHNE_BESTELLUNG;
 
 		securityClient.logout();
@@ -241,7 +240,7 @@ public class KundenverwaltungTest extends AbstractTest {
 	}
 	
 	@Test
-	public void neuerNameFuerKunde() throws EmailExistsException, KundeValidationException, LoginException {
+	public void neuerNameFuerKunde() throws LoginException {
 		final Long id = KUNDE_ID_VORHANDEN;
 		
 		AbstractKunde kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
