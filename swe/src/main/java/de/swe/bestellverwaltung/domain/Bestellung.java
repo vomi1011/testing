@@ -103,7 +103,7 @@ public class Bestellung implements Serializable {
 	@Column(name = "b_id")
 	@Min(value = BESTELLUNG_ID, message = "{bestellverwaltung.bestellung.id.min}", groups = IdGroup.class)
 	@XmlAttribute(name = "id")
-	private Long bId;
+	private Long id;
 	
 	@Version
 	@XmlTransient
@@ -124,10 +124,9 @@ public class Bestellung implements Serializable {
 	@XmlElement(name = "bestellposition", required = true)
 	private List<Bestellposition> bestellpositionen;
 	
-//	@Enumerated(EnumType.STRING) 
 	@Column(name = "status", nullable = false)
 	@Enumerated(STRING)
-	public Status status;
+	private Status status;
 	
 	@Temporal(TemporalType.DATE)
 	@XmlJavaTypeAdapter(XmlDateAdapter.class)
@@ -168,7 +167,7 @@ public class Bestellung implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bId == null) ? 0 : bId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((bestelldatum == null) ? 0 : bestelldatum.hashCode());
 		return result;
@@ -189,12 +188,12 @@ public class Bestellung implements Serializable {
 			return false;
 		} 
 		Bestellung other = (Bestellung) obj;
-		if (bId == null) {
-			if (other.bId != null) {
+		if (id == null) {
+			if (other.id != null) {
 				return false;
 			}
 		} 
-		else if (!bId.equals(other.bId)) {
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (bestelldatum == null) {
@@ -208,12 +207,22 @@ public class Bestellung implements Serializable {
 		return true;
 	}
 
+	@Deprecated
 	public void setBId(Long bId) {
-		this.bId = bId;
+		this.id = bId;
 	}
 	
+	@Deprecated
 	public Long getBId() {
-		return this.bId;
+		return this.id;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Date getAktualisiert() {
@@ -268,7 +277,7 @@ public class Bestellung implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Bestellung [Bestellnummer=" + bId + ", Kunde=" + kunde + ", Status= " 
+		return "Bestellung [Bestellnummer=" + id + ", Kunde=" + kunde + ", Status= " 
 				+ status + ", Bestelldatum=" + bestelldatum + "]";
 	}
 

@@ -55,7 +55,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	public void findBestellungenByKundenIdVorhanden() {
 		long id = KUNDE_ID_VORHANDEN;
 		List<Bestellung> bestellungen = bv.findBestellungenByKundenId(id);
-		assertThat(bestellungen.get(0).getBId(), is(BESTELL_ID_VORHANDEN));
+		assertThat(bestellungen.get(0).getId(), is(BESTELL_ID_VORHANDEN));
 	}
 	
 	@Test
@@ -76,7 +76,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	public void findBestellungByIdVorhanden() {
 		long id = BESTELL_ID_VORHANDEN;
 		Bestellung bestellung = bv.findBestellungById(id);
-		assertThat(bestellung.getBId(), is(id));
+		assertThat(bestellung.getId(), is(id));
 	}
 	
 	@Test

@@ -98,7 +98,7 @@ public class Bestellverwaltung implements Serializable {
 		
 		validateBestellung(bestellung, locale, Default.class);
 		
-		bestellung.setBId(KEINE_ID);
+		bestellung.setId(KEINE_ID);
 		for (Bestellposition bp : bestellung.getBestellpositionen()) {
 			bp.setBpId(KEINE_ID);
 		}
@@ -116,7 +116,7 @@ public class Bestellverwaltung implements Serializable {
 		
 		validateBestellung(bestellung, locale, Default.class);
 		
-		bestellung = dao.update(bestellung, bestellung.getBId());
+		bestellung = dao.update(bestellung, bestellung.getId());
 		return bestellung;
 	}
 
@@ -129,9 +129,9 @@ public class Bestellverwaltung implements Serializable {
 		
 		validateBestellung(bestellung, locale, Default.class);
 		
-		if (!bestellung.status.toString().equals("ABGEHOLT")) {
+		if (!bestellung.getStatus().toString().equals("ABGEHOLT")) {
 					bestellung.setStatus(Status.STORNIERT);
-					bestellung = dao.update(bestellung, bestellung.getBId());
+					bestellung = dao.update(bestellung, bestellung.getId());
 				}
 		return bestellung;
 	}
@@ -142,7 +142,7 @@ public class Bestellverwaltung implements Serializable {
 			return;
 		}
 		
-		bestellung = findBestellungById(bestellung.getBId());
+		bestellung = findBestellungById(bestellung.getId());
 		
 		if (bestellung == null) {
 			return;

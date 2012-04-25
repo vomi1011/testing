@@ -104,7 +104,7 @@ public class BestellungTest extends AbstractTest {
 		final Long bid = BID_VORHANDEN;
 		
 		Bestellung bestellung = em.find(Bestellung.class, bid);
-		assertThat(bestellung.getBId(), is(bid));
+		assertThat(bestellung.getId(), is(bid));
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class BestellungTest extends AbstractTest {
 		Bestellposition neueBestellposition = new Bestellposition(fahrzeug);
 
 		Bestellung neueBestellung = new Bestellung();
-		neueBestellung.setBId(KEINE_ID);
+		neueBestellung.setId(KEINE_ID);
 		neueBestellung.setStatus(STATUS);
 		neueBestellung.setBestelldatum(DATUM_NEU.getTime());
 		neueBestellung.addBestellposition(neueBestellposition);

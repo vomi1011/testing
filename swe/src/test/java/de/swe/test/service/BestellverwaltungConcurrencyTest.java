@@ -33,11 +33,6 @@ import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-import de.swe.kundenverwaltung.domain.Adresse;
-import de.swe.kundenverwaltung.domain.Privatkunde;
-import de.swe.kundenverwaltung.service.EmailExistsException;
-import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
 import de.swe.test.util.AbstractTest;
@@ -97,7 +92,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		trans.commit();
 			
 		BestellverwaltungConcurrencyHelper concurrentUpdate = 
-				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getBId());
+				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
@@ -156,7 +151,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		trans.commit();
 			
 		BestellverwaltungConcurrencyHelper concurrentUpdate = 
-				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getBId());
+				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();

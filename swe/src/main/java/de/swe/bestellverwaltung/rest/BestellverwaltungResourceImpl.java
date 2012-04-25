@@ -261,7 +261,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
 		                             .path(BestellverwaltungResource.class)
 		                             .path(BestellverwaltungResource.class, "findBestellung");
-		final URI uri = ub.build(bestellung.getBId());
+		final URI uri = ub.build(bestellung.getId());
 		
 		return uri;
 	}
