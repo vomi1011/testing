@@ -11,6 +11,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.logging.Logger;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 import javax.transaction.HeuristicMixedException;
@@ -18,11 +23,6 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.logging.Logger;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
@@ -33,10 +33,15 @@ import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
+import de.swe.kundenverwaltung.domain.Adresse;
+import de.swe.kundenverwaltung.domain.Privatkunde;
+import de.swe.kundenverwaltung.service.EmailExistsException;
+import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
+import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
-import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
 import de.swe.test.util.AbstractTest;
+import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
 import de.swe.util.ConcurrentDeleteException;
 import de.swe.util.ConcurrentUpdateException;
 
@@ -93,7 +98,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		trans.commit();
 			
 		BestellverwaltungConcurrencyHelper concurrentUpdate = 
-				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
+				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getBId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
 		future.get();
@@ -119,13 +124,12 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		LOGGER.debug("ENDE updateUpdateBestellung");
 	}
 	
-	@Ignore
 	@Test
 	public void deleteUpdateBestellung() throws 
 	NotSupportedException, SystemException, LoginException, 
 	SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, 
 	HeuristicRollbackException, InterruptedException, ExecutionException {
-		LOGGER.debug("BEGINN updateUpdateBestellung");
+		LOGGER.debug("BEGINN deleteUpdateBestellung");
 		
 		
 		final Long kundeId = KUNDE_ID_VORHANDEN2;
@@ -151,30 +155,19 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(bestellung.getBestellpositionen().size(), is(1));
 		trans.commit();
 			
-		BestellverwaltungConcurrencyHelper concurrentUpdate = 
-				new BestellverwaltungConcurrencyHelper(Cmd.UPDATE, bestellung.getId());
+		BestellverwaltungConcurrencyHelper concurrentDelete = 
+				new BestellverwaltungConcurrencyHelper(Cmd.DELETE, bestellung.getBId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
-		final Future<Void> future = executorService.submit(concurrentUpdate);
+		final Future<Void> future = executorService.submit(concurrentDelete);
 		future.get();
 		
 		trans.begin();
+		bestellung.setStatus(Status.BEARBEITET);
 		
-		try {
-			bv.deleteBestellung(bestellung);
-			fail("ConcurrentUpdateException wurde nicht geworfen!");
-		}
-		catch (ConcurrentUpdateException e) {
-			trans.rollback();
-			
-			securityClient.logout();
-			securityClient.setSimple(USERNAME_ADMIN, PASSWORD_ADMIN);
-			securityClient.login();
-			
-			trans.begin();
-			bv.deleteBestellung(bestellung);
-		}
+		thrown.expect(ConcurrentDeleteException.class);
+		bv.updateBestellung(bestellung, LOCALE);
 		
-		LOGGER.debug("BEGINN updateDeleteBestellung");
+		LOGGER.debug("BEGINN deleteUpdateBestellung");
 	}
 	
 	
