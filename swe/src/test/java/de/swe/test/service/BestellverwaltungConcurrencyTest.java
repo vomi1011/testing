@@ -56,6 +56,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	private static final Status STATUS = Bestellung.Status.NEU;
 	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 01);
 	
+	//Kommentar
 	@Inject
 	Bestellverwaltung bv;
 	
