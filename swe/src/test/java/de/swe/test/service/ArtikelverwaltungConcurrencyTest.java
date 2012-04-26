@@ -1,7 +1,5 @@
 package de.swe.test.service;
 
-import static de.swe.util.Constants.AUTOHERSTELLER_ID;
-import static de.swe.util.Constants.FAHRZEUG_ID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -50,7 +48,8 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 //Test update Fahrzeug	währen update
 	@Test
 	public void updateUpdateFahrzeug()
-			throws InterruptedException, LoginException, ExecutionException, RollbackException, HeuristicMixedException, HeuristicRollbackException, 
+			throws InterruptedException, LoginException, ExecutionException,
+				   RollbackException, HeuristicMixedException, HeuristicRollbackException, 
 				   SystemException, NotSupportedException {
 		LOGGER.debug("BEGINN updateUpdateFahrzeug");
 		
@@ -101,10 +100,11 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 //Test update Autohersteller waehrend update
 	@Test
 	public void updateUpdateAutohersteller()
-			throws InterruptedException, LoginException, ExecutionException, RollbackException, HeuristicMixedException, HeuristicRollbackException, 
+			throws InterruptedException, LoginException, ExecutionException,
+				   RollbackException, HeuristicMixedException, HeuristicRollbackException, 
 				   SystemException, NotSupportedException {
 		LOGGER.debug("BEGINN updateUpdateAutohersteller");
-
+		
 		final String name = AUTOHERSTELLER_NAME;
 		final String nameUpdated = "updated";
 		
@@ -148,9 +148,9 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 //Test update Fahrzeug, der nicht existiert	
 	@Test
 	public void updateDeleteFahrzeug()
-			throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
-			SystemException, InterruptedException, ExecutionException, 
-				   NotSupportedException, LoginException {
+			throws RollbackException, HeuristicMixedException, 
+				   HeuristicRollbackException, SystemException, InterruptedException,
+				   ExecutionException, NotSupportedException, LoginException {
 		LOGGER.debug("BEGINN updateDeleteFahrzeug");	
 		
 		final Long id = Long.valueOf(7001);
@@ -169,7 +169,8 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(fahrzeug.getId().longValue() > 0, is(true));
 		trans.commit();
 		
-		ArtikelverwaltungConcurrencyHelper concurrentDelete = new ArtikelverwaltungConcurrencyHelper(Cmd.DELETE, fahrzeug.getId());
+		ArtikelverwaltungConcurrencyHelper concurrentDelete = 
+				new ArtikelverwaltungConcurrencyHelper(Cmd.DELETE, fahrzeug.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentDelete);
 		future.get();
@@ -187,8 +188,9 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 //Test update Autohersteller, der nicht existiert	
 	@Test
 	public void updateDeleteAutohersteller()
-			throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
-			SystemException, InterruptedException, ExecutionException, 
+			throws RollbackException, HeuristicMixedException, 
+				   HeuristicRollbackException, SystemException,
+				   InterruptedException, ExecutionException, 
 				   NotSupportedException, LoginException {
 		LOGGER.debug("BEGINN updateDeleteAutohersteller");		
 		
@@ -205,7 +207,8 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(autohersteller.getId().longValue() > 0, is(true));
 		trans.commit();
 		
-		ArtikelverwaltungConcurrencyHelper concurrentDelete = new ArtikelverwaltungConcurrencyHelper(Cmd.DELETE, autohersteller.getId());
+		ArtikelverwaltungConcurrencyHelper concurrentDelete = 
+				new ArtikelverwaltungConcurrencyHelper(Cmd.DELETE, autohersteller.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentDelete);
 		future.get();
@@ -224,7 +227,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 	@Test
 	public void deleteUpdateFahrzeug()
 			throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
-			SystemException, InterruptedException, ExecutionException,
+				   SystemException, InterruptedException, ExecutionException,
 				   LoginException, NotSupportedException {
 		LOGGER.debug("BEGINN deleteUpdateFahrzeug");
 
@@ -263,8 +266,9 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 //Test delete Autohersteller, der upgedated wird	
 	@Test
 	public void deleteUpdateAutohersteller()
-			throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
-			SystemException, InterruptedException, ExecutionException,
+			throws RollbackException, HeuristicMixedException,
+				   HeuristicRollbackException, SystemException,
+				   InterruptedException, ExecutionException,
 				   LoginException, NotSupportedException {
 		LOGGER.debug("BEGINN deleteUpdateAutohersteller");
 		final String name = AUTOHERSTELLER_NAME;
@@ -300,6 +304,8 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		private Long artikelId;
 		private Long fahrzeugId;
 		private Long autoherstellerId;
+		private final Long min = Long.valueOf(6000);
+		private final Long max = Long.valueOf(7000);
 	
 		protected ArtikelverwaltungConcurrencyHelper(Cmd cmd, Long id) {
 			super(cmd);
@@ -312,7 +318,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 	
 			try {
 				
-				if (artikelId >= FAHRZEUG_ID && artikelId < AUTOHERSTELLER_ID) { 
+				if (artikelId > min && artikelId < max) {
 					fahrzeugId = artikelId;
 					final Fahrzeug fahrzeug = av.findFahrzeugById(fahrzeugId);
 					fahrzeug.setModell(fahrzeug.getModell() + "concurrent");
@@ -320,7 +326,8 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 				}
 				else {
 					autoherstellerId = artikelId;
-					final Autohersteller autohersteller = av.findAutoherstellerById(autoherstellerId);
+					final Autohersteller autohersteller = 
+							av.findAutoherstellerById(autoherstellerId);
 					autohersteller.setName(autohersteller.getName() + "concurrent");
 					av.updateAutohersteller(autohersteller, LOCALE);
 				}
@@ -349,7 +356,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 			}
 			
 			try {
-				if (artikelId >= FAHRZEUG_ID && artikelId < AUTOHERSTELLER_ID) {
+				if (artikelId > min && artikelId < max) {
 					fahrzeugId = artikelId;
 				av.deleteFahrzeug(av.findFahrzeugById(fahrzeugId));
 				}
