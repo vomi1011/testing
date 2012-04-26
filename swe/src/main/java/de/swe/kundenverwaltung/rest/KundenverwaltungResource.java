@@ -27,7 +27,6 @@ import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.swe.bestellverwaltung.rest.BestellungList;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-import de.swe.util.NotFoundException;
 
 @Path("/kunden")
 @Produces({ APPLICATION_XML, TEXT_XML })
@@ -97,8 +96,7 @@ public interface KundenverwaltungResource {
 	@Produces
 	Response updateKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
-						 @Context HttpHeaders headers)
-			throws NotFoundException;
+						 @Context HttpHeaders headers);
 	
 	/**
 	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen
