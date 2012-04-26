@@ -97,8 +97,7 @@ public interface KundenverwaltungResource {
 	@Produces
 	Response updateKunde(AbstractKunde kunde,
 						 @Context UriInfo uriInfo,
-						 @Context HttpHeaders headers)
-			throws NotFoundException;
+						 @Context HttpHeaders headers);
 	
 	/**
 	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen
