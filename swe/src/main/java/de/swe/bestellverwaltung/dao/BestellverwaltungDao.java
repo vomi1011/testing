@@ -1,4 +1,4 @@
-package de.swe.bestellverwaltung.Dao;
+package de.swe.bestellverwaltung.dao;
 
 import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;

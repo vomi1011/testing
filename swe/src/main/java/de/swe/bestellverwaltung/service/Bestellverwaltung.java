@@ -22,7 +22,7 @@ import javax.validation.groups.Default;
 
 import org.jboss.ejb3.annotation.SecurityDomain;
 
-import de.swe.bestellverwaltung.Dao.BestellverwaltungDao;
+import de.swe.bestellverwaltung.dao.BestellverwaltungDao;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.domain.Bestellung.Status;

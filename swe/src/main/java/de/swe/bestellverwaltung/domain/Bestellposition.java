@@ -78,6 +78,7 @@ public class Bestellposition implements Serializable {
 	
 	//notwendig für Rest
 	public Bestellposition() {
+		super();
 	}
 	
 	public Bestellposition(Fahrzeug fahrzeug) {
