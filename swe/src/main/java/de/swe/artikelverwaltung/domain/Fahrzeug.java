@@ -197,7 +197,6 @@ public class Fahrzeug implements Serializable {
 	}
 	
 	public Fahrzeug() {
-		super();
 	}
 	
 	public Fahrzeug(String modell, Autohersteller hersteller) {
