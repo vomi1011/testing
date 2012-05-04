@@ -6,6 +6,7 @@ import static org.dbunit.operation.DatabaseOperation.CLEAN_INSERT;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import javax.annotation.Resource;
@@ -14,10 +15,13 @@ import javax.inject.Singleton;
 import javax.sql.DataSource;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.mysql.MySqlConnection;
+import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 import org.jboss.logging.Logger;
 
 import de.swe.util.Log;
@@ -59,37 +63,37 @@ public class DbService {
 		try {
 			jdbcConn = datasource.getConnection();
 			
-//			final DatabaseMetaData metaData = jdbcConn.getMetaData();
-//			final String dbProdukt = metaData.getDatabaseProductName();
-//			LOGGER.infof("  Produkt:   %s %s", dbProdukt, metaData.getDatabaseProductVersion());
-//			LOGGER.infof("  Treiber:   %s", metaData.getDriverVersion());
-//			LOGGER.infof("  URL:       %s", metaData.getURL());
-//			LOGGER.infof("  Username:  %s", metaData.getUserName());
-//			
+			final DatabaseMetaData metaData = jdbcConn.getMetaData();
+			final String dbProdukt = metaData.getDatabaseProductName();
+			LOGGER.infof("  Produkt:   %s %s", dbProdukt, metaData.getDatabaseProductVersion());
+			LOGGER.infof("  Treiber:   %s", metaData.getDriverVersion());
+			LOGGER.infof("  URL:       %s", metaData.getURL());
+			LOGGER.infof("  Username:  %s", metaData.getUserName());
+			
 			boolean caseSensitiveTableNames = false;
-//			switch (dbProdukt) {
-//				case "PostgreSQL":
-//					final String schema = metaData.getUserName();
-//					LOGGER.infof("  Schema:    %s", schema);
-//					
-//					dbunitConn = new DatabaseConnection(jdbcConn, schema);
-//					dbunitConn.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-//							                           new PostgresqlDataTypeFactory());
-//					caseSensitiveTableNames = true;
-//					break;
-//					
-//				case "MySQL":
+			switch (dbProdukt) {
+				case "PostgreSQL":
+					final String schema = metaData.getUserName();
+					LOGGER.infof("  Schema:    %s", schema);
+					
+					dbunitConn = new DatabaseConnection(jdbcConn, schema);
+					dbunitConn.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+							                           new PostgresqlDataTypeFactory());
+					caseSensitiveTableNames = true;
+					break;
+					
+				case "MySQL":
 					dbunitConn = new MySqlConnection(jdbcConn, null);
 					if (System.getProperty("os.name").contains("Linux")) {
 						caseSensitiveTableNames = true;
 					}
-//					break;
-//					
-//				default:
-//					throw new IllegalStateException("Das Datenbankprodukt \"" + dbProdukt
-//							                        + "\" wird fuer " + DATASOURCE
-//							                        + " nicht unterstuetzt");
-//			}
+					break;
+					
+				default:
+					throw new IllegalStateException("Das Datenbankprodukt \"" + dbProdukt
+							                        + "\" wird fuer " + DATASOURCE
+							                        + " nicht unterstuetzt");
+			}
 			
 			final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
 			flatXmlDataSetBuilder.setCaseSensitiveTableNames(caseSensitiveTableNames);

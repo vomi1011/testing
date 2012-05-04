@@ -51,7 +51,6 @@ public class KundeTest extends AbstractTest {
 	private static final String ORT_NEU = "Abc Ort";
 	private static final String STRASSE_NEU = "Abc Weg";
 	private static final String HAUSNR_NEU = "1";
-	private static final String EMAIL_NEU = "cdf@ijk.de";
 
 	@Test
 	public void findKundenByIdVorhanden() {
@@ -217,44 +216,6 @@ public class KundeTest extends AbstractTest {
 		assertThat(kunde.getAdresse(), is(adresse));
 		assertThat(adresse.getId().longValue() > ADRESS_ID, is(true));
 	}
-
-	//FIXME RollbackException wird nicht geworfen
-//	@Test
-//	public void createPrivatkundeOhneAdresse() throws RollbackException, HeuristicMixedException,
-//    												  HeuristicRollbackException, SystemException {
-//		final String nachname = PRIVATKUNDE_NACHNAME_NEU;
-//		final String email = EMAIL_NEU;
-//		
-//		final Privatkunde kunde = new Privatkunde();
-//		kunde.setNachname("123");
-//		kunde.setEmail(email);
-//		em.persist(kunde);
-//		
-//		try {
-//			trans.commit();
-//			fail("RollbackException wurde nicht geworfen!");
-//		}
-//		catch (RollbackException e) {
-//			final PersistenceException pe = (PersistenceException) e.getCause();
-//			final ConstraintViolationException cve = (ConstraintViolationException) pe.getCause();
-//			final Set<ConstraintViolation<?>> violations = cve.getConstraintViolations();
-//			
-//			assertThat(violations, is(notNullValue()));
-//			assertThat(violations.isEmpty(), is(false));
-//			
-//			for (ConstraintViolation<?> v : violations) {
-//				final String property = v.getPropertyPath().toString();
-//				if ("adresse".equals(property)) {
-//					continue;
-//				}
-//
-//				fail("Unerwartete Verletzung: " + v.getMessage() + " bei der Property "
-//				     + v.getPropertyPath());
-//			}
-//			
-//			trans = null;
-//		}
-//	}
 	
 	@Test
 	public void createFirmenkunde() {
