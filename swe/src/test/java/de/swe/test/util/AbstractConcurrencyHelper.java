@@ -59,14 +59,11 @@ public abstract class AbstractConcurrencyHelper implements Callable<Void> {
 			throw new RuntimeException(e);
 		}
 
-		switch (cmd) {
-			case UPDATE:
-				update();
-				break;
-				
-			case DELETE:
-				delete();
-				break;
+		if (cmd.equals(Cmd.UPDATE)) {
+			update();
+		}
+		else if (cmd.equals(Cmd.DELETE)) {
+			delete();
 		}
 		
 		try {

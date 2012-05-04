@@ -3,7 +3,6 @@ package de.swe.kundenverwaltung.service;
 import static de.swe.util.Constants.KEINE_ID;
 import static de.swe.util.Constants.ROLLE_ADMIN;
 import static de.swe.util.Constants.ROLLE_MITARBEITER;
-import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
 import static de.swe.util.Dao.QueryParameter.with;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
@@ -33,7 +32,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import org.jboss.ejb3.annotation.SecurityDomain;
 import org.jboss.logging.Logger;
 import org.jboss.security.SimpleGroup;
 
@@ -43,6 +41,7 @@ import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.PasswordGroup;
 import de.swe.util.IdGroup;
+import de.swe.util.InternalError;
 import de.swe.util.RolleType;
 import de.swe.util.ValidationService;
 import de.swe.util.jboss.PasswordService;
@@ -50,7 +49,6 @@ import de.swe.util.jboss.SecurityCache;
 
 @Stateless
 @TransactionAttribute(MANDATORY)
-@SecurityDomain(SECURITY_DOMAIN) //TODO entfernen wenn nachher Schutz fuer alle EJBs eingestellt wird
 public class Kundenverwaltung implements Serializable {
 	private static final long serialVersionUID = UID;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
@@ -225,7 +223,7 @@ public class Kundenverwaltung implements Serializable {
 			subject = (Subject) PolicyContext.getContext("javax.security.auth.Subject.container");
 		}
 		catch (PolicyContextException e) {
-			final InternalError error = new InternalError(e.getMessage());
+			final InternalError error = new InternalError(e);
 			LOGGER.error(error.getMessage(), error);
 			throw error;
 		}
@@ -248,7 +246,7 @@ public class Kundenverwaltung implements Serializable {
 			while (members.hasMoreElements()) {
 				final String rolle = members.nextElement().toString();
 				if (rolle != null) {
-					rollen.add(RolleType.valueOf(rolle.toUpperCase()));
+					rollen.add(RolleType.valueOf(rolle.toUpperCase(Locale.getDefault())));
 				}
 			}
 		}

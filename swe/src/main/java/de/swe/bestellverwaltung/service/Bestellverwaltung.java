@@ -3,7 +3,6 @@ package de.swe.bestellverwaltung.service;
 import static de.swe.util.Constants.KEINE_ID;
 import static de.swe.util.Constants.ROLLE_ADMIN;
 import static de.swe.util.Constants.ROLLE_KUNDE;
-import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
@@ -20,8 +19,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import org.jboss.ejb3.annotation.SecurityDomain;
-
 import de.swe.bestellverwaltung.dao.BestellverwaltungDao;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
@@ -33,7 +30,6 @@ import de.swe.util.ValidationService;
 
 @Stateless
 @TransactionAttribute(MANDATORY)
-@SecurityDomain(SECURITY_DOMAIN) //TODO entfernen wenn nachher Schutz fuer alle EJBs eingestellt wird
 public class Bestellverwaltung implements Serializable {
 	private static final long serialVersionUID = UID;
 	

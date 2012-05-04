@@ -2,7 +2,6 @@ package de.swe.artikelverwaltung.service;
 
 import static de.swe.util.Constants.ROLLE_ADMIN;
 import static de.swe.util.Constants.ROLLE_ARTIKELVERWALTER;
-import static de.swe.util.Constants.SECURITY_DOMAIN;
 import static de.swe.util.Constants.UID;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
@@ -19,8 +18,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import org.jboss.ejb3.annotation.SecurityDomain;
-
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
@@ -29,7 +26,6 @@ import de.swe.util.ValidationService;
 //TODO Code kommentieren
 @Stateless
 @TransactionAttribute(MANDATORY)
-@SecurityDomain(SECURITY_DOMAIN) //TODO entfernen wenn nachher Schutz fuer alle EJBs eingestellt wird
 public class Artikelverwaltung implements Serializable {
 	
 	private static final long serialVersionUID = UID;	

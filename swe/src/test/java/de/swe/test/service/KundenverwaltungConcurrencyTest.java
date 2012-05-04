@@ -73,7 +73,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(kunde.getId().longValue() > 0, is(true));
 		trans.commit();
 			
-		KundenverwaltungConcurrencyHelper concurrentUpdate = 
+		final KundenverwaltungConcurrencyHelper concurrentUpdate = 
 				new KundenverwaltungConcurrencyHelper(Cmd.UPDATE, kunde.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
@@ -86,7 +86,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 			kv.updateKunde(kunde, LOCALE);
 			fail("ConcurrentUpdateException wurde nicht geworfen!");
 		}
-		catch (ConcurrentUpdateException e) {
+		catch (final ConcurrentUpdateException e) {
 			trans.rollback();
 			
 			securityClient.logout();
@@ -120,7 +120,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(kunde.getId().longValue() > 0, is(true));
 		trans.commit();
 		
-		KundenverwaltungConcurrencyHelper concurrentDelete = new KundenverwaltungConcurrencyHelper(Cmd.DELETE, kunde.getId());
+		final KundenverwaltungConcurrencyHelper concurrentDelete = new KundenverwaltungConcurrencyHelper(Cmd.DELETE, kunde.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentDelete);
 		future.get();
@@ -154,7 +154,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		assertThat(kunde.getId().longValue() > 0, is(true));
 		trans.commit();
 		
-		KundenverwaltungConcurrencyHelper concurrentUpdate = 
+		final KundenverwaltungConcurrencyHelper concurrentUpdate = 
 				new KundenverwaltungConcurrencyHelper(Cmd.UPDATE, kunde.getId());
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
 		final Future<Void> future = executorService.submit(concurrentUpdate);
@@ -175,7 +175,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 
 	private class KundenverwaltungConcurrencyHelper extends
 			AbstractConcurrencyHelper {
-		private Long kundeId;
+		final private Long kundeId;
 	
 		protected KundenverwaltungConcurrencyHelper(Cmd cmd, Long id) {
 			super(cmd);
@@ -210,7 +210,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 			
 			try {
 				securityClient.login();
-			} catch (LoginException e) {
+			} catch (final LoginException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
@@ -218,7 +218,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 			try {
 				kv.deleteKundeById(kundeId);
 			}
-			catch (KundeDeleteBestellungException e) {
+			catch (final KundeDeleteBestellungException e) {
 				throw new IllegalStateException(e);
 			}
 			

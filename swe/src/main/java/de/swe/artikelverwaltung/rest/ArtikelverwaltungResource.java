@@ -32,6 +32,7 @@ public interface ArtikelverwaltungResource {
 	 * Mit der URL /fahrzeuge werden alle Fahrzeuge ermittelt
 	 * @return Liste mit den gefundenen Fahrzeugdaten
 	 */
+	// TODO Mit findFahrzeug mergen
 	@GET
 	@Path("/fahrzeuge")
 	@Formatted
@@ -53,6 +54,7 @@ public interface ArtikelverwaltungResource {
 	 * Mit der URL /autohersteller werden alle Autohersteller ermittelt
 	 * @return Liste mit den gefundenen Autoherstellern
 	 */
+	// TODO Mit findAutohersteller mergen
 	@GET
 	@Path("/autohersteller")
 	@Formatted

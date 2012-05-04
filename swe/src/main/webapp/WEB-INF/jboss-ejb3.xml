@@ -8,7 +8,7 @@
                impl-version="2.0"> 
 	<assembly-descriptor> 
 		<s:security> 
-			<ejb-name>test</ejb-name> 
+			<ejb-name>*</ejb-name> 
 			<s:security-domain>swe</s:security-domain> 
 		</s:security> 
 	</assembly-descriptor> 
