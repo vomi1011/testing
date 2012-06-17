@@ -59,6 +59,9 @@ public enum ArchiveService {
 		addTestklassen();
 		addDbUnit();
 		
+		// persistence.xml main/resources/META-INF hinzufuegen
+		archive.addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml");
+		
 //		final Path arquillianPath = Paths.get("target/arquillian");
 //		try {
 //			Files.createDirectories(arquillianPath);

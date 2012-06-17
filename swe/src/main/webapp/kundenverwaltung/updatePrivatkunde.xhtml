@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msgKv['updatePrivatkunde.title']}"/>
+	
+		<ui:define name="contents">
+			<h1>#{msgKv['updatePrivatkunde.heading']}</h1>
+			
+			<h:outputText id="fehlerKeinKunde"
+			              value="#{msgKv['updatePrivatkunde.keinKunde']}"
+			              class="error"
+			              rendered="#{empty kv.kunde}"/>
+
+			<a4j:push id="updateEvent" address="updateKunde"
+		              ondataavailable="if (event.rf.data == '#{kv.kunde.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updatePrivatkunde.concurrentUpdate']}&lt;/span&gt;') }"/>
+			<span id="updateMessage"></span>
+			
+			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
+			<h:form id="updateKundeForm" rendered="#{not empty kv.kunde}">
+				<h:panelGrid id="updateKundeTabelle"
+				             columns="3">
+					<h:outputText id="idLabel" value="#{msgKv['updatePrivatkunde.id']}"/>
+					<h:inputText id="id" value="#{kv.kunde.id}" disabled="true"/>
+					<f:verbatim/>
+		
+					<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updatePrivatkunde.nachname']}"/>
+					<h:inputText id="nachname"
+					             value="#{kv.kunde.nachname}"
+					             valueChangeListener="#{kv.geaendert}">
+						<rich:validator/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenNachname" for="nachname"/>
+		
+					<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updatePrivatkunde.vorname']}"/>
+					<h:inputText id="vorname" value="#{kv.kunde.vorname}" valueChangeListener="#{kv.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="kategorieLabel" value="#{msgKv['updatePrivatkunde.kategorie']}" for="kategorie"/>
+					<rich:inputNumberSpinner id="kategorie"
+					                         value="#{kv.kunde.kategorie}"
+					                         minValue="0" maxValue="5"
+					                         inputSize="1"
+					                         valueChangeListener="#{kv.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="seitLabel"
+					               for="seit"
+					               value="#{msgKv['updatePrivatkunde.seit']}"
+					               escape="false"/>
+					<rich:calendar id="seit"
+					               datePattern="#{msgKv['updatePrivatkunde.calendar.pattern']}"
+					               value="#{kv.kunde.seit}"
+					               timezone="CET">
+						<!--
+						<rich:validator/>
+						-->
+					</rich:calendar>
+					<rich:messages id="fehlermeldungSeit" for="seit"/>
+					
+					<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['updatePrivatkunde.umsatz']}"/>
+					<h:inputText id="umsatz"
+					             value="#{kv.kunde.umsatz}"
+					             converterMessage="#{msgKv['updatePrivatkunde.umsatz.convert']}"
+					             valueChangeListener="#{kv.geaendert}">
+						<f:convertNumber type="currency"
+						                 currencyCode="EUR"
+						                 maxFractionDigits="2"/>
+						<f:ajax event="blur" render="updateKundeForm:fehlermeldungenUmsatz"/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenUmsatz" for="umsatz"/>
+					
+					<h:outputLabel id="rabattLabel" for="rabatt" value="#{msgKv['updatePrivatkunde.rabatt']}"/>
+					<h:inputText id="rabatt"
+					             value="#{kv.kunde.rabatt}"
+					             converterMessage="#{msgKv['updatePrivatkunde.rabatt.convert']}"
+					             valueChangeListener="#{kv.geaendert}">
+						<f:convertNumber type="percent"
+	                                     maxFractionDigits="2"
+	                                     maxIntegerDigits="2"/>
+						<f:ajax event="blur" render="updateKundeForm:fehlermeldungenRabatt"/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenRabatt" for="rabatt"/>
+		
+					<h:outputLabel id="familienstandLabel" for="familienstandMenu" value="#{msgKv['updatePrivatkunde.familienstand']}"/>
+					<rich:select id="familienstandMenu"
+					             enableManualInput="true"
+					             defaultLabel="#{msgKv['updatePrivatkunde.familienstand']}"
+					             value="#{kv.kunde.familienstand}"
+					             valueChangeListener="#{kv.geaendert}">
+						<f:selectItem id="ledig" itemValue="LEDIG" itemLabel="#{msgKv['updatePrivatkunde.familienstand.ledig']}"/>
+						<f:selectItem id="verheiratet" itemValue="VERHEIRATET" itemLabel="#{msgKv['updatePrivatkunde.familienstand.verheiratet']}"/>
+						<f:selectItem id="geschieden" itemValue="GESCHIEDEN" itemLabel="#{msgKv['updatePrivatkunde.familienstand.geschieden']}"/>
+						<f:selectItem id="verwitwet" itemValue="VERWITWET" itemLabel="#{msgKv['updatePrivatkunde.familienstand.verwitwet']}"/>
+					</rich:select>
+					<f:verbatim/>
+	
+					<h:outputLabel id="newsletterLabel" value="#{msgKv['updatePrivatkunde.newsletter']}"/>
+					<h:selectBooleanCheckbox id="newsletter" value="#{kv.kunde.newsletter}" valueChangeListener="#{kv.geaendert}"/>
+					<f:verbatim/>
+	
+					<h:outputText id="hobbiesLabel" value="#{msgKv['updatePrivatkunde.hobbies']}"/>
+					<h:selectManyCheckbox value="#{kv.kunde.hobbies}"
+					                      layout="pageDirection"
+					                      valueChangeListener="#{kv.geaendert}">
+						<f:selectItem itemValue="SPORT"
+									  itemLabel="#{msgKv['updatePrivatkunde.sport']}"/>
+						<f:selectItem itemValue="LESEN" 
+									  itemLabel="#{msgKv['updatePrivatkunde.lesen']}"/>
+						<f:selectItem itemValue="REISEN" 
+									  itemLabel="#{msgKv['updatePrivatkunde.reisen']}"/>
+					</h:selectManyCheckbox>
+					<f:verbatim/>
+					
+					<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
+					<h:inputText id="email" value="#{kv.kunde.email}" valueChangeListener="#{kv.geaendert}">
+						<rich:validator/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenEmail" for="email"/>
+				</h:panelGrid>
+	
+				<p id="buttons">
+					<h:commandButton id="button" action="#{kv.update}" value="#{msgKv['updatePrivatkunde.submit']}"/>
+					#{' '}
+					<h:commandButton type="reset" value="#{msgKv['updatePrivatkunde.reset']}"/>
+				</p>
+				
+				<p id="hinweisPflichtfelder">
+					#{msgKv['updatePrivatkunde.required']}
+				</p>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

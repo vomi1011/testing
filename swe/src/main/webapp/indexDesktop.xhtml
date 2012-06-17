@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+			<!-- <f:event type="preRenderView" listener="#{av.loadLadenhueter}"/>  -->
+			<!-- http://docs.jboss.org/seam/3/faces/reference/snapshot/en-US/html_single/#viewaction
+			<s:viewAction action="#{auth.loadRollen}"/>
+			-->
+		</ui:define>
+		
+		<ui:param name="pageTitle" value="#{msg['index.title']}"/>
+	
+		<ui:define name="contents">
+			<h1 id="heading">#{msg['index.welcome']}</h1>
+			<!-- 
+			<rich:dataTable id="ladenhueterTabelle"
+			                var="artikel"
+			                value="#{requestScope.ladenhueter}"
+			                rendered="#{not empty requestScope.ladenhueter}">
+			             
+			    <f:facet name="header">
+			    	#{msg['index.ladenhueter']}
+				</f:facet>
+					 
+				<rich:column id="idSpalte">
+					<f:facet name="header">
+						#{msg['index.artikelId']}
+					</f:facet>
+					#{artikel.id}
+				</rich:column>
+						
+				<rich:column id="bezeichnungSpalte">
+					<f:facet name="header">
+						#{msg['index.artikelBezeichnung']}
+					</f:facet>
+					#{artikel.bezeichnung}
+				</rich:column>
+			</rich:dataTable>
+			-->
+			
+			<p id="datum">
+				#{msg['index.heute']}
+				<h:outputText id="aktuellesDatum" value="#{kv.aktuellesDatum}">
+					<f:convertDateTime type="date" dateStyle="full"/>
+				</h:outputText>
+			</p>
+		</ui:define>
+	</ui:composition>
+</html>

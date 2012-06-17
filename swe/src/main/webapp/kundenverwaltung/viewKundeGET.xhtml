@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+			<f:viewParam id="kundeIdMeta" name="kundeId"/>
+			<f:event type="preRenderView" listener="#{kv.loadKundeById}"/>
+		</ui:define>
+		
+		<ui:param name="pageTitle" value="#{msgKv['viewKundeGET.title']}"/>
+	
+		<ui:define name="contents">
+			<h:outputFormat id="fehlerKundeId"
+			                value="#{msgKv['viewKundeGET.notFound']}"
+			                class="error"
+			                rendered="#{empty kv.kunde}">
+				<f:param id="idParam" value="#{param.kundeId}"/>
+			</h:outputFormat>
+				
+			<h:panelGrid id="ausgewaehlterKunde"
+			             columns="2"
+			             rendered="#{not empty kunde}">
+				<h:outputText id="idLabel" value="#{msgKv['viewKundeGET.kundenr']}"/>
+				<h:outputText id="id" value="#{kv.kunde.id}"/>
+				
+				<h:outputText id="nachnameLabel" value="#{msgKv['viewKundeGET.nachname']}"/>
+				<h:outputText id="nachname" value="#{kv.kunde.nachname}"/>
+				
+				<h:outputText id="vornameLabel" value="#{msgKv['viewKundeGET.vorname']}"/>
+				<h:outputText id="vorname" value="#{kv.kunde.vorname}"/>
+							
+				<h:outputText id="seitLabel" value="#{msgKv['viewKundeGET.seit']}"/>
+				<h:outputText id="seit" value="#{kv.kunde.seit}">
+					<f:convertDateTime type="date" dateStyle="long"/>
+				</h:outputText>
+							
+				<h:outputText id="umsatzLabel" value="#{msgKv['viewKundeGET.umsatz']}"/>
+				<h:outputText id="umsatz" value="#{kv.kunde.umsatz}">
+					<f:convertNumber type="currency"
+					                 currencyCode="EUR"/>
+				</h:outputText>
+				
+				<h:outputText id="emailLabel" value="#{msgKv['viewKundeGET.email']}"/>
+				<h:outputText id="email" value="#{kv.kunde.email}"/>
+			
+				<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kv.kunde.art eq 'F'}"/>
+				<h:outputText id="firmenkunde" value="#{msgKv['viewKundeGET.firmenkunde']}" rendered="#{kv.kunde.art eq 'F'}"/>
+				
+				<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kv.kunde.art eq 'P'}"/>
+				<h:outputText id="privatkunde" value="#{msgKv['viewKundeGET.privatkunde']}" rendered="#{kv.kunde.art eq 'P'}"/>
+							
+				<h:outputText id="rabattLabel" value="#{msgKv['viewKundeGET.rabatt']}" rendered="#kv.{kunde.art eq 'F'}"/>
+				<h:outputText id="rabatt" value="#{kv.kunde.rabatt}" rendered="#{kv.kunde.art eq 'F'}">
+					<f:convertNumber type="percent" maxFractionDigits="2"/>
+				</h:outputText>
+							
+				<h:outputText id="familienstandLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'LEDIG'}"/>
+				<h:outputText id="familienstand" value="#{msgKv['viewKundeGET.familienstand.ledig']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'LEDIG'}"/>
+				
+				<h:outputText id="verheiratetLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERHEIRATET'}"/>
+				<h:outputText id="verheiratet" value="#{msgKv['viewKundeGET.familienstand.verheiratet']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERHEIRATET'}"/>
+				
+				<h:outputText id="geschiedenLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'GESCHIEDEN'}"/>
+				<h:outputText id="geschieden" value="#{msgKv['viewKundeGET.familienstand.geschieden']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'GESCHIEDEN'}"/>
+				
+				<h:outputText id="verwitwetLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERWITWET'}"/>
+				<h:outputText id="verwitwet" value="#{msgKv['viewKundeGET.familienstand.verwitwet']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERWITWET'}"/>
+				
+				<h:outputText id="weiblichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'WEIBLICH'}"/>
+				<h:outputText id="weiblich" value="#{msgKv['viewKundeGET.geschlecht.weiblich']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'WEIBLICH'}"/>
+			
+				<h:outputText id="maennlichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'MAENNLICH'}"/>
+				<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'MAENNLICH'}"/>
+	
+				<h:outputText id="newsletterLabel" value="#{msgKv['viewKundeGET.newsletter']}"/>
+				<h:selectBooleanCheckbox id="newsletter" value="#{kunde.newsletter}" disabled="true" readonly="true"/>
+			</h:panelGrid>
+						
+			<h:form id="buttons" rendered="#{not empty kv.kunde}">
+				<h:commandButton id="updateButtonPrivatkunde"
+				                 image="#{resource['images/edit.gif']}"
+				                 action="/kundenverwaltung/updatePrivatkunde"
+				                 alt="#{msgKv['viewKundeGET.update.alt']}"
+				                 rendered="#{kv.kunde.art eq 'P'}"/>
+				<h:commandButton id="updateButtonFirmenkunde"
+				                 image="#{resource['images/edit.gif']}"
+				                 action="/kundenverwaltung/updateFirmenkunde"
+				                 alt="#{msgKv['viewKundeGET.update.alt']}"
+				                 rendered="#{kv.kunde.art eq 'F'}"/>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

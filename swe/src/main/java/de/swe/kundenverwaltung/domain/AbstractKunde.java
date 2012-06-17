@@ -74,10 +74,15 @@ import de.swe.util.XmlDateAdapter;
 						+ "FROM AbstractKunde k LEFT JOIN FETCH k.bestellungen"),
 	@NamedQuery(name = AbstractKunde.FIND_KUNDEN_ORDER_BY_ID,
 				query = "SELECT k "
-						+ "FROM AbstractKunde k order by k.id"),
+						+ "FROM AbstractKunde k ORDER BY k.id"),
 	@NamedQuery(name = AbstractKunde.FIND_KUNDEN_BY_ID,
 				query = "FROM AbstractKunde k "
 						+ "WHERE k.id = :" + AbstractKunde.PARAM_KUNDE_ID),
+	@NamedQuery(name = AbstractKunde.FIND_KUNDEN_BY_ID_PREFIX,
+				query = "SELECT k "
+						+ "FROM AbstractKunde k "
+						+ "WHERE CONCAT('', k.id) LIKE CONCAT(:" + AbstractKunde.PARAM_KUNDE_ID_PREFIX + ", '%') "
+						+ "ORDER BY k.id"),
 	@NamedQuery(name = AbstractKunde.FIND_KUNDEN_BY_EMAIL,
 				query = "SELECT k "
 						+ "FROM AbstractKunde k "
@@ -152,6 +157,7 @@ public abstract class AbstractKunde implements Serializable {
 	public static final String FIND_KUNDEN_FETCH_BESTELLUNGEN = PREFIX + "findKundenFetchBestellungen";
 	public static final String FIND_KUNDEN_ORDER_BY_ID = PREFIX + "findKundenOrderById";
 	public static final String FIND_KUNDEN_BY_ID = PREFIX + "findKundenById";
+	public static final String FIND_KUNDEN_BY_ID_PREFIX = PREFIX + "findKundenByIdPrefix";
 	public static final String FIND_KUNDEN_BY_EMAIL = PREFIX + "findKundenEmail";
 	public static final String FIND_KUNDEN_BY_NACHNAME = PREFIX + "findKundenByNachname";
 	public static final String FIND_KUNDEN_BY_PLZ = PREFIX + "findKundenByPlz";
@@ -166,6 +172,7 @@ public abstract class AbstractKunde implements Serializable {
 				   PREFIX + "findKundenByEmailFetchBestellungen";
 	
 	public static final String PARAM_KUNDE_ID = "id";
+	public static final String PARAM_KUNDE_ID_PREFIX = "idPrefix";
 	public static final String PARAM_KUNDE_EMAIL = "email";
 	public static final String PARAM_KUNDE_NACHNAME = "nachname";
 	public static final String PARAM_KUNDE_ADRESSE_PLZ = "plz";

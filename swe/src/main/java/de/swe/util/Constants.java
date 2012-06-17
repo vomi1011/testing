@@ -28,6 +28,18 @@ public final class Constants {
 	public static final String BESTELLVERWALTUNG_NS = "urn:swe:bestellverwaltung";
 	public static final String KUNDENVERWALTUNG_NS = "urn:swe:kundenverwaltung";
 	
+	// JSF
+	public static final String JSF_INDEX = "/index";
+	public static final String JSF_DEFAULT_ERROR = "/error/defaultError";
+	public static final String JSF_REDIRECT_SUFFIX = "?faces-redirect=true";
+	
+	private static final String PREFIX_PACKAGES = "de.swe.";
+	private static final String SUFFIX = ".ui.messages";
+	
+	public static final String SHOP = PREFIX_PACKAGES + "messages";
+	public static final String KUNDENVERWALTUNG = PREFIX_PACKAGES + "kundenverwaltung" + SUFFIX;
+	public static final String BESTELLVERWALTUNG = PREFIX_PACKAGES + "bestellverwaltung" + SUFFIX;
+	public static final String ARTIKELVERWALTUNG = PREFIX_PACKAGES + "artikelverwaltung" + SUFFIX;
 	private Constants() {
 	}
 }

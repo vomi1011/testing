@@ -95,6 +95,13 @@ public class KundenverwaltungDao extends Dao {
 		return kunde;
 	}
 
+	public List<AbstractKunde> findKundenByIdPrefix(Long id) {
+		final List<AbstractKunde> kunden = find(AbstractKunde.class, AbstractKunde.FIND_KUNDEN_BY_ID_PREFIX,
+				with(AbstractKunde.PARAM_KUNDE_ID_PREFIX, id).build());
+		
+		return kunden;
+	}
+
 	@CacheResult(cacheName = "kunde-cache")
 	public AbstractKunde findKundeByEmail(String email, Fetch fetch) {
 		AbstractKunde kunde = null;

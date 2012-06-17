@@ -1,0 +1,53 @@
+/* # fuer Tag-ID und . fuer CSS-Klasse */
+
+#header {
+	height: 69px;
+	background-color: #BED6F8;   /* blueSky */
+}
+
+#nav {
+	float: left;
+	width: 15%;
+	height: 450px;
+	padding: 5px;
+	background-color: #BED6F8;   /* blueSky */
+}
+
+#contents {
+	width: 80%;
+	overflow: auto;
+	padding: 5px;
+}
+
+#footer {
+	clear: left;
+	padding: 10px;
+}
+
+img {
+	border: None;
+}
+
+h1 {
+	font-style: italic;
+}
+
+.error {
+	color: red;
+	font-style: bold;
+	list-style-type: none;
+}
+
+.tabelleMitZebrastil {
+}
+.odd-row {
+	background-color: #ECF3FE;
+}
+.even-row {
+	background-color: #FCFFFE;
+}
+.active-row {
+	background-color: #FFEBDA;
+	cursor: pointer;
+}
+

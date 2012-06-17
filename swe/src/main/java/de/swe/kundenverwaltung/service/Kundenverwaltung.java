@@ -265,4 +265,10 @@ public class Kundenverwaltung implements Serializable {
 
 		LOGGER.debugf("ENDE passwordVerschluesseln: kunde=%s", verschluesselt);
 	}
+
+	public List<AbstractKunde> findKundenbyIdPrefix(Long id) {
+		final List<AbstractKunde> kunden = dao.findKundenByIdPrefix(id);
+		
+		return kunden;
+	}
 }

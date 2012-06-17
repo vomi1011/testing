@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<f:view locale="#{userLocale}">
+		<f:metadata>
+			<ui:insert name="metadata"/>
+		</f:metadata>
+
+		
+		<h:head>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+			<meta http-equiv="Content-Style-Type" content="text/css"/>
+			<base href="#{request.contextPath}"/>
+			<title>#{empty pageTitle ? 'Webshop' : pageTitle}</title>
+			<h:outputStylesheet id="cssDatei" library="css" name="shop.css"/>
+			<link rel="shortcut icon" type="image/x-icon" href="#{resource['images:favicon.ico']}"/>
+			<meta name="author" content="J&#252;rgen Zimmermann"/>
+			<meta name="copyright" content="J&#252;rgen Zimmermann"/>
+			<meta name="keywords" content="Software Engineering,Beispiele,JSF,CDI,RichFaces,Seam 3"/>
+		</h:head>
+		
+		<h:body>
+			<header id="header">
+				<ui:insert name="header">
+					<ui:include src="header.xml"/>
+				</ui:insert>
+			</header>
+		
+			<nav id="nav">
+				<ui:insert name="nav">
+					<ui:include src="nav.xml"/>
+				</ui:insert>
+			</nav>
+		
+			<div id="contents">
+				<ui:insert name="contents"/>
+			</div>
+		
+			<footer id="footer">
+				<ui:insert name="footer">
+					<ui:include src="footer.xml"/>
+				</ui:insert>
+			</footer>
+		</h:body>
+	</f:view>
+</html>

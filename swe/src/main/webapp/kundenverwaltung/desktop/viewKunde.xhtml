@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msgKv['viewKunde.title']}"/>
+	
+		<ui:define name="contents">
+			<h:form id="form">
+				<rich:panel id="suchePanel" header="#{msgKv['viewKunde.sucheNeu']}">
+					<h:panelGrid id="suchePanelGrid" columns="4">
+						<h:outputLabel id="kundeIdInputLabel"
+						               value="#{msgKv['viewKunde.kundenr']}"
+						               for="kundeIdInput"/>
+						             
+						<rich:autocomplete id="kundeIdInput"
+						                   value="#{kv.kundeId}"
+						                   mode="ajax"
+						                   minChars="1"
+						                   autocompleteMethod="#{kv.findKundenByIdPrefix}"
+						                   var="kunde"
+						                   fetchValue="#{kunde.id}"
+						                   converter="javax.faces.Number"
+						                   converterMessage="#{msgKv.viewKunde.kundenr.converterError}">
+							#{kunde.id} : #{kunde.nachname}, #{kunde.vorname}
+						</rich:autocomplete> 
+	
+						<a4j:commandButton id="findButton"
+						                   action="#{kv.findKundeById}"
+						                   value="#{msgKv['viewKunde.submit']}"
+						                   render="gesuchterKundePanel fehlermeldungKundeId"/>
+						
+						<a4j:status id="statusWaiting">
+							<f:facet name="start">
+								<h:panelGroup id="waitingGroup">
+									<h:graphicImage id="waitingGif"
+									                name="waiting.gif"
+									                library="images"/>
+									#{msgKv['viewKunde.inBearbeitung']}
+								</h:panelGroup>
+							</f:facet>
+						</a4j:status>
+					</h:panelGrid>
+					
+					<rich:messages id="fehlermeldungKundeId" for="kundeId"/>
+					<rich:jQuery id="focus" selector="#kundeId" query="focus()"/>
+				</rich:panel>
+	
+				<a4j:outputPanel id="gesuchterKundePanel">
+					<rich:tabPanel id="tabPanel" switchType="client" rendered="#{not empty kv.kunde}">
+						<rich:tab id="stammdatenTab">
+							<f:facet name="header">
+								<h:panelGroup id="stammdatenLabel">
+									<h:graphicImage id="stammdatenGif"
+									                name="stammdaten.gif"
+									                library="images"/>
+									#{' '}
+									#{msgKv['viewKunde.kunde.stammdaten']}
+								</h:panelGroup>
+							</f:facet>
+							
+							<rich:panel id="stammdatenPanel">
+								<h:panelGrid id="stammdatenGrid" columns="2">
+									<h:outputText id="kundeIdLabel" value="#{msgKv['viewKunde.kundenr']}"/>
+									<h:outputText id="kundeId" value="#{kv.kunde.id}"/>
+							
+									<h:outputText id="nachnameLabel" value="#{msgKv['viewKunde.nachname']}"/>
+									<h:outputText id="nachname" value="#{kv.kunde.nachname}"/>
+						
+									<h:outputText id="vornameLabel" value="#{msgKv['viewKunde.vorname']}"/>
+									<h:outputText id="vorname" value="#{kv.kunde.vorname}"/>
+						
+									<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
+									<h:outputText id="email" value="#{kv.kunde.email}"/>
+					
+									<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKunde.kundenart']}" rendered="#{kv.kunde.art eq 'F'}"/>
+									<h:outputText id="firmenkunde" value="#{msgKv['viewKunde.firmenkunde']}" rendered="#{kv.kunde.art eq 'F'}"/>
+						
+									<h:outputText id="privatkundeLabel" value="#{msgKv['viewKunde.kundenart']}" rendered="#{kv.kunde.art eq 'P'}"/>
+									<h:outputText id="privatkunde" value="#{msgKv['viewKunde.privatkunde']}" rendered="#{kv.kunde.art eq 'P'}"/>
+					
+									<h:outputText id="weiblichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'WEIBLICH'}"/>
+									<h:outputText id="weiblich" value="#{msgKv['viewKunde.geschlecht.weiblich']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'WEIBLICH'}"/>
+						
+									<h:outputText id="maennlichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'MAENNLICH'}"/>
+									<h:outputText id="maennlich" value="#{msgKv['viewKunde.geschlecht.maennlich']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'MAENNLICH'}"/>
+								</h:panelGrid>
+							</rich:panel>
+						</rich:tab>
+						
+						<rich:tab id="bestellungenTab" rendered="#{not empty kv.kunde.bestellungen}">
+							<f:facet name="header">
+								<h:panelGroup id="bestellungenLabel">
+									<h:graphicImage id="bestellungenGif"
+									                name="bestellungen.gif"
+									                library="images"/>
+									#{' '}
+									#{msgKv['viewKunde.kunde.bestellungen']}
+								</h:panelGroup>
+							</f:facet>
+							
+							<rich:dataTable id="bestellungenTabelle" value="#{kv.kunde.bestellungen}" var="bestellung">
+								<f:facet name="header">
+									<rich:columnGroup id="positionenSpalten">
+										<rich:column id="artikelIdSpalte">
+											#{msgKv['viewKunde.artikel.id']}
+										</rich:column>
+										<rich:column id="bezeichnungSpalte">
+											#{msgKv['viewKunde.artikel.bezeichnung']}
+										</rich:column>
+										<rich:column id="anzahlSpalte">
+											#{msgKv['viewKunde.artikel.anzahl']}
+										</rich:column>
+									</rich:columnGroup>
+								</f:facet>
+								
+								<rich:column id="togglerSpalte" colspan="3">
+									<rich:collapsibleSubTableToggler id="subTableToggler"
+									                                 for="positionenSubtable"
+									                                 collapsedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.getErzeugt('yyyy-MM-dd')}"
+									                                 expandedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.getErzeugt('yyyy-MM-dd')}"/>
+								</rich:column>
+								
+								<rich:collapsibleSubTable id="positionenSubtable"
+								                          value="#{bestellung.bestellpositionen}"
+								                          var="pos"
+								                          rowClasses="odd-row, even-row"
+									                      styleClass="tabelleMitZebrastil"
+								                          expandMode="client"
+								                          expanded="#{false}"> <!-- https://issues.jboss.org/browse/RF-10715 -->
+									<rich:column id="artikelIdSpalteSub">
+										#{pos.artikel.id}
+									</rich:column>
+						
+									<rich:column id="bezeichnungSpalteSub">
+										#{pos.artikel.bezeichnung}
+									</rich:column>
+						
+									<rich:column id="anzahlSpalteSub">
+										#{pos.anzahl}
+									</rich:column>
+								</rich:collapsibleSubTable>		
+							
+								<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+									<rich:jQuery id="odd"
+									             selector=".tabelleMitZebrastil tr:odd"
+									             query="addClass('odd-row')"
+									             timing="domready"/>
+									<rich:jQuery id="even"
+									             selector=".tabelleMitZebrastil tr:even"
+									             query="addClass('even-row')"
+									             timing="domready"/>
+									<rich:jQuery id="mouseover"
+									             selector=".tabelleMitZebrastil tr"
+									             event="mouseover"
+									             query="jQuery(this).addClass('active-row')"
+									             timing="domready"/>
+									<rich:jQuery id="mouseout"
+									             selector=".tabelleMitZebrastil tr"
+									             event="mouseout"
+									             query="jQuery(this).removeClass('active-row')"
+									             timing="domready"/>
+								</a4j:outputPanel>
+							</rich:dataTable>
+						</rich:tab>
+				</rich:tabPanel>
+					<p id="buttons">
+						<h:panelGroup id="buttonsGroup" rendered="#{not empty kv.kunde}">
+							<h:commandButton id="updateButtonPrivatkunde"
+							                 image="#{resource['images:edit.gif']}"
+							                 action="/kundenverwaltung/updatePrivatkunde"
+							                 alt="#{msgKv['viewKunde.update.alt']}"
+							                 rendered="#{kv.kunde.art eq 'P'}"/>
+							<h:commandButton id="updateButtonFirmenkunde"
+							                 image="#{resource['images/edit.gif']}"
+							                 action="/kundenverwaltung/updateFirmenkunde"
+							                 alt="#{msgKv['viewKunde.update.alt']}"
+							                 rendered="#{kv.kunde.art eq 'F'}"/>
+							#{' '}
+							<h:commandButton id="deleteButton"
+											 image="#{resource['images:delete.gif']}"
+									         action="#{kv.deleteAngezeigtenKunden}"
+									         onclick="return confirm('#{msgKv['viewKunde.deleteKundeBestaetigung']}')"
+									         alt="#{msgKv['viewKunde.deleteButtonAlt']}"
+									         rendered="#{rich:isUserInRole('admin')}"/>
+							#{' '}
+							<rich:messages id="fehlermeldungDeleteButton" for="deleteButton"/>
+						</h:panelGroup>
+					</p>
+				</a4j:outputPanel>
+			</h:form>
+			
+			<!--
+			<a4j:log id="log"/>
+			-->
+		</ui:define>
+	</ui:composition>
+</html>
