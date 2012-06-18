@@ -207,11 +207,13 @@ public class Bestellung implements Serializable {
 		return true;
 	}
 
+	//TODO Methode entfernen, wenn alle Abhaengigkeiten beseitig sind
 	@Deprecated
 	public void setBId(Long bId) {
 		this.id = bId;
 	}
 	
+	//TODO Methode entfernen, wenn alle Abhaengigkeiten beseitig sind
 	@Deprecated
 	public Long getBId() {
 		return this.id;

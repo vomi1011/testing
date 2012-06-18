@@ -53,7 +53,7 @@ public class Bestellposition implements Serializable {
 	@Column(name = "bp_id")
 	@Min(value = BESTELLPOSITION_ID, message = "{bestellverwaltung.bestellposition.id.min}", groups = IdGroup.class)
 	@XmlAttribute(name = "id")
-	private Long bpId;
+	private Long id;
 
 	@NotNull(message = "{bestellverwaltung.bestellposition.anzahl.notNull}")
 	@XmlElement(required = true)
@@ -65,7 +65,7 @@ public class Bestellposition implements Serializable {
 	private int version = ERSTE_VERSION;
 	
 	//one-directional one-to-one association to Fahrzeug
-	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@OneToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "fahrzeug_fk", nullable = false)
 	@NotNull(message = "{bestellverwaltung.bestellposition.fahrzeug.notNull}")
 	@Valid
@@ -98,12 +98,30 @@ public class Bestellposition implements Serializable {
 		this.fahrzeug = fahrzeug;
 	}
 
-	public Long getBpId() {
-		return this.bpId;
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	//TODO Methode entfernen, wenn alle Abhaengigkeiten beseitig sind
+	@Deprecated
+	public Long getBpId() {
+		return this.id;
+	}
+
+	//TODO Methode entfernen, wenn alle Abhaengigkeiten beseitig sind
+	@Deprecated
 	public void setBpId(Long bpId) {
-		this.bpId = bpId;
+		this.id = bpId;
 	}
 
 	public short getAnzahl() {
@@ -124,14 +142,14 @@ public class Bestellposition implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Bestellposition [bpId=" + bpId + ", anzahl=" + anzahl + "]";
+		return "Bestellposition [bpId=" + id + ", anzahl=" + anzahl + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bpId == null) ? 0 : bpId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -147,12 +165,12 @@ public class Bestellposition implements Serializable {
 			return false;
 		}
 		Bestellposition other = (Bestellposition) obj;
-		if (bpId == null) {
-			if (other.bpId != null) {
+		if (id == null) {
+			if (other.id != null) {
 				return false;
 			}
 		} 
-		else if (!bpId.equals(other.bpId)) {
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;
