@@ -32,9 +32,11 @@ import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
 
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
+import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.domain.Privatkunde;
 import de.swe.kundenverwaltung.service.EmailExistsException;
+import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.swe.kundenverwaltung.service.KundeValidationException;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.util.AbstractSweException;
@@ -52,7 +54,7 @@ public class KundenverwaltungController implements Serializable {
 
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
-	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
+	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "listKunden";
 	private static final String JSF_UPDATE_PRIVATKUNDE = JSF_KUNDENVERWALTUNG + "updatePrivatkunde";
 	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
 	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
@@ -60,6 +62,10 @@ public class KundenverwaltungController implements Serializable {
 	private static final String CLIENT_ID_KUNDEID = "form:kundeId";
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
+	
+	private static final String CLIENT_ID_KUNDEN_NACHNAME = "form:nachname";
+	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
+	
 	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_DUPLIKAT = "updatePrivatkunde.duplikat";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT = "updateFirmenkunde.duplikat";
 	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_UPDATE = "updatePrivatkunde.concurrentUpdate";
@@ -67,6 +73,8 @@ public class KundenverwaltungController implements Serializable {
 	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_DELETE = "updatePrivatkunde.concurrentDelete";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE = "updateFirmenkunde.concurrentDelete";
 	private static final String MSG_KEY_KUNDE_NOT_FOUND_BY_ID = "viewKunde.notFound";
+
+	private static final String MSG_KEY_SELECT_DELETE_KUNDE_BESTELLUNG = "listKunden.deleteKundeBestellung";
 	
 	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());;
 	
@@ -78,7 +86,7 @@ public class KundenverwaltungController implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private transient ExternalContext ext;
+	private transient ExternalContext externalCtx;
 	
 	@Inject
 	@Client // Sprache des Clients
@@ -165,6 +173,12 @@ public class KundenverwaltungController implements Serializable {
 		return datum;
 	}
 	
+	public void sortByVorname() {
+		vornameSortOrder = vornameSortOrder.equals(SortOrder.ascending)
+						   ? SortOrder.descending
+						   : SortOrder.ascending;
+	}
+	
 	public List<AbstractKunde> findKundenByIdPrefix(String idPrefix) {
 		List<AbstractKunde> kundenPrefix = null;
 		Long id = null;
@@ -199,6 +213,96 @@ public class KundenverwaltungController implements Serializable {
 		}
 		
 		return JSF_VIEW_KUNDE;
+	}
+	
+	/**
+	 * Action Methode, um einen Kunden zu gegebener ID zu suchen
+	 * @return URL fuer Anzeige des gefundenen Kunden; sonst null
+	 */
+	public String findKundenByNachname() {
+		if (nachname == null || nachname.isEmpty()) {
+			kunden = kv.findAllKunden(Fetch.MIT_BESTELLUNG, Order.KEINE);
+			return JSF_LIST_KUNDEN;
+		}
+
+		kunden = kv.findKundenByNachname(nachname, Fetch.MIT_BESTELLUNG);
+		return JSF_LIST_KUNDEN;
+	}
+	
+	/**
+	 * F&uuml;r rich:autocomplete
+	 * @return Liste der potenziellen Nachnamen
+	 */
+	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+		final List<String> nachnamen = kv.findNachnamenByPrefix(nachnamePrefix);
+		if (nachnamen.isEmpty()) {
+			messages.error(new BundleKey(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME), kundeId)
+                    .targets(CLIENT_ID_KUNDEN_NACHNAME);
+			return nachnamen;
+		}
+
+		if (nachnamen.size() > MAX_AUTOCOMPLETE) {
+			return nachnamen.subList(0, MAX_AUTOCOMPLETE);
+		}
+
+		return nachnamen;
+	}
+	
+	public void loadKundeById() {
+		// Request-Parameter "kundeId" fuer ID des gesuchten Kunden
+		final String idStr = externalCtx.getRequestParameterMap().get("kundeId");
+		Long id;
+		try {
+			id = Long.valueOf(idStr);
+		}
+		catch (NumberFormatException e) {
+			return;
+		}
+		
+		// Suche durch den Anwendungskern
+		kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
+		if (kunde == null) {
+			return;
+		}
+	}
+	
+	public String details(AbstractKunde ausgewaehlterKunde) {
+		if (ausgewaehlterKunde == null) {
+			return null;
+		}
+		
+		// Bestellungen nachladen
+		this.kunde = kv.findKundeById(ausgewaehlterKunde.getId(), Fetch.MIT_BESTELLUNG);
+		this.kundeId = this.kunde.getId();
+		
+		return JSF_VIEW_KUNDE;
+	}
+	
+	public String selectForUpdate(AbstractKunde ausgewaehlterKunde) {
+		this.kunde = ausgewaehlterKunde;
+		
+		if (AbstractKunde.PRIVATKUNDE.equals(ausgewaehlterKunde.getArt())) {
+			return JSF_UPDATE_PRIVATKUNDE;
+		}
+		else {
+			return JSF_UPDATE_FIRMENKUNDE;
+		}
+	}
+	
+	public String delete(AbstractKunde ausgewaehlterKunde) {
+		try {
+			kv.deleteKunde(ausgewaehlterKunde);
+		}
+		catch (KundeDeleteBestellungException e) {
+			messages.error(new BundleKey(KUNDENVERWALTUNG, MSG_KEY_SELECT_DELETE_KUNDE_BESTELLUNG),
+				           e.getKundeId(),
+                           e.getAnzahlBestellungen())
+                    .targets(null);
+			return null;
+		}
+
+		kunden.remove(ausgewaehlterKunde);
+		return null;
 	}
 	
 	public String update() {

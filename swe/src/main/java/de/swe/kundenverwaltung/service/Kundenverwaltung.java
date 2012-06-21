@@ -110,6 +110,18 @@ public class Kundenverwaltung implements Serializable {
 		return kunden;
 	}
 	
+	public List<AbstractKunde> findKundenbyIdPrefix(Long id) {
+		final List<AbstractKunde> kunden = dao.findKundenByIdPrefix(id);
+		
+		return kunden;
+	}
+
+	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+		final List<String> kundenNachnamen = dao.findKundenByNachnamePrefix(nachnamePrefix);
+		
+		return kundenNachnamen;
+	}
+
 	private void validateKunde(AbstractKunde kunde, Locale locale, Class<?>... groups) {
 		final Validator validator = validationService.getValidator(locale);
 		final Set<ConstraintViolation<AbstractKunde>> violations = validator.validate(kunde, groups);
@@ -264,11 +276,5 @@ public class Kundenverwaltung implements Serializable {
 		kunde.setPasswordWdh(verschluesselt);
 
 		LOGGER.debugf("ENDE passwordVerschluesseln: kunde=%s", verschluesselt);
-	}
-
-	public List<AbstractKunde> findKundenbyIdPrefix(Long id) {
-		final List<AbstractKunde> kunden = dao.findKundenByIdPrefix(id);
-		
-		return kunden;
 	}
 }
