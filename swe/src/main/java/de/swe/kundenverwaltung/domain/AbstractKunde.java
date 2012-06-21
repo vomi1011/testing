@@ -256,6 +256,10 @@ public abstract class AbstractKunde implements Serializable {
 	@XmlElement(name = "bestellungen")
 	private URI bestellungenUri;
 	
+	@Transient
+	@AssertTrue(message = "{kundenverwaltung.kunde.agb}")
+	private boolean agbAkzeptiert;
+	
 	@PostPersist
 	protected void postPersist() {
 		LOGGER.tracef("Neuer Kunde mit ID=%d", id);
@@ -446,6 +450,14 @@ public abstract class AbstractKunde implements Serializable {
 
 	public void setBestellungenUri(URI bestellungenUri) {
 		this.bestellungenUri = bestellungenUri;
+	}
+
+	public boolean isAgbAkzeptiert() {
+		return agbAkzeptiert;
+	}
+
+	public void setAgbAkzeptiert(boolean agbAkzeptiert) {
+		this.agbAkzeptiert = agbAkzeptiert;
 	}
 
 	@Override

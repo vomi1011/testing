@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.faces.context.ExternalContext;
@@ -34,6 +36,8 @@ import org.richfaces.component.SortOrder;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Order;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
+import de.swe.kundenverwaltung.domain.Adresse;
+import de.swe.kundenverwaltung.domain.PasswordGroup;
 import de.swe.kundenverwaltung.domain.Privatkunde;
 import de.swe.kundenverwaltung.service.EmailExistsException;
 import de.swe.kundenverwaltung.service.KundeDeleteBestellungException;
@@ -57,11 +61,15 @@ public class KundenverwaltungController implements Serializable {
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "listKunden";
 	private static final String JSF_UPDATE_PRIVATKUNDE = JSF_KUNDENVERWALTUNG + "updatePrivatkunde";
 	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
-	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
 
 	private static final String CLIENT_ID_KUNDEID = "form:kundeId";
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
+
+	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
+	private static final String MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS = "createPrivatkunde.emailExists";
+
+	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
 	
 	private static final String CLIENT_ID_KUNDEN_NACHNAME = "form:nachname";
 	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
@@ -106,11 +114,29 @@ public class KundenverwaltungController implements Serializable {
 	private String vornameFilter = "";
 	
 	private boolean geaendertKunde; // fuer ValueChangeListener
-	private Privatkunde neuerPrivatKunde;
+	private Privatkunde neuerPrivatkunde;
+
+	@Inject
+	@Push(topic = "marketing")
+	private transient Event<String> neuerKundeEvent;
 	
 	@Inject
 	@Push(topic = "updateKunde")
 	private transient Event<String> updateKundeEvent;
+
+	@SuppressWarnings("unused")
+	@PostConstruct
+	private void postConstruct() {
+		createEmptyPrivatkunde();
+
+		LOGGER.debug("KundenverwaltungController wurde erzeugt");
+	}
+
+	@SuppressWarnings("unused")
+	@PreDestroy
+	private void preDestroy() {
+		LOGGER.debug("KundenverwaltungController wird geloescht");
+	}
 	
 	public Long getKundeId() {
 		return kundeId;
@@ -160,17 +186,21 @@ public class KundenverwaltungController implements Serializable {
 		this.vornameFilter = vornameFilter;
 	}
 	
-	public Privatkunde getNeuerPrivatKunde() {
-		return neuerPrivatKunde;
+	public Privatkunde getNeuerPrivatkunde() {
+		return neuerPrivatkunde;
 	}
 	
-	public void setNeuerPrivatKunde(Privatkunde neuerPrivatKunde) {
-		this.neuerPrivatKunde = neuerPrivatKunde;
+	public void setNeuerPrivatkunde(Privatkunde neuerPrivatkunde) {
+		this.neuerPrivatkunde = neuerPrivatkunde;
 	}
 	
 	public Date getAktuellesDatum() {
 		Date datum = new Date();
 		return datum;
+	}
+	
+	public Class<?>[] getPasswordGroup() {
+		return PASSWORD_GROUP.clone();
 	}
 	
 	public void sortByVorname() {
@@ -334,6 +364,42 @@ public class KundenverwaltungController implements Serializable {
 		kundeId = kunde.getId();
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
+	}
+	
+	public String createPrivatkunde() {
+		try {
+			neuerPrivatkunde = (Privatkunde) kv.createKunde(neuerPrivatkunde, locale);
+		}
+		catch (KundeValidationException | EmailExistsException e) {
+			final String outcome = createPrivatkundeErrorMsg(e);
+			return outcome;
+		}
+		
+		// Push-Event fuer Webbrowser
+		neuerKundeEvent.fire("" + neuerPrivatkunde.getId());
+		
+		// Aufbereitung fuer viewKunde.xhtml
+		kundeId = neuerPrivatkunde.getId();
+		kunde = neuerPrivatkunde;
+		createEmptyPrivatkunde();
+		
+		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
+	}
+	
+	private String createPrivatkundeErrorMsg(AbstractSweException e) {
+		if (e.getClass().equals(EmailExistsException.class)) {
+			messages.error(new BundleKey(KUNDENVERWALTUNG, MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS))
+			        .targets(CLIENT_ID_CREATE_EMAIL);
+		}
+		
+		return null;
+	}
+	
+	private void createEmptyPrivatkunde() {
+		neuerPrivatkunde = new Privatkunde();
+		final Adresse adresse = new Adresse();
+		adresse.setKunde(neuerPrivatkunde);
+		neuerPrivatkunde.setAdresse(adresse);
 	}
 	
 	/**

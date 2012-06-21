@@ -25,17 +25,10 @@
 						<f:param id="initParamListKunden" name="init" value="true"/>
 					</h:outputLink>
 				</rich:panelMenuItem>
-				<rich:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem" rendered="#{rich:isUserInRole('admin')}">
+				<rich:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem">
 					<h:outputLink id="kundenverwaltungCreatePrivatkunde"
 					              value="#{request.contextPath}/kundenverwaltung/createPrivatkunde.jsf">
 						#{msg['nav.kundenverwaltung.createPrivatkunde']}
-					</h:outputLink>
-				</rich:panelMenuItem>
-				<rich:panelMenuItem id="kundenverwaltungUploadItem" rendered="#{rich:isUserInRole('admin')}">
-					<h:outputLink id="kundenverwaltungUpload"
-					              value="#{request.contextPath}/kundenverwaltung/upload.jsf"
-					              rendered="#{auth.loggedIn}">
-						#{msg['nav.kundenverwaltung.upload']}
 					</h:outputLink>
 				</rich:panelMenuItem>
 				<!--
