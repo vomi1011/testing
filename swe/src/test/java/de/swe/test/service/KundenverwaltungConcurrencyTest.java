@@ -35,8 +35,8 @@ import de.swe.kundenverwaltung.service.Kundenverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
 import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
 import de.swe.test.util.AbstractTest;
-import de.swe.util.ConcurrentDeleteException;
-import de.swe.util.ConcurrentUpdateException;
+import de.swe.util.ConcurrentDeletedException;
+import de.swe.util.ConcurrentUpdatedException;
 
 @RunWith(Arquillian.class)
 public class KundenverwaltungConcurrencyTest extends AbstractTest {
@@ -86,7 +86,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 			kv.updateKunde(kunde, LOCALE);
 			fail("ConcurrentUpdateException wurde nicht geworfen!");
 		}
-		catch (final ConcurrentUpdateException e) {
+		catch (final ConcurrentUpdatedException e) {
 			trans.rollback();
 			
 			securityClient.logout();
@@ -128,7 +128,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		trans.begin();
 		kunde.setNachname(nachname + nachnameUpdate);
 		
-		thrown.expect(ConcurrentDeleteException.class);
+		thrown.expect(ConcurrentDeletedException.class);
 		kv.updateKunde(kunde, LOCALE);
 		
 		LOGGER.debug("BEGINN updateDeleteKunde");
@@ -191,8 +191,8 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 				kunde.setNachname(kunde.getNachname() + "concurrent");
 				kv.updateKunde(kunde, LOCALE);
 			}
-			catch (ConcurrentUpdateException |
-				   ConcurrentDeleteException | 
+			catch (ConcurrentUpdatedException |
+				   ConcurrentDeletedException | 
 				   EmailExistsException | 
 				   KundeValidationException e) {
 				throw new IllegalStateException(e);

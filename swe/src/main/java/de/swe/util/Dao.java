@@ -112,14 +112,14 @@ public class Dao implements Serializable {
 		
 		Object tmp = em.find(obj.getClass(), id);
 		if (tmp == null) {
-			throw new ConcurrentDeleteException(id);
+			throw new ConcurrentDeletedException(id);
 		}
 		
 		try {
 			obj = em.merge(obj);
 		}
 		catch (OptimisticLockException e) {
-			throw new ConcurrentUpdateException(id, e);
+			throw new ConcurrentUpdatedException(id, e);
 		}
 		
 		return obj;

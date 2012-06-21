@@ -71,7 +71,7 @@ public class Bestellposition implements Serializable {
 	@Valid
     @XmlTransient
 	private Fahrzeug fahrzeug;
-	
+
 	@Transient
 	@XmlElement(name = "fahrzeug")
 	private URI fahrzeugUri;

@@ -78,6 +78,9 @@
 						
 									<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
 									<h:outputText id="email" value="#{kv.kunde.email}"/>
+									
+									<h:outputText id="telefonLabel" value="#{msgKv['viewKunde.telefon']}"/>
+									<h:outputText id="telefon" value="#{kv.kunde.telefon}"/>
 					
 									<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKunde.kundenart']}" rendered="#{kv.kunde.art eq 'F'}"/>
 									<h:outputText id="firmenkunde" value="#{msgKv['viewKunde.firmenkunde']}" rendered="#{kv.kunde.art eq 'F'}"/>
@@ -111,6 +114,12 @@
 										<rich:column id="artikelIdSpalte">
 											#{msgKv['viewKunde.artikel.id']}
 										</rich:column>
+										<rich:column id="herstellerSpalte">
+											#{msgKv['viewKunde.artikel.hersteller']}
+										</rich:column>
+										<rich:column id="modellSpalte">
+											#{msgKv['viewKunde.artikel.modell']}
+										</rich:column>
 										<rich:column id="bezeichnungSpalte">
 											#{msgKv['viewKunde.artikel.bezeichnung']}
 										</rich:column>
@@ -120,11 +129,12 @@
 									</rich:columnGroup>
 								</f:facet>
 								
-								<rich:column id="togglerSpalte" colspan="3">
+								<rich:column id="togglerSpalte" colspan="5">
 									<rich:collapsibleSubTableToggler id="subTableToggler"
 									                                 for="positionenSubtable"
-									                                 collapsedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.getBestelldatum()}"
-									                                 expandedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.getBestelldatum()}"/>
+									                                 collapsedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.bestelldatum} : #{bestellung.status}"
+									                                 expandedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.bestelldatum} : #{bestellung.status}"
+									                                 rendered="#{not empty bestellung.bestellpositionen}"/>
 								</rich:column>
 								
 								<rich:collapsibleSubTable id="positionenSubtable"
@@ -136,6 +146,14 @@
 								                          expanded="#{false}"> <!-- https://issues.jboss.org/browse/RF-10715 -->
 									<rich:column id="artikelIdSpalteSub">
 										#{pos.fahrzeug.id}
+									</rich:column>
+						
+									<rich:column id="herstellerSpalteSub">
+										#{pos.fahrzeug.hersteller.name}
+									</rich:column>
+						
+									<rich:column id="modellSpalteSub">
+										#{pos.fahrzeug.modell}
 									</rich:column>
 						
 									<rich:column id="bezeichnungSpalteSub">

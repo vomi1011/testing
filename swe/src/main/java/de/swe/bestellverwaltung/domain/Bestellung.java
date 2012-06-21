@@ -279,8 +279,8 @@ public class Bestellung implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Bestellung [Bestellnummer=" + id + ", Kunde=" + kunde + ", Status= " 
-				+ status + ", Bestelldatum=" + bestelldatum + "]";
+		return "Bestellung [Bestellnummer=" + id + ", Status= " + status
+				+ ", Bestelldatum=" + bestelldatum + "]";
 	}
 
 	public Date getBestelldatum() {

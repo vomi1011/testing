@@ -32,8 +32,8 @@ import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
 import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
 import de.swe.test.util.AbstractTest;
-import de.swe.util.ConcurrentDeleteException;
-import de.swe.util.ConcurrentUpdateException;
+import de.swe.util.ConcurrentDeletedException;
+import de.swe.util.ConcurrentUpdatedException;
 
 @RunWith(Arquillian.class)
 public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
@@ -83,7 +83,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 			av.updateFahrzeug(fahrzeug, LOCALE);
 			fail("ConcurrentUpdateException wurde nicht geworfen!");
 		}
-		catch (ConcurrentUpdateException e) {
+		catch (ConcurrentUpdatedException e) {
 			trans.rollback();
 			
 			securityClient.logout();
@@ -131,7 +131,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 			av.updateAutohersteller(autohersteller, LOCALE);
 			fail("ConcurrentUpdateException wurde nicht geworfen!");
 		}
-		catch (ConcurrentUpdateException e) {
+		catch (ConcurrentUpdatedException e) {
 			trans.rollback();
 			
 			securityClient.logout();
@@ -178,7 +178,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		trans.begin();
 		fahrzeug.setModell(modell + modellUpdate);
 		
-		thrown.expect(ConcurrentDeleteException.class);
+		thrown.expect(ConcurrentDeletedException.class);
 		av.updateFahrzeug(fahrzeug, LOCALE);
 		
 		LOGGER.debug("ENDE updateDeleteFahrzeug");
@@ -216,7 +216,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 		trans.begin();
 		autohersteller.setName(name + nameUpdated);
 		
-		thrown.expect(ConcurrentDeleteException.class);
+		thrown.expect(ConcurrentDeletedException.class);
 		av.updateAutohersteller(autohersteller, LOCALE);
 		
 		LOGGER.debug("ENDE updateDeleteAutohersteller");
@@ -332,8 +332,8 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 					av.updateAutohersteller(autohersteller, LOCALE);
 				}
 			}
-			catch (ConcurrentUpdateException |
-				   ConcurrentDeleteException | 
+			catch (ConcurrentUpdatedException |
+				   ConcurrentDeletedException | 
 				   ArtikelValidationExeption e) {
 				throw new IllegalStateException(e);
 			}
