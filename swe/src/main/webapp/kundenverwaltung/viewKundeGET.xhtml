@@ -24,7 +24,7 @@
 				
 			<h:panelGrid id="ausgewaehlterKunde"
 			             columns="2"
-			             rendered="#{not empty kunde}">
+			             rendered="#{not empty kv.kunde}">
 				<h:outputText id="idLabel" value="#{msgKv['viewKundeGET.kundenr']}"/>
 				<h:outputText id="id" value="#{kv.kunde.id}"/>
 				
@@ -33,17 +33,6 @@
 				
 				<h:outputText id="vornameLabel" value="#{msgKv['viewKundeGET.vorname']}"/>
 				<h:outputText id="vorname" value="#{kv.kunde.vorname}"/>
-							
-				<h:outputText id="seitLabel" value="#{msgKv['viewKundeGET.seit']}"/>
-				<h:outputText id="seit" value="#{kv.kunde.seit}">
-					<f:convertDateTime type="date" dateStyle="long"/>
-				</h:outputText>
-							
-				<h:outputText id="umsatzLabel" value="#{msgKv['viewKundeGET.umsatz']}"/>
-				<h:outputText id="umsatz" value="#{kv.kunde.umsatz}">
-					<f:convertNumber type="currency"
-					                 currencyCode="EUR"/>
-				</h:outputText>
 				
 				<h:outputText id="emailLabel" value="#{msgKv['viewKundeGET.email']}"/>
 				<h:outputText id="email" value="#{kv.kunde.email}"/>
@@ -53,32 +42,12 @@
 				
 				<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{kv.kunde.art eq 'P'}"/>
 				<h:outputText id="privatkunde" value="#{msgKv['viewKundeGET.privatkunde']}" rendered="#{kv.kunde.art eq 'P'}"/>
-							
-				<h:outputText id="rabattLabel" value="#{msgKv['viewKundeGET.rabatt']}" rendered="#kv.{kunde.art eq 'F'}"/>
-				<h:outputText id="rabatt" value="#{kv.kunde.rabatt}" rendered="#{kv.kunde.art eq 'F'}">
-					<f:convertNumber type="percent" maxFractionDigits="2"/>
-				</h:outputText>
-							
-				<h:outputText id="familienstandLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'LEDIG'}"/>
-				<h:outputText id="familienstand" value="#{msgKv['viewKundeGET.familienstand.ledig']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'LEDIG'}"/>
-				
-				<h:outputText id="verheiratetLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERHEIRATET'}"/>
-				<h:outputText id="verheiratet" value="#{msgKv['viewKundeGET.familienstand.verheiratet']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERHEIRATET'}"/>
-				
-				<h:outputText id="geschiedenLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'GESCHIEDEN'}"/>
-				<h:outputText id="geschieden" value="#{msgKv['viewKundeGET.familienstand.geschieden']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'GESCHIEDEN'}"/>
-				
-				<h:outputText id="verwitwetLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERWITWET'}"/>
-				<h:outputText id="verwitwet" value="#{msgKv['viewKundeGET.familienstand.verwitwet']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.familienstand eq 'VERWITWET'}"/>
 				
 				<h:outputText id="weiblichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'WEIBLICH'}"/>
 				<h:outputText id="weiblich" value="#{msgKv['viewKundeGET.geschlecht.weiblich']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'WEIBLICH'}"/>
 			
 				<h:outputText id="maennlichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'MAENNLICH'}"/>
 				<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{kv.kunde.art eq 'P' and kv.kunde.geschlecht eq 'MAENNLICH'}"/>
-	
-				<h:outputText id="newsletterLabel" value="#{msgKv['viewKundeGET.newsletter']}"/>
-				<h:selectBooleanCheckbox id="newsletter" value="#{kunde.newsletter}" disabled="true" readonly="true"/>
 			</h:panelGrid>
 						
 			<h:form id="buttons" rendered="#{not empty kv.kunde}">

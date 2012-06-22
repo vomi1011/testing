@@ -39,85 +39,17 @@
 						<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['createPrivatkunde.vorname']}"/>
 						<h:inputText id="vorname" value="#{kv.neuerPrivatkunde.vorname}"/>
 						<f:verbatim/>
-						
-						<h:outputLabel id="kategorieLabel" value="#{msgKv['createPrivatkunde.kategorie']}" for="kategorie"/>
-						<rich:inputNumberSlider id="kategorie"
-						                        value="#{kv.neuerPrivatkunde.kategorie}"
-						                        minValue="0"
-						                        maxValue="5"
-						                        inputSize="1"
-						                        width="100"/>
-						<f:verbatim/>
-						
-						<h:outputLabel id="seitLabel"
-						               for="seit"
-						               value="#{msgKv['createPrivatkunde.seit']}"/>
-						<rich:calendar id="seit"
-						               datePattern="#{msgKv['createPrivatkunde.calendar.pattern']}"
-						               value="#{kv.neuerPrivatkunde.seit}"
-						               timezone="CET">
-						    <!-- https://issues.jboss.org/browse/RF-10224
-							<rich:validator/>
-							-->
-						</rich:calendar>
-						<rich:messages id="fehlermeldungenSeit" for="seit"/>
-						
-						<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['createPrivatkunde.umsatz']}"/>
-						<h:inputText id="umsatz"
-						             value="#{kv.neuerPrivatkunde.umsatz}"
-						             converterMessage="#{msgKv['createPrivatkunde.umsatz.convert']}">
-						    <f:convertNumber type="currency"
-							                 currencyCode="EUR"
-							                 maxFractionDigits="2"/>
-							<f:ajax event="blur" render="fehlermeldungenUmsatz"/>
-							<!-- https://issues.jboss.org/browse/RF-10224
-							<rich:validator/>
-							-->
-						</h:inputText>
-						<rich:messages id="fehlermeldungenUmsatz" for="umsatz"/>
-			
-						<h:outputLabel id="familienstandLabel" for="familienstand" value="#{msgKv['createPrivatkunde.familienstand']}"/>
-						<rich:select id="familienstand"
-						             enableManualInput="true"
-						             defaultLabel="#{msgKv['createPrivatkunde.familienstand']}"
-						             value="#{kv.neuerPrivatkunde.familienstand}">
-							<f:selectItem id="ledig" itemValue="LEDIG" itemLabel="#{msgKv['createPrivatkunde.familienstand.ledig']}"/>
-							<f:selectItem id="verheiratet" itemValue="VERHEIRATET" itemLabel="#{msgKv['createPrivatkunde.familienstand.verheiratet']}"/>
-							<f:selectItem id="geschieden" itemValue="GESCHIEDEN" itemLabel="#{msgKv['createPrivatkunde.familienstand.geschieden']}"/>
-							<f:selectItem id="verwitwet" itemValue="VERWITWET" itemLabel="#{msgKv['createPrivatkunde.familienstand.verwitwet']}"/>
-						</rich:select>
-						<f:verbatim/>
-						
-						<h:outputText id="geschlechtLabel" value="#{msgKv['createPrivatkunde.geschlecht']}"/>
-						<h:selectOneRadio id="geschlecht" value="#{kv.neuerPrivatkunde.geschlecht}">
-							<f:selectItem id="weiblich" itemValue="WEIBLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.weiblich']}"/>
-							<f:selectItem id="maennlich" itemValue="MAENNLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.maennlich']}"/>
-						</h:selectOneRadio>
-						<f:verbatim/>
-						
-						<h:outputLabel id="newsletterLabel" value="#{msgKv['createPrivatkunde.newsletter']}"/>
-						<h:selectBooleanCheckbox id="newsletter" value="#{kv.neuerPrivatkunde.newsletter}"/>
-						<f:verbatim/>
-		
-						
-						<h:outputText id="hobbiesLabel" value="#{msgKv['createPrivatkunde.hobbies']}"/>
-						<h:selectManyCheckbox id="hobbies" value="#{kv.neuerPrivatkunde.hobbies}"
-						                      layout="pageDirection">
-							<f:selectItem id="sport" itemValue="SPORT"
-										  itemLabel="#{msgKv['createPrivatkunde.sport']}"/>
-							<f:selectItem id="lesen" itemValue="LESEN" 
-										  itemLabel="#{msgKv['createPrivatkunde.lesen']}"/>
-							<f:selectItem id="reisen" itemValue="REISEN" 
-										  itemLabel="#{msgKv['createPrivatkunde.reisen']}"/>
-						</h:selectManyCheckbox>
-						<f:verbatim/>
 										
 						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['createPrivatkunde.email']}"/>
 						<h:inputText id="email" value="#{kv.neuerPrivatkunde.email}">
 							<rich:validator/>
 						</h:inputText>
 						<rich:messages id="fehlermeldungEmail" for="email"/>
-		
+						
+						<h:outputLabel id="telefonLabel" for="telefon" value="#{msgKv['createPrivatkunde.telefon']}"/>
+						<h:inputText id="telefon" value="#{kv.neuerPrivatkunde.telefon}"/>
+						<f:verbatim/>
+						
 						<h:outputLabel id="passwordLabel"
 						               for="password"
 						               value="#{msgKv['createPrivatkunde.password']}"/>

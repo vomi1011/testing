@@ -91,6 +91,11 @@ import de.swe.util.XmlDateAdapter;
 				query = "SELECT k "
 						+ "FROM AbstractKunde k "
 						+ "WHERE k.nachname = :" + AbstractKunde.PARAM_KUNDE_NACHNAME),
+	@NamedQuery(name = AbstractKunde.FIND_KUNDEN_BY_NACHNAME_PREFIX,
+				query = "SELECT DISTINCT k.nachname "
+						+ "FROM AbstractKunde k "
+						+ "WHERE UPPER(k.nachname) like CONCAT(UPPER(:" + AbstractKunde.PARAM_KUNDE_NACHNAME_PREFIX + "), '%') "
+						+ "ORDER BY k.id"),
 	@NamedQuery(name = AbstractKunde.FIND_KUNDEN_BY_PLZ,
 				query = "SELECT k "
 						+ "FROM AbstractKunde k "
@@ -160,6 +165,7 @@ public abstract class AbstractKunde implements Serializable {
 	public static final String FIND_KUNDEN_BY_ID_PREFIX = PREFIX + "findKundenByIdPrefix";
 	public static final String FIND_KUNDEN_BY_EMAIL = PREFIX + "findKundenEmail";
 	public static final String FIND_KUNDEN_BY_NACHNAME = PREFIX + "findKundenByNachname";
+	public static final String FIND_KUNDEN_BY_NACHNAME_PREFIX = PREFIX + "findKundenByNachnamePrefix";
 	public static final String FIND_KUNDEN_BY_PLZ = PREFIX + "findKundenByPlz";
 	public static final String FIND_KUNDEN_BY_ERSTELLT = PREFIX + "findKundenByErstellt";
 	public static final String FIND_ANZ_KUNDEN_ALL = PREFIX + "findAnzKundenAll";
@@ -175,6 +181,7 @@ public abstract class AbstractKunde implements Serializable {
 	public static final String PARAM_KUNDE_ID_PREFIX = "idPrefix";
 	public static final String PARAM_KUNDE_EMAIL = "email";
 	public static final String PARAM_KUNDE_NACHNAME = "nachname";
+	public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
 	public static final String PARAM_KUNDE_ADRESSE_PLZ = "plz";
 	public static final String PARAM_KUNDE_ERSTELLT = "erstellt";
 	public static final String PARAM_KUNDE_ART = "art";
@@ -248,6 +255,10 @@ public abstract class AbstractKunde implements Serializable {
 	@Transient
 	@XmlElement(name = "bestellungen")
 	private URI bestellungenUri;
+	
+	@Transient
+	@AssertTrue(message = "{kundenverwaltung.kunde.agb}")
+	private boolean agbAkzeptiert;
 	
 	@PostPersist
 	protected void postPersist() {
@@ -439,6 +450,14 @@ public abstract class AbstractKunde implements Serializable {
 
 	public void setBestellungenUri(URI bestellungenUri) {
 		this.bestellungenUri = bestellungenUri;
+	}
+
+	public boolean isAgbAkzeptiert() {
+		return agbAkzeptiert;
+	}
+
+	public void setAgbAkzeptiert(boolean agbAkzeptiert) {
+		this.agbAkzeptiert = agbAkzeptiert;
 	}
 
 	@Override
