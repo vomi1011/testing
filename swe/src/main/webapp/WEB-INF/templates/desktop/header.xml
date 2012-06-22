@@ -115,7 +115,7 @@
 							
 							<rich:column id="deleteButton">
 								<h:commandButton image="#{resource['images:delete.gif']}"
-										         action="#{wk.delete(position)}"
+										         action="#{wk.remove(position)}"
 										         alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}"/>
 							</rich:column>
 						</rich:dataTable>

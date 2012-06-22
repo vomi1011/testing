@@ -96,9 +96,10 @@ public class Bestellverwaltung implements Serializable {
 		
 		bestellung.setId(KEINE_ID);
 		for (Bestellposition bp : bestellung.getBestellpositionen()) {
-			bp.setBpId(KEINE_ID);
+			bp.setId(KEINE_ID);
 		}
 		
+		bestellung.setStatus(Status.NEU);
 		bestellung = dao.create(bestellung);
 		return bestellung;
 	}

@@ -17,12 +17,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.security.annotations.LoggedIn;
 import org.jboss.solder.core.Client;
 
 //import de.swe.auth.ui.AuthController;
 //import de.swe.auth.ui.LoggedIn;
 //import de.swe.bestellverwaltung.ui.Warenkorb;
+import de.swe.auth.ui.AuthController;
+import de.swe.auth.ui.LoggedIn;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.service.BestellungValidationException;
@@ -39,8 +40,6 @@ import de.swe.util.Log;
 public class BestellverwaltungController implements Serializable {
 	private static final long serialVersionUID = -1790295502719370565L;
 
-//	@Inject
-//	private Logger logger;
 	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final String JSF_VIEW_BESTELLUNG = "/bestellverwaltung/viewBestellung";
@@ -54,12 +53,12 @@ public class BestellverwaltungController implements Serializable {
 	@Inject
 	private Kundenverwaltung kv;
 	
-//	@Inject
-//	private AuthController auth;
+	@Inject
+	private AuthController auth;
 	
-//	@Inject
-//	@LoggedIn
-//	private AbstractKunde user;
+	@Inject
+	@LoggedIn
+	private AbstractKunde user;
 	
 	@PersistenceContext
 	@SuppressWarnings("unused")
@@ -81,11 +80,11 @@ public class BestellverwaltungController implements Serializable {
 
 
 	public String bestellen() {
-//		if (!auth.isLoggedIn()) {
-//			// Java Reflection mit Klasse Method nicht moeglich, weil Method nicht serialisierbar ist
-//			ctx.getSessionMap().put("methodOrigin", "bestellen");
-//			return "/auth/login";
-//		}
+		if (!auth.isLoggedIn()) {
+			// Java Reflection mit Klasse Method nicht moeglich, weil Method nicht serialisierbar ist
+			ctx.getSessionMap().put("methodOrigin", "bestellen");
+			return "/auth/login";
+		}
 		
 		if (warenkorb == null || warenkorb.getPositionen() == null || warenkorb.getPositionen().isEmpty()) {
 			// Darf nicht passieren, wenn der Button zum Bestellen verfuegbar ist
@@ -93,7 +92,7 @@ public class BestellverwaltungController implements Serializable {
 		}
 		//TODO Attribut "kunde" verwenden, wenn Autentifizierung funktioniert
 		// Den eingeloggten Kunden mit seinen Bestellungen ermitteln
-		final AbstractKunde kunde = kv.findKundeById(Long.valueOf(1001), Fetch.MIT_BESTELLUNG);
+		final AbstractKunde kunde = kv.findKundeById(user.getId(), Fetch.MIT_BESTELLUNG);
 		
 		// Aus dem Warenkorb nur Positionen mit Anzahl > 0
 		final List<Bestellposition> positionen = warenkorb.getPositionen();
