@@ -13,11 +13,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.faces.context.ExternalContext;
@@ -63,9 +61,6 @@ public class KundenverwaltungController implements Serializable {
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "listKunden";
 	private static final String JSF_UPDATE_PRIVATKUNDE = JSF_KUNDENVERWALTUNG + "updatePrivatkunde";
 	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
-	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
-
-	private static final String REQUEST_KUNDE_ID = "kundeId";
 
 	private static final String CLIENT_ID_KUNDEID = "form:kundeId";
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
@@ -86,9 +81,6 @@ public class KundenverwaltungController implements Serializable {
 	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_DELETE = "updatePrivatkunde.concurrentDelete";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE = "updateFirmenkunde.concurrentDelete";
 	private static final String MSG_KEY_KUNDE_NOT_FOUND_BY_ID = "viewKunde.notFound";
-
-	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String MSG_KEY_DELETE_KUNDE_BESTELLUNG = "viewKunde.deleteKundeBestellung";
 
 	private static final String MSG_KEY_SELECT_DELETE_KUNDE_BESTELLUNG = "listKunden.deleteKundeBestellung";
 	
@@ -314,40 +306,6 @@ public class KundenverwaltungController implements Serializable {
 		this.kundeId = this.kunde.getId();
 		
 		return JSF_VIEW_KUNDE;
-	}
-	
-	/**
-	 * Action Methode, um einen zuvor gesuchten Kunden zu l&ouml;schen
-	 * @return URL fuer Startseite im Erfolgsfall, sonst wieder die gleiche Seite
-	 */
-	public String deleteAngezeigtenKunden() {
-		if (kunde == null) {
-			return null;
-		}
-		
-		LOGGER.tracef("kunde = %s", kunde);
-		try {
-			kv.deleteKunde(kunde);
-//			kv.deleteKundeById(getKundeId());
-		}
-		catch (KundeDeleteBestellungException e) {
-//			catch(EJBTransactionRolledbackException e) {
-			messages.error(new BundleKey(KUNDENVERWALTUNG, MSG_KEY_DELETE_KUNDE_BESTELLUNG),
-					       e.getKundeId(),
-                           e.getAnzahlBestellungen())
-                    .targets(CLIENT_ID_DELETE_BUTTON);
-			return null;
-		}
-		
-		// Aufbereitung fuer ok.xhtml
-		final Map<String, Object> requestParams = externalCtx.getRequestMap();
-		requestParams.put(REQUEST_KUNDE_ID, kunde.getId());
-		
-		// Zuruecksetzen
-		kunde = null;
-		kundeId = null;
-
-		return JSF_DELETE_OK;
 	}
 	
 	public String selectForUpdate(AbstractKunde ausgewaehlterKunde) {

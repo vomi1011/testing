@@ -18,12 +18,12 @@
 					<h:panelGrid id="sucheGrid" columns="4">
 						<h:outputLabel id="bezeichnungLabel"
 						               value="#{msgAv['listArtikel.bezeichnung']}"
-						               for="beschreibung"/>
+						               for="modell"/>
 		
-						<h:inputText id="beschreibung" value="#{av.beschreibung}"/>
+						<h:inputText id="modell" value="#{av.modell}"/>
 		
 						<a4j:commandButton id="findButton"
-						                   action="#{av.findFahrzeugeByBeschreibung}"
+						                   action="#{av.findFahrzeugeByModell}"
 								           value="#{msgAv['listArtikel.submit']}"
 								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
 						
@@ -45,7 +45,7 @@
 			
 				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
-						<c:set var="artikel" value="#{flash.fahrzeug}" scope="view"/>
+						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
 						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
 						
 						<rich:dataTable id="artikelTabelle"
@@ -68,7 +68,7 @@
 								<f:facet name="header">
 									#{msgAv['listArtikel.bezeichnung']}
 								</f:facet>
-								#{art.bezeichnung}
+								#{art.modell}
 							</rich:column>
 							
 							<rich:column id="buttonSpalte"

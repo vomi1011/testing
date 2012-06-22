@@ -47,9 +47,9 @@ public class ArtikelverwaltungDao extends Dao {
 			return fahrzeug;
 	}
 	
-	public List<Fahrzeug> findFahrzeugeByBeschreibung(String beschreibung) {
-		List<Fahrzeug> fahrzeuge = find(Fahrzeug.class, Fahrzeug.FIND_FAHRZEUG_BY_BESCHREIBUNG,
-									   with(Fahrzeug.PARAM_FAHRZEUG_BESCHREIBUNG, beschreibung).build());
+	public List<Fahrzeug> findFahrzeugeByModell(String modell) {
+		List<Fahrzeug> fahrzeuge = find(Fahrzeug.class, Fahrzeug.FIND_FAHRZEUG_BY_MODELL,
+									   with(Fahrzeug.PARAM_FAHRZEUG_MODELL, modell).build());
 		
 		return fahrzeuge;
 	}
