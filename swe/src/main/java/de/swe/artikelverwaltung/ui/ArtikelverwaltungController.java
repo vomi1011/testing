@@ -38,7 +38,7 @@ public class ArtikelverwaltungController implements Serializable {
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
 
-	private String beschreibung;
+	private String modell;
 
 	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -69,21 +69,21 @@ public class ArtikelverwaltungController implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "ArtikelverwaltungController [bezeichnung=" + beschreibung + "]";
+		return "ArtikelverwaltungController [bezeichnung=" + modell + "]";
 	}
 
-	public String getBeschreibung() {
-		return beschreibung;
+	public String getModell() {
+		return modell;
 	}
 
-	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
+	public void setModell(String modell) {
+		this.modell = modell;
 	}
 
 	/**
 	 */
-	public String findFahrzeugeByBeschreibung() {
-		final List<Fahrzeug> artikel = av.findFahrzeugeByBeschreibung(beschreibung);
+	public String findFahrzeugeByModell() {
+		final List<Fahrzeug> artikel = av.findFahrzeugeByModell(modell);
 		flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL;
