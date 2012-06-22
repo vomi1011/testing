@@ -26,5 +26,15 @@
 			<base-name>de.swe.kundenverwaltung.ui.messages</base-name>
 			<var>msgKv</var>
 		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>de.swe.bestellverwaltung.ui.messages</base-name>
+			<var>msgBv</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>de.swe.artikelverwaltung.ui.messages</base-name>
+			<var>msgAv</var>
+		</resource-bundle>
 	</application>
 </faces-config>
