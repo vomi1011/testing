@@ -327,15 +327,13 @@ public class KundenverwaltungController implements Serializable {
 		
 		LOGGER.tracef("kunde = %s", kunde);
 		try {
-//			kv.deleteKunde(kunde);
-			kv.deleteKundeById(getKundeId());
+			kv.deleteKunde(kunde);
 		}
-//		catch (KundeDeleteBestellungException e) {
-			catch(EJBTransactionRolledbackException e) {
-//			messages.error(new BundleKey(KUNDENVERWALTUNG, MSG_KEY_DELETE_KUNDE_BESTELLUNG),
-//					       e.getKundeId(),
-//                           e.getAnzahlBestellungen())
-//                    .targets(CLIENT_ID_DELETE_BUTTON);
+		catch (KundeDeleteBestellungException e) {
+			messages.error(new BundleKey(KUNDENVERWALTUNG, MSG_KEY_DELETE_KUNDE_BESTELLUNG),
+					       e.getKundeId(),
+                           e.getAnzahlBestellungen())
+                    .targets(CLIENT_ID_DELETE_BUTTON);
 			return null;
 		}
 		

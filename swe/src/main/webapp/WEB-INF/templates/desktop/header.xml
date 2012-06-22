@@ -24,8 +24,8 @@
 						<h:outputLabel id="artikelBezLabel"
 						               value="#{msg['header.schnellsuche.artikelBezeichnung']}"
 						               for="artikelBezeichnung"/>
-						<h:inputText id="artikelBezeichnung" value="#{av.beschreibung}"/>
-						<h:commandButton id="artikelButton" action="#{av.findArtikelByBezeichnung}" value="#{msg['header.schnellsuche.button']}"/>
+						<h:inputText id="artikelBezeichnung" value="#{av.modell}"/>
+						<h:commandButton id="artikelButton" action="#{av.findFahrzeugeByModell}" value="#{msg['header.schnellsuche.button']}"/>
 						
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
