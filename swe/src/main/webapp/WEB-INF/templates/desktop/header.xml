@@ -24,7 +24,7 @@
 						<h:outputLabel id="artikelBezLabel"
 						               value="#{msg['header.schnellsuche.artikelBezeichnung']}"
 						               for="artikelBezeichnung"/>
-						<h:inputText id="artikelBezeichnung" value="#{av.bezeichnung}"/>
+						<h:inputText id="artikelBezeichnung" value="#{av.beschreibung}"/>
 						<h:commandButton id="artikelButton" action="#{av.findArtikelByBezeichnung}" value="#{msg['header.schnellsuche.button']}"/>
 						
 						<h:outputLabel id="kundeIdLabel"
@@ -91,14 +91,14 @@
 								<f:facet name="header">
 									#{msgBv['viewWarenkorb.artikel.id']}
 								</f:facet>
-								#{position.artikel.id}
+								#{position.fahrzeug.id}
 							</rich:column>
 								
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
 									#{msgBv['viewWarenkorb.artikel.bezeichnung']}
 								</f:facet>
-								#{position.artikel.bezeichnung}
+								#{position.fahrzeug.beschreibung}
 							</rich:column>
 					
 							<rich:column id="anzahlSpalte">

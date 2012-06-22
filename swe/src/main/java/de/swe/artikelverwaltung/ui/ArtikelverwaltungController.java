@@ -37,7 +37,6 @@ public class ArtikelverwaltungController implements Serializable {
 	private static final String FLASH_ARTIKEL = "artikel";
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
-	private static final Order ORDER = Order.KEINE; 
 
 	private String beschreibung;
 
@@ -106,7 +105,7 @@ public class ArtikelverwaltungController implements Serializable {
 			return JSF_SELECT_ARTIKEL;
 		}
 		
-		final List<Fahrzeug> alleArtikel = av.findAllFahrzeuge(ORDER);
+		final List<Fahrzeug> alleArtikel = av.findAllFahrzeuge(Order.KEINE);
 		sessionMap.put(SESSION_VERFUEGBARE_ARTIKEL, alleArtikel);
 		return JSF_SELECT_ARTIKEL;
 	}
