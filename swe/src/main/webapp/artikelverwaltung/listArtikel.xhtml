@@ -71,6 +71,13 @@
 								#{art.modell}
 							</rich:column>
 							
+							<rich:column id="preisSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.preis']}
+								</f:facet>
+								#{art.preis}
+							</rich:column>
+							
 							<rich:column id="buttonSpalte"
 							             rendered="#{not empty artikel}">
 								<h:commandButton id="warenkorbButton"

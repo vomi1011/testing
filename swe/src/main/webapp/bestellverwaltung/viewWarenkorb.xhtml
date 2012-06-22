@@ -48,6 +48,13 @@
 					                             inputSize="2"/>
 					</rich:column>
 					
+					<rich:column id="summeSpalte">
+						<f:facet name="header">
+							#{msgBv['viewWarenkorb.total']}
+						</f:facet>
+					    #{bestellposition.total}
+					</rich:column>
+					
 					<rich:column id="deleteButton">
 						<h:commandButton image="#{resource['images:delete.gif']}"
 								         action="#{wk.remove(bestellposition)}"
