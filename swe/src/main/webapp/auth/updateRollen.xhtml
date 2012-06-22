@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+			<f:event type="preRenderView" listener="#{auth.loadRollen}"/>
+		</ui:define>
+		
+		<ui:param name="pageTitle" value="#{msgAuth['updateRollen.title']}"/>
+	
+		<ui:define name="contents">
+			<h1>#{msgAuth['updateRollen.heading']}</h1>
+			
+			<h:form id="rollenForm">
+				<p>
+					<rich:pickList id="rollenPickList"
+					               value="#{auth.ausgewaehlteRollen}"
+					               var="rolle"
+					               sourceCaption="#{msgAuth['updateRollen.verfuegbareRollen']}"
+					               targetCaption="#{msgAuth['updateRollen.ausgewaehlteRollen']}"
+					               addAllText="#{msgAuth['updateRollen.addAllText']}"
+					               addText="#{msgAuth['updateRollen.addText']}"
+					               removeAllText="#{msgAuth['updateRollen.removeAllText']}"
+					               removeText="#{msgAuth['updateRollen.removeText']}"
+					               listHeight="100">
+						<f:selectItems id="selectItems"
+						               value="#{auth.verfuegbareRollen}"/>
+						<f:converter converterId="RollenConverter"/>
+						<rich:column id="rollenSpalte">
+							<f:facet name="header">#{msgAuth['updateRollen.rolle']}</f:facet>
+							#{rolle.value}
+						</rich:column>
+					</rich:pickList>
+				</p>
+	
+				<p>
+					<h:commandButton id="updateButton"
+					                 action="#{auth.updateRollen}"
+						             value="#{msgAuth['updateRollen.submit']}"/>
+				</p>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

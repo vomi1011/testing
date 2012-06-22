@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msg['login.title']}"/>
+	
+		<ui:define name="contents">
+			<rich:panel id="loginPanel" header="#{msg['login.heading']}" style="width:300px">
+				<h:form id="loginForm">
+					<h:panelGrid id="loginGrid" columns="3">
+						<h:outputLabel id="usernameLabel"
+						               value="#{msg['login.kundeId']}"
+						               for="username"/>
+						<h:inputText id="username" value="#{auth.username}"/>
+						<f:verbatim/>
+								
+						<h:outputLabel id="passwordLabel"
+						               value="#{msg['login.password']}"
+						               for="password"/>
+						<h:inputSecret id="password" value="#{auth.password}"/>
+						<h:commandButton id="loginButton" action="#{auth.loginRedirect}" value="#{msg['login.submit']}"/>
+					</h:panelGrid>
+					<rich:jQuery id="focusUsername" selector="#username" query="focus()"/>
+				</h:form>
+
+				<h:panelGroup id="fehlermeldungGroup">
+					<p id="abstandZuForm">
+						<rich:message id="fehlermeldungLogin" for="username"/>
+					</p>
+				</h:panelGroup>
+			</rich:panel>
+		</ui:define>
+	</ui:composition>
+</html>

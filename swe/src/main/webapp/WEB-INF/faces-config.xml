@@ -23,6 +23,11 @@
 		</resource-bundle>
 
 		<resource-bundle>
+			<base-name>de.swe.auth.ui.messages</base-name>
+			<var>msgAuth</var>
+		</resource-bundle>
+		
+		<resource-bundle>
 			<base-name>de.swe.kundenverwaltung.ui.messages</base-name>
 			<var>msgKv</var>
 		</resource-bundle>

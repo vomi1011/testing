@@ -25,7 +25,7 @@
 						<f:param id="initParamListKunden" name="init" value="true"/>
 					</h:outputLink>
 				</rich:panelMenuItem>
-				<rich:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem">
+				<rich:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="kundenverwaltungCreatePrivatkunde"
 					              value="#{request.contextPath}/kundenverwaltung/createPrivatkunde.jsf">
 						#{msg['nav.kundenverwaltung.createPrivatkunde']}
