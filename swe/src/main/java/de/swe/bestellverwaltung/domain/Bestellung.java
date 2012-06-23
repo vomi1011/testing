@@ -136,6 +136,21 @@ public class Bestellung implements Serializable {
     @XmlTransient
 	private Date aktualisiert;
     
+    @Transient
+    @XmlElement(name = "gesamtPreis")
+    public long gesamtPreis;
+    
+	public long getGesamtPreis() {
+		return gesamtPreis;
+	}
+
+	public void setGesamtPreis(long gesamtPreis) {
+		
+		for(Bestellposition bp : bestellpositionen) { 
+			this.gesamtPreis += bp.total;
+		}	
+	}
+
 	@Transient
 	@XmlElement(name = "kunde")
 	private URI kundeUri;

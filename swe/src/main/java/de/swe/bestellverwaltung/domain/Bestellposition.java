@@ -60,7 +60,20 @@ public class Bestellposition implements Serializable {
 	//@Min(value = 1, message = "{bestellverwaltung.bestellposition.anzahl.min}")
 	private short anzahl;
 	
-	@Version
+    @Transient
+    @XmlElement(name = "zwischenErgebnis")
+    public long total;
+	
+    public long getTotal() {
+		return total;
+	}
+
+	public void setTotal() {
+		this.total = this.fahrzeug.getPreis() * this.anzahl;
+	}
+
+
+    @Version
 	@XmlTransient
 	private int version = ERSTE_VERSION;
 	

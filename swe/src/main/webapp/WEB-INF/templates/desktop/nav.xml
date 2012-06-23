@@ -60,10 +60,13 @@
 			                     expanded="true"
 			                     rendered="#{not empty wk.positionen}">
 				<rich:panelMenuItem id="bestellverwaltunghowViewWarenkorbItem">
-					<h:outputLink id="bestellverwaltungViewWarenkorb"
+					<h:link outcome="/bestellverwaltung/viewWarenkorb.xhtml" value="#{msg['nav.bestellverwaltung.viewWarenkorb']}">
+						<f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+					</h:link>
+					<!--<h:outputLink id="bestellverwaltungViewWarenkorb"
 					              value="#{request.contextPath}/bestellverwaltung/viewWarenkorb.jsf">
 						#{msg['nav.bestellverwaltung.viewWarenkorb']}
-					</h:outputLink>
+					</h:outputLink>-->
 				</rich:panelMenuItem>
 			</rich:panelMenuGroup>
 			<rich:panelMenuGroup id="auth"
