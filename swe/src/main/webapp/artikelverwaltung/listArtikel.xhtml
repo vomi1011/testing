@@ -78,12 +78,20 @@
 								#{art.preis}
 							</rich:column>
 							
-							<rich:column id="buttonSpalte"
+							<rich:column id="buttonSpalte1"
 							             rendered="#{not empty artikel}">
 								<h:commandButton id="warenkorbButton"
 												 image="#{resource['images:warenkorb.gif']}"
 										         action="#{wk.add(art)}"
 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
+							</rich:column>
+							
+							<rich:column id="buttonSpalte2"
+							             rendered="#{not empty artikel}">
+								<h:commandButton id="updatebButton"
+												 image="#{resource['images:edit.gif']}"
+										         action="#{av.selectForUpdate(art)}"
+										         alt="#{msgAv['listArtikel.alt.update']}"/>
 							</rich:column>
 						</rich:dataTable>
 						

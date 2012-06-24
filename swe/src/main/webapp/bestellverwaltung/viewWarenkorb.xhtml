@@ -52,7 +52,7 @@
 						<f:facet name="header">
 							#{msgBv['viewWarenkorb.total']}
 						</f:facet>
-					    #{bestellposition.total}
+					    #{bestellposition.fahrzeug.preis * bestellposition.anzahl}
 					</rich:column>
 					
 					<rich:column id="deleteButton">

@@ -96,6 +96,13 @@ public class Kundenverwaltung implements Serializable {
 		return kunde;
 	}
 	
+
+	public AbstractKunde findKundeByEmail(String email) {
+		final AbstractKunde kunde = dao.findKundeByEmail(email, Fetch.NUR_KUNDE);
+		
+		return kunde;
+	}
+	
 	public List<AbstractKunde> findKundenByPLZ(String plz) {
 		final List<AbstractKunde> kunden = dao.find(AbstractKunde.class, AbstractKunde.FIND_KUNDEN_BY_PLZ,
 													with(AbstractKunde.PARAM_KUNDE_ADRESSE_PLZ, plz).build());
@@ -161,14 +168,12 @@ public class Kundenverwaltung implements Serializable {
 		
 		validateKunde(kunde, locale, Default.class, PasswordGroup.class, IdGroup.class);
 		
-		final AbstractKunde vorhandenerKunde =
-				dao.findSingle(AbstractKunde.class, AbstractKunde.FIND_KUNDEN_BY_EMAIL,
-							   with(AbstractKunde.PARAM_KUNDE_EMAIL, kunde.getEmail()).build());
-		
-		if (vorhandenerKunde != null && vorhandenerKunde.getId().longValue() != kunde.getId().longValue()) {
+		final AbstractKunde tmp = findKundeByEmail(kunde.getEmail());
+		if (tmp != null && tmp.getId().longValue() != kunde.getId().longValue()) {
 			throw new EmailExistsException(kunde.getEmail());
 		}
-		else if (kunde.getPassword() != null && !kunde.getPassword().equals(vorhandenerKunde.getPassword())) {
+		
+		if (kunde.getPassword() != null && !kunde.getPassword().equals(tmp.getPassword())) {
 			passwordVerschluesseln(kunde);
 		}
 		
