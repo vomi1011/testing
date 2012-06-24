@@ -65,7 +65,7 @@ public class Artikelverwaltung implements Serializable {
 		Set<ConstraintViolation<Fahrzeug>> violations = validator.validate(fahrzeug, groups);				
 		
 		if (!violations.isEmpty()) {
-			throw new ArtikelValidationExeption(fahrzeug, violations);
+			throw new ArtikelValidationException(fahrzeug, violations);
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class Artikelverwaltung implements Serializable {
 		Set<ConstraintViolation<Autohersteller>> violations = validator.validate(autohersteller, groups);				
 		
 		if (!violations.isEmpty()) {
-			throw new ArtikelValidationExeptionAH(autohersteller, violations);
+			throw new ArtikelValidationExceptionAH(autohersteller, violations);
 		}
 	}
 	

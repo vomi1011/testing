@@ -12,12 +12,12 @@ import de.swe.artikelverwaltung.domain.Fahrzeug;
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
  */
 //@ApplicationException(rollback = true)
-public class ArtikelValidationExeption extends AbstractArtikelverwaltungExeption {
+public class ArtikelValidationException extends AbstractArtikelverwaltungExeption {
 	private static final long serialVersionUID = UID;
 	private final Fahrzeug fahrzeug;
 	private final Collection<ConstraintViolation<Fahrzeug>> violations;
 	
-	public ArtikelValidationExeption(Fahrzeug fahrzeug, Collection<ConstraintViolation<Fahrzeug>> violations) {
+	public ArtikelValidationException(Fahrzeug fahrzeug, Collection<ConstraintViolation<Fahrzeug>> violations) {
 		super("Ungueltiges Fahrzeug: " + fahrzeug + "Violations: " + violations);
 		this.fahrzeug = fahrzeug;
 		this.violations = violations;

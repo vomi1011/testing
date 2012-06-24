@@ -64,6 +64,13 @@
 								#{art.id}
 							</rich:column>
 							
+							<rich:column id="herstellerSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.hersteller']}
+								</f:facet>
+								#{art.hersteller.name}
+							</rich:column>
+							
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
 									#{msgAv['listArtikel.bezeichnung']}
@@ -87,7 +94,7 @@
 							</rich:column>
 							
 							<rich:column id="buttonSpalte2"
-							             rendered="#{not empty artikel}">
+							             rendered="#{not empty artikel and rich:isUserInRole('admin')}">
 								<h:commandButton id="updatebButton"
 												 image="#{resource['images:edit.gif']}"
 										         action="#{av.selectForUpdate(art)}"

@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
+import de.swe.artikelverwaltung.service.ArtikelValidationException;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.test.util.AbstractConcurrencyHelper;
 import de.swe.test.util.AbstractConcurrencyHelper.Cmd;
@@ -334,7 +334,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 			}
 			catch (ConcurrentUpdatedException |
 				   ConcurrentDeletedException | 
-				   ArtikelValidationExeption e) {
+				   ArtikelValidationException e) {
 				throw new IllegalStateException(e);
 			}
 	
@@ -366,7 +366,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 				}
 			}
 
-			catch (ArtikelValidationExeption e) {
+			catch (ArtikelValidationException e) {
 				throw new IllegalStateException(e);
 			}
 			

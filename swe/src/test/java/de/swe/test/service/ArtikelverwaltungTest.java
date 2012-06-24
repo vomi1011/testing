@@ -17,8 +17,8 @@ import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
+import de.swe.artikelverwaltung.service.ArtikelValidationException;
+import de.swe.artikelverwaltung.service.ArtikelValidationExceptionAH;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
 import de.swe.test.util.AbstractTest;
@@ -150,7 +150,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		final Fahrzeug neuesFahrzeug = new Fahrzeug();
 		neuesFahrzeug.setModell(modell);
 		
-		thrown.expect(ArtikelValidationExeption.class);
+		thrown.expect(ArtikelValidationException.class);
 		av.createFahrzeug(neuesFahrzeug, LOCALE);
 	}
 	
@@ -210,7 +210,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		Autohersteller neuesAutohersteller = new Autohersteller();
 		neuesAutohersteller.setName(null);
 		
-		thrown.expect(ArtikelValidationExeptionAH.class);
+		thrown.expect(ArtikelValidationExceptionAH.class);
 		av.createAutohersteller(neuesAutohersteller, LOCALE);
 			
 	}

@@ -53,6 +53,12 @@
 						#{msg['nav.artikelverwaltung.selectArtikel']}
 					</h:commandLink>
 				</rich:panelMenuItem>
+				<rich:panelMenuItem id="artikelverwaltungCreateArtikelItem" rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="artikelverwaltungCreatetArtikel"
+					               value="#{request.contextPath}/artikelverwaltung/listArtikel.jsf">
+						#{msg['nav.artikelverwaltung.createArtikel']}
+					</h:outputLink>
+				</rich:panelMenuItem>
 						
 			</rich:panelMenuGroup>
 
