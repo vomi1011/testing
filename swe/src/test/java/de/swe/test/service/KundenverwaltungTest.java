@@ -154,7 +154,6 @@ public class KundenverwaltungTest extends AbstractTest {
 		final String ort = ORT_NEU;
 		final Adresse adresse = new Adresse(strasse, hausnr, plz, ort);
 		final Privatkunde kunde = new Privatkunde(nachname, email, adresse);
-		kunde.setAgbAkzeptiert(true);
 		
 		final List<AbstractKunde> kundenVorher = kv.findAllKunden(Fetch.NUR_KUNDE, Order.ID);
 		AbstractKunde neuerKunde = kv.createKunde(kunde, LOCALE);
@@ -181,7 +180,6 @@ public class KundenverwaltungTest extends AbstractTest {
 		final Privatkunde kunde = new Privatkunde();
 		kunde.setNachname(nachname);
 		kunde.setEmail(email);
-		kunde.setAgbAkzeptiert(true);
 
 		thrown.expect(KundeValidationException.class);
 		kv.createKunde(kunde, LOCALE);
@@ -200,7 +198,6 @@ public class KundenverwaltungTest extends AbstractTest {
 		neuerKunde.setNachname(vorhandenerKunde.getNachname());
 		neuerKunde.setEmail(vorhandenerKunde.getEmail());
 		neuerKunde.setAdresse(vorhandenerKunde.getAdresse());
-		neuerKunde.setAgbAkzeptiert(true);
 		
 		thrown.expect(EmailExistsException.class);
 		kv.createKunde(neuerKunde, LOCALE);
@@ -258,21 +255,4 @@ public class KundenverwaltungTest extends AbstractTest {
 		kunde = kv.findKundeById(id, Fetch.NUR_KUNDE);
 		assertThat(kunde.getNachname(), is(neuerName));
 	}
-
-//	@Test
-//	public void neueEmailFuerKunde() throws LoginException {
-//		final String email = EMAIL_VORHANDEN;
-//		
-//		AbstractKunde kunde = kv.findKundeByEmail(email, Fetch.NUR_KUNDE);
-//		
-//		final String alteEmail = kunde.getEmail();
-//		final String neueEmail = alteEmail + alteEmail.charAt(alteEmail.length() - 1);
-//		kunde.setNachname(neueEmail);
-//		
-//		kunde = kv.updateKunde(kunde, LOCALE);
-//		assertThat(kunde.getEmail(), is(neueEmail));
-//		
-//		kunde = kv.findKundeByEmail(email, Fetch.NUR_KUNDE);;
-//		assertThat(kunde.getEmail(), is(neueEmail));
-//	}
 }

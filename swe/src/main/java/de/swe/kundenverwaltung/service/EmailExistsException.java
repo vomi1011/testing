@@ -4,6 +4,7 @@ import static de.swe.util.Constants.UID;
 
 import javax.ejb.ApplicationException;
 
+
 @ApplicationException(rollback = true)
 public class EmailExistsException extends AbstractKundenverwaltungException {
 	private static final long serialVersionUID = UID;

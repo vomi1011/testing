@@ -26,7 +26,7 @@
 						                   autocompleteMethod="#{kv.findKundenByIdPrefix}"
 						                   var="kunde"
 						                   fetchValue="#{kunde.id}"
-						                   converter="javax.faces.Long"
+						                   converter="javax.faces.Number"
 						                   converterMessage="#{msgKv.viewKunde.kundenr.converterError}">
 							#{kunde.id} : #{kunde.nachname}, #{kunde.vorname}
 						</rich:autocomplete> 

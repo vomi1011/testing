@@ -273,7 +273,6 @@ public abstract class AbstractKunde implements Serializable {
 	@PostLoad
 	protected void postLoad() {
 		passwordWdh = password;
-		agbAkzeptiert = true;
 	}
 	
 	@AssertTrue(groups = PasswordGroup.class, message = "{kundenverwaltung.kunde.password.notEqual}")

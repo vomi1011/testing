@@ -44,5 +44,3 @@ a_id;version;strasse;hausnr;plz;ort;kunde_fk;erstellt;aktualisiert
 2042;;Kaiserstraße;84;76133;Karlsruhe;1508;2011-10-24 19:27:00;2011-10-11 19:27:00
 2043;;Akademiestraße;80;76133;Karlsruhe;1509;2011-10-24 19:27:00;2011-10-11 19:27:00
 2044;;Hagsfelderstr;91;76133;Karlsruhe;1510;2011-10-24 19:27:00;2011-10-11 19:27:00
-2045;;Klammweg;51;76133;Karlsruhe;1006;2011-10-24 19:27:00;2011-10-11 19:27:00
-2046;;Amalienstraße;75;76133;Karlsruhe;1007;2011-10-24 19:27:00;2011-10-11 19:27:00

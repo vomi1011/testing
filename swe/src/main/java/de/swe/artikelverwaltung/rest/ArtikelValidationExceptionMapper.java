@@ -14,15 +14,15 @@ import javax.ws.rs.ext.Provider;
 import org.jboss.logging.Logger;
 
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationException;
+import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
 
 
 @Provider
-public class ArtikelValidationExceptionMapper implements ExceptionMapper<ArtikelValidationException> {
+public class ArtikelValidationExceptionMapper implements ExceptionMapper<ArtikelValidationExeption> {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Override
-	public Response toResponse(ArtikelValidationException e) {
+	public Response toResponse(ArtikelValidationExeption e) {
 		LOGGER.debugf("BEGINN toResponse: %s", e.getViolations());
 		
 		final Collection<ConstraintViolation<Fahrzeug>> violations = e.getViolations();

@@ -142,7 +142,7 @@ public class KundenverwaltungDao extends Dao {
 		
 		findKundeById(kundeId, Fetch.NUR_KUNDE);
 		
-		final String insertTemplate = "INSERT INTO " + ROLLE_TABELLE + " VALUES (" + "''{0}''," + kundeId + ")";
+		final String insertTemplate = "INSERT INTO " + ROLLE_TABELLE + " VALUES (" + kundeId + ", ''{0}'')";
 		for (RolleType rolle : rollen) {
 			final String rolleStr = rolle.getValue();
 			final String insertStr = MessageFormat.format(insertTemplate, rolleStr);

@@ -7,7 +7,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,12 +50,11 @@ import de.swe.util.XmlDateAdapter;
 	@NamedQuery(name = Fahrzeug.FIND_FAHRZEUG_BY_HERSTELLER,
 		query =  "FROM Fahrzeug f WHERE f.hersteller.id = :" + Fahrzeug.PARAM_FAHRZEUG_HERSTELLER),
 	@NamedQuery(name = Fahrzeug.FIND_FAHRZEUG_BY_MODELL,
-		query =  "FROM Fahrzeug f WHERE f.modell LIKE CONCAT(:" + Fahrzeug.PARAM_FAHRZEUG_MODELL + ", '%')"),
+		query =  "FROM Fahrzeug f WHERE f.modell = :" + Fahrzeug.PARAM_FAHRZEUG_MODELL),
 	@NamedQuery(name = Fahrzeug.FIND_FAHRZEUG_BY_BAUJAHR,
 		query = "FROM Fahrzeug f WHERE f.baujahr = :" + Fahrzeug.PARAM_FAHRZEUG_BAUJAHR),
 	@NamedQuery(name = Fahrzeug.FIND_FAHRZEUG_BY_BESCHREIBUNG,
-		query = "FROM Fahrzeug f "
-				+ "WHERE f.beschreibung LIKE CONCAT(:" + Fahrzeug.PARAM_FAHRZEUG_BESCHREIBUNG + ", '%')"),
+		query = "FROM Fahrzeug f WHERE f.beschreibung = :" + Fahrzeug.PARAM_FAHRZEUG_BESCHREIBUNG),
 	@NamedQuery(name = Fahrzeug.FIND_FAHRZEUG_BY_ERSTELLT,
 		query =  "FROM Fahrzeug f WHERE f.erstellt = :" + Fahrzeug.PARAM_FAHRZEUG_ERSTELLT)
 	})

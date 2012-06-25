@@ -1,38 +1,26 @@
 package de.swe.artikelverwaltung.ui;
 
-import static de.swe.util.Constants.JSF_DEFAULT_ERROR;
-import static de.swe.util.Constants.JSF_INDEX;
-import static de.swe.util.Constants.JSF_REDIRECT_SUFFIX;
-
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Event;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.Flash;
-import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.logging.Logger;
-import org.jboss.solder.core.Client;
-import org.richfaces.cdi.push.Push;
-
-import de.swe.artikelverwaltung.domain.Autohersteller;
-import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationException;
-import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
-import de.swe.util.ConcurrentDeletedException;
-import de.swe.util.ConcurrentUpdatedException;
+
+import org.jboss.logging.Logger;
+
+import de.swe.artikelverwaltung.domain.Fahrzeug;
+import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.util.Log;
 
 
@@ -40,18 +28,15 @@ import de.swe.util.Log;
  * Dialogsteuerung fuer die Artikelverwaltung
  */
 @Named("av")
-@SessionScoped
+@RequestScoped
 @Log
 public class ArtikelverwaltungController implements Serializable {
 	private static final long serialVersionUID = 1564024850446471639L;
-
-	private static final String JSF_ARTIKELVERWALTUNG = "/artikelverwaltung/";
+	
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
+	private static final String FLASH_ARTIKEL = "artikel";
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
-	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateArtikel";
-
-	private static final String FLASH_ARTIKEL = "artikel";
 
 	private String modell;
 
@@ -62,39 +47,18 @@ public class ArtikelverwaltungController implements Serializable {
 	
 	@PersistenceContext
 	@SuppressWarnings("unused")
-	private transient EntityManager em;
-	
-	@Inject
-	@Client // Sprache des Clients
-	private Locale locale;
+	private transient EntityManager entityManager;
 	
 	@Inject
 	private transient Flash flash;
 	
 	@Inject
 	private transient ExternalContext externalCtx;
-
-	private boolean geaendertArtikel; // fuer ValueChangeListener
-	private Fahrzeug neuerArtikel;
-
-	@Inject
-	@Push(topic = "marketingArtikel")
-	private transient Event<String> neuerArtikelEvent;
-	
-	@Inject
-	@Push(topic = "updateArtikel")
-	private transient Event<String> updateArtikelEvent;
-
-	private Fahrzeug fahrzeug;
-	private List<Autohersteller> hersteller;
-	private long herstellerId;
 	
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void postConstruct() {
 		LOGGER.debug("ArtikelverwaltungController wurde erzeugt");
-		neuerArtikel = new Fahrzeug();
-		hersteller = av.findAllAutohersteller(Order.NAME);
 	}
 
 	@SuppressWarnings("unused")
@@ -103,60 +67,9 @@ public class ArtikelverwaltungController implements Serializable {
 		LOGGER.debug("ArtikelverwaltungController wird geloescht");
 	}
 	
-	public Fahrzeug getFahrzeug() {
-		return fahrzeug;
-	}
-
-	public void setFahrzeug(Fahrzeug artikel) {
-		this.fahrzeug = artikel;
-	}
-
-	public long getHerstellerId() {
-		return herstellerId;
-	}
-
-	public void setHerstellerId(long herstellerId) {
-		this.herstellerId = herstellerId;
-	}
-
-	public List<Autohersteller> getHersteller() {
-		return hersteller;
-	}
-
-	public void setHersteller(List<Autohersteller> hersteller) {
-		this.hersteller = hersteller;
-	}
-
-	public boolean isGeaendertArtikel() {
-		return geaendertArtikel;
-	}
-
-	public void setGeaendertArtikel(boolean geaendertArtikel) {
-		this.geaendertArtikel = geaendertArtikel;
-	}
-
-	public Fahrzeug getNeuerArtikel() {
-		return neuerArtikel;
-	}
-
-	public void setNeuerArtikel(Fahrzeug neuerArtikel) {
-		this.neuerArtikel = neuerArtikel;
-	}
-
-	public Event<String> getNeuerArtikelEvent() {
-		return neuerArtikelEvent;
-	}
-
-	public void setNeuerArtikelEvent(Event<String> neuerArtikelEvent) {
-		this.neuerArtikelEvent = neuerArtikelEvent;
-	}
-
-	public Event<String> getUpdateArtikelEvent() {
-		return updateArtikelEvent;
-	}
-
-	public void setUpdateArtikelEvent(Event<String> updatArtikelEvent) {
-		this.updateArtikelEvent = updatArtikelEvent;
+	@Override
+	public String toString() {
+		return "ArtikelverwaltungController [bezeichnung=" + modell + "]";
 	}
 
 	public String getModell() {
@@ -176,27 +89,7 @@ public class ArtikelverwaltungController implements Serializable {
 		return JSF_LIST_ARTIKEL;
 	}
 	
-	public String createArtikel() {
-		Autohersteller hrst = av.findAutoherstellerById(herstellerId);
-		neuerArtikel.setHersteller(hrst);
-		
-		try {
-			neuerArtikel = (Fahrzeug) av.createFahrzeug(neuerArtikel, locale);
-		}
-		catch (ArtikelValidationException e) {
-			//TODO genauere Fehlermeldung erzeugen 
-			return JSF_DEFAULT_ERROR;
-		}
-		
-		// Push-Event fuer Webbrowser
-		neuerArtikelEvent.fire("" + neuerArtikel.getId());
-		
-		fahrzeug = neuerArtikel;
-		neuerArtikel = new Fahrzeug();
-		
-		return JSF_LIST_ARTIKEL + JSF_REDIRECT_SUFFIX;
-	}
-	
+
 	/**
 	 * fuer index.xhtml
 	 */
@@ -215,62 +108,5 @@ public class ArtikelverwaltungController implements Serializable {
 		final List<Fahrzeug> alleArtikel = av.findAllFahrzeuge(Order.KEINE);
 		sessionMap.put(SESSION_VERFUEGBARE_ARTIKEL, alleArtikel);
 		return JSF_SELECT_ARTIKEL;
-	}
-	
-	public String selectForUpdate(Fahrzeug fahrzeug) {
-		this.fahrzeug = fahrzeug;
-
-		return JSF_UPDATE_ARTIKEL;
-	}
-
-	public String update() {
-		if (!geaendertArtikel || fahrzeug == null) {
-			return JSF_INDEX;
-		}
-
-		Autohersteller hrst = av.findAutoherstellerById(herstellerId);
-		fahrzeug.setHersteller(hrst);
-		
-		LOGGER.tracef("artikel = %s", fahrzeug);
-		try {
-			fahrzeug = av.updateFahrzeug(fahrzeug, locale);
-		}
-		catch (ArtikelValidationException | ConcurrentUpdatedException
-			  | ConcurrentDeletedException e) {
-			//TODO genauere Fehlermeldung erzeugen 
-			return JSF_DEFAULT_ERROR;
-		}
-		
-		if (fahrzeug == null) {
-			return JSF_DEFAULT_ERROR;
-		}
-		
-		// Push-Event fuer Webbrowser
-		updateArtikelEvent.fire("" + fahrzeug.getId());
-		
-		// ValueChangeListener zuruecksetzen
-		geaendertArtikel = false;
-		
-		return JSF_LIST_ARTIKEL + JSF_REDIRECT_SUFFIX;
-	}
-	
-	/**
-	 * Verwendung als ValueChangeListener bei updateArtikel.xhtml
-	 */
-	public void geaendert(ValueChangeEvent e) {
-		if (geaendertArtikel) {
-			return;
-		}
-		
-		if (e.getOldValue() == null) {
-			if (e.getNewValue() != null) {
-				geaendertArtikel = true;
-			}
-			return;
-		}
-
-		if (!e.getOldValue().equals(e.getNewValue())) {
-			geaendertArtikel = true;				
-		}
 	}
 }

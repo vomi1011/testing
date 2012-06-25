@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -61,6 +60,19 @@ public class Bestellposition implements Serializable {
 	//@Min(value = 1, message = "{bestellverwaltung.bestellposition.anzahl.min}")
 	private short anzahl;
 	
+    @Transient
+    @XmlElement(name = "zwischenErgebnis")
+    public long total;
+	
+    public long getTotal() {
+		return total;
+	}
+
+	public void setTotal() {
+		this.total = this.fahrzeug.getPreis() * this.anzahl;
+	}
+
+
     @Version
 	@XmlTransient
 	private int version = ERSTE_VERSION;
@@ -76,14 +88,6 @@ public class Bestellposition implements Serializable {
 	@Transient
 	@XmlElement(name = "fahrzeug")
 	private URI fahrzeugUri;
-	
-	@Transient
-	public long total;
-	
-	@PostLoad
-	protected void postLoad() {
-		total = fahrzeug.getPreis() * anzahl;
-	}
 	
 	//notwendig für Rest
 	public Bestellposition() {
@@ -147,14 +151,6 @@ public class Bestellposition implements Serializable {
 	
 	public void setFahrzeugUri(URI fahrzeugUri) {
 		this.fahrzeugUri = fahrzeugUri;
-	}
-
-	public long getTotal() {
-		return total;
-	}
-
-	public void setTotal(long total) {
-		this.total = total;
 	}
 
 	@Override

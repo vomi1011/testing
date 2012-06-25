@@ -30,7 +30,6 @@
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
 						               for="kundeId"/>
-						               
 						<h:inputText id="kundeId" value="#{kv.kundeId}"/>
 						<h:commandButton id="kundeButton" action="#{kv.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
 					</h:panelGrid>
