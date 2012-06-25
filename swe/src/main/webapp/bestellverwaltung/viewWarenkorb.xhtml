@@ -30,11 +30,18 @@
 						#{bestellposition.fahrzeug.id}
 					</rich:column>
 					
-					<rich:column id="bezeichnungSpalte">
+					<rich:column id="modellSpalte">
 						<f:facet name="header">
 							#{msgBv['viewWarenkorb.artikel.bezeichnung']}
 						</f:facet>
 						#{bestellposition.fahrzeug.modell}
+					</rich:column>
+					
+					<rich:column id="bezeichnungSpalte">
+						<f:facet name="header">
+							#{msgBv['viewWarenkorb.artikel.beschreibung']}
+						</f:facet>
+						#{bestellposition.fahrzeug.beschreibung}
 					</rich:column>
 		
 					<rich:column id="anzahlSpalte">

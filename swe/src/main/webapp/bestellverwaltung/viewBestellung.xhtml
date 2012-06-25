@@ -45,10 +45,18 @@
 		
 					<rich:column id="bezeichnungSpalte">
 						<f:facet name="header">
-							#{msgBv['viewBestellung.artikel.bezeichnung']}
-						</f:facet>fahrzeug
+							#{msgBv['viewBestellung.artikel.modell']}
+						</f:facet>
+						#{pos.fahrzeug.modell}
 					</rich:column>
 		
+					<rich:column id="artikelBeschreibung">
+						<f:facet name="header">
+							#{msgBv['viewBestellung.artikel.bezeichnung']}
+						</f:facet>
+						#{pos.fahrzeug.beschreibung}
+					</rich:column>
+					
 					<rich:column id="anzahlSpalte">
 						<f:facet name="header">
 							#{msgBv['viewBestellung.artikel.anzahl']}
