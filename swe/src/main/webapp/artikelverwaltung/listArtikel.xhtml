@@ -19,13 +19,16 @@
 						<h:outputLabel id="bezeichnungLabel"
 						               value="#{msgAv['listArtikel.bezeichnung']}"
 						               for="modell"/>
-						             
+						<!--             
 						<rich:autocomplete id="modell"
 						                   value="#{av.modell}"
 						                   mode="ajax"
 						                   minChars="1"
 						                   autocompleteMethod="#{av.findFahrzeugeByModell}"/> 
-		
+						-->
+						
+						<h:inputText id="modell" value="#{av.modell}"/>
+						
 						<a4j:commandButton id="sucheButton"
 						                   action="#{av.findFahrzeugeByModell}"
 										   value="#{msgAv['listArtikel.submit']}"
