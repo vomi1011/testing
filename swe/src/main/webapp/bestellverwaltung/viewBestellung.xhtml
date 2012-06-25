@@ -35,7 +35,7 @@
 			<rich:panel id="positionen" header="#{msgBv['viewBestellung.positionen']}"> 
 				<rich:dataTable id="positionenTabelle"
 				                value="#{bestellung.bestellpositionen}"
-				                var="pos">
+				                var="pos" style=" width : 401px; height : 64px;">
 					<rich:column id="artikelIdSpalte">
 						<f:facet name="header">
 							#{msgBv['viewBestellung.artikel.id']}
@@ -46,7 +46,8 @@
 					<rich:column id="bezeichnungSpalte">
 						<f:facet name="header">
 							#{msgBv['viewBestellung.artikel.bezeichnung']}
-						</f:facet>fahrzeug</rich:column>
+						</f:facet>fahrzeug
+					</rich:column>
 		
 					<rich:column id="anzahlSpalte">
 						<f:facet name="header">
@@ -54,6 +55,7 @@
 						</f:facet>
 						#{pos.anzahl}
 					</rich:column>
+
 				</rich:dataTable>
 			</rich:panel>
 		</ui:define>
