@@ -28,7 +28,7 @@ import de.swe.test.util.AbstractTest;
 @RunWith(Arquillian.class)
 public class ArtikelverwaltungTest extends AbstractTest {
 	private static final long FID_VORHANDEN = 6002;
-	private static final long AID_VORHANDEN = 7001;
+	private static final long AID_VORHANDEN = 7004;
 	private static final long FID_NICHT_VORHANDEN = 1;
 	private static final long AID_NICHT_VORHANDEN = 1;
 	private static final String AUTOHERSTELLER_NAME = "Audi";

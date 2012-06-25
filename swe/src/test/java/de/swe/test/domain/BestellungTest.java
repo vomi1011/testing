@@ -28,16 +28,16 @@ import de.swe.test.util.AbstractTest;
 
 @RunWith(Arquillian.class)
 public class BestellungTest extends AbstractTest {
-	private static final Long BID_VORHANDEN = Long.valueOf(5001);
+	private static final Long BID_VORHANDEN = Long.valueOf(5016);
 	private static final Long BID_NICHT_VORHANDEN =  Long.valueOf(100);
-	private static final Long KUNDE_VORHANDEN = Long.valueOf(1001);
+	private static final Long KUNDE_VORHANDEN = Long.valueOf(1205);
 	private static final Long KUNDE_NICHT_VORHANDEN = Long.valueOf(1);
 	private static final String DATUM_NICHT_VORHANDEN = "2000-10-10";
-	private static final String DATUM_VORHANDEN = "2024-10-11";
-	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 01);
-	public static final Long BESTELL_ID = Long.valueOf(5001);
-	public static final Long BESTELLPOSITION_ID = Long.valueOf(9006);
-	private static final Long FAHRZEUG_ID = Long.valueOf(6001);
+	private static final String DATUM_VORHANDEN = "2011-10-22";
+	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 23);
+//	public static final Long BESTELL_ID = Long.valueOf(5014);
+//	public static final Long BESTELLPOSITION_ID = Long.valueOf(9016);
+	private static final Long FAHRZEUG_ID = Long.valueOf(6021);
 	private static final Status STATUS = Bestellung.Status.NEU;
 	
 	@Test
