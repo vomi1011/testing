@@ -36,8 +36,7 @@ public interface ArtikelverwaltungResource {
 	@GET
 	@Path("/fahrzeuge")
 	@Formatted
-	FahrzeugList findFahrzeuge(@Context UriInfo uriInfo)
-			throws NotFoundException;
+	FahrzeugList findFahrzeuge(@Context UriInfo uriInfo);
 	
 	/**
 	 * Mit der URL /fahrzeuge/{id} einen Fahrzeug ermittelt
@@ -47,8 +46,7 @@ public interface ArtikelverwaltungResource {
 	@GET
 	@Path("/fahrzeuge/{id:[6][0-9]+}")
 	@Formatted
-	Fahrzeug findFahrzeug(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Fahrzeug findFahrzeug(@PathParam("id") Long id, @Context UriInfo uriInfo);
 
 	/**
 	 * Mit der URL /autohersteller werden alle Autohersteller ermittelt
@@ -58,8 +56,7 @@ public interface ArtikelverwaltungResource {
 	@GET
 	@Path("/autohersteller")
 	@Formatted
-	AutoherstellerList findAutohersteller(@Context UriInfo uriInfo)
-			throws NotFoundException;	
+	AutoherstellerList findAutohersteller(@Context UriInfo uriInfo);	
 
 	/**
 	 * Mit der URL /autohersteller/{id} einen Autohersteller ermittelt
@@ -69,8 +66,7 @@ public interface ArtikelverwaltungResource {
 	@GET
 	@Path("/autohersteller/{id:[7][0-9]+}")
 	@Formatted
-	Autohersteller findAutohersteller(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Autohersteller findAutohersteller(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	@POST
 	@Path("/fahrzeuge")

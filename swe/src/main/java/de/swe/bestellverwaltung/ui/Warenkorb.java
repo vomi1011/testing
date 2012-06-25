@@ -18,7 +18,6 @@ import org.jboss.logging.Logger;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.bestellverwaltung.domain.Bestellposition;
-import de.swe.util.Log;
 
 @Named("wk")
 @ConversationScoped

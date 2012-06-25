@@ -19,16 +19,12 @@ import javax.persistence.PersistenceContext;
 import org.jboss.logging.Logger;
 import org.jboss.solder.core.Client;
 
-//import de.swe.auth.ui.AuthController;
-//import de.swe.auth.ui.LoggedIn;
-//import de.swe.bestellverwaltung.ui.Warenkorb;
 import de.swe.auth.ui.AuthController;
 import de.swe.auth.ui.LoggedIn;
 import de.swe.bestellverwaltung.domain.Bestellposition;
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.bestellverwaltung.service.BestellungValidationException;
 import de.swe.bestellverwaltung.service.Bestellverwaltung;
-//import de.swe.kundenverwaltung.dao.KundenverwaltungDao.FetchType;
 import de.swe.kundenverwaltung.dao.KundenverwaltungDao.Fetch;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
 import de.swe.kundenverwaltung.service.Kundenverwaltung;
@@ -39,7 +35,7 @@ import de.swe.util.Log;
 @Log
 public class BestellverwaltungController implements Serializable {
 	private static final long serialVersionUID = -1790295502719370565L;
-
+	
 	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final String JSF_VIEW_BESTELLUNG = "/bestellverwaltung/viewBestellung";
@@ -71,13 +67,13 @@ public class BestellverwaltungController implements Serializable {
 	@Client                  // Attributwert bezieht sich auf den Client
 	private Locale locale;   // #{userLocale} in JSF-Seiten, vor allem Template-Seiten
 	
+
 	@Inject
 	private transient ExternalContext ctx;   // fuer Redirecct
 	
 	// TODO https://issues.jboss.org/browse/SOLDER-311
 //	@Inject
 //	private HttpSession session;             // fuer Redirect
-
 
 	public String bestellen() {
 		if (!auth.isLoggedIn()) {

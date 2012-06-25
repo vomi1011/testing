@@ -61,8 +61,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Bestellung findBestellung(Long id, UriInfo uriInfo)
-	                  throws NotFoundException {
+	public Bestellung findBestellung(Long id, UriInfo uriInfo) {
 		final Bestellung bestellung = bv.findBestellungById(id);
 		if (bestellung == null) {
 			final String msg = "Keine Bestellung gefunden mit der ID " + id;
@@ -76,8 +75,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	}
 	
 	@Override
-	public BestellungList findBestellungen(UriInfo uriInfo)
-	                  throws NotFoundException {
+	public BestellungList findBestellungen(UriInfo uriInfo) {
 		List<Bestellung> bestellungen = bv.findAllBestellungen();
 		if (bestellungen.isEmpty()) {
 			final String msg = "Keine Bestellungen gefunden.";
@@ -94,13 +92,11 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	}
 	
 	
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AbstractKunde findKundeByBid(Long id, UriInfo uriInfo)
-	                     throws NotFoundException {
+	public AbstractKunde findKundeByBid(Long id, UriInfo uriInfo) {
 		AbstractKunde kunde = bv.findKundeByBestellid(id);
 		if (kunde == null) {
 			final String msg = "Keine Kunden zur Bestellnr. " + id + " gefunden.";
@@ -112,8 +108,6 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 
 		return kunde;
 	}
-	
-
 
 	
 	/**
@@ -229,7 +223,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	}
 		
 	@Override
-	public void updateUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException {
+	public void updateUriBestellung(Bestellung bestellung, UriInfo uriInfo) {
 		if (bestellung == null) {
 			final String msg = "Kein Bestellung vorhanden";
 			throw new NotFoundException(msg);
@@ -253,7 +247,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	
 	
 	@Override
-	public URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException {
+	public URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo) {
 		if (bestellung == null) {
 			final String msg = "Kein Bestellung vorhanden";
 			throw new NotFoundException(msg);
@@ -267,8 +261,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	}
 	
 	@Override
-	public Response deleteBestellung(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public Response deleteBestellung(Long id, UriInfo uriInfo) {
 		final Bestellung bestellung = bv.findBestellungById(id);
 		if (bestellung == null) {
 			final String msg = "Keine Bestellung gefunden mit der ID " + id;
@@ -282,7 +275,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 	
 	@Override
 	public Response stornierenBestellung(Long id,
-			UriInfo uriInfo) throws NotFoundException {
+			UriInfo uriInfo) {
 		Bestellung bestellung = bv.findBestellungById(id);
 		
 		if (bestellung == null) {

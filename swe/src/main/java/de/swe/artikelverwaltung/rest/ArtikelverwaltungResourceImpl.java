@@ -28,8 +28,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	private Artikelverwaltung av;
 	
 	@Override
-	public Fahrzeug findFahrzeug(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public Fahrzeug findFahrzeug(Long id, UriInfo uriInfo) {
 		Fahrzeug fahrzeug = av.findFahrzeugById(id);
 		if (fahrzeug == null) {
 			String msg = "Kein Fahrzeug gefunden mit ID " + id;
@@ -40,8 +39,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	}
 	
 	@Override
-	public Autohersteller findAutohersteller(Long id, UriInfo uriInfo)
-			throws NotFoundException {
+	public Autohersteller findAutohersteller(Long id, UriInfo uriInfo) {
 		Autohersteller autohersteller = av.findAutoherstellerById(id);
 		
 		return autohersteller;
@@ -155,8 +153,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 	}
 
 	@Override
-	public FahrzeugList findFahrzeuge(UriInfo uriInfo) 
-			throws NotFoundException {
+	public FahrzeugList findFahrzeuge(UriInfo uriInfo) {
 		List<Fahrzeug> fahrzeuge = av.findAllFahrzeuge(Order.ID);
 		final FahrzeugList fahrzeugliste = new FahrzeugList(fahrzeuge);
 		return fahrzeugliste;
@@ -164,8 +161,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 
 
 	@Override
-	public AutoherstellerList findAutohersteller(UriInfo uriInfo)
-			throws NotFoundException {
+	public AutoherstellerList findAutohersteller(UriInfo uriInfo) {
 		List<Autohersteller> autohersteller = av.findAllAutohersteller(Order.ID);
 		final AutoherstellerList autoherstellerliste = new AutoherstellerList(autohersteller);
 		return autoherstellerliste;

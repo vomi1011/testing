@@ -76,12 +76,12 @@ public class UAgentInfo {
     private String httpAccept = "";
     
     // Let's store values for quickly accessing the same info multiple times.
-    public boolean isIphone = false;
-    public boolean isAndroidPhone = false;
-    public boolean isTierTablet = false;
-    public boolean isTierIphone = false;
-    public boolean isTierRichCss = false;
-    public boolean isTierGenericMobile = false;
+    private boolean isIphone = false;
+    private boolean isAndroidPhone = false;
+    private boolean isTierTablet = false;
+    private boolean isTierIphone = false;
+    private boolean isTierRichCss = false;
+    private boolean isTierGenericMobile = false;
     
     // Initialize some initial smartphone string variables.
     public static final String engineWebKit = "webkit";
@@ -272,9 +272,9 @@ public class UAgentInfo {
      */
     public boolean detectIphone() {
         // The iPad and iPod touch say they're an iPhone! So let's disambiguate.
-        if (userAgent.indexOf(deviceIphone) != -1 && 
-                !detectIpad() && 
-                !detectIpod()) {
+        if (userAgent.indexOf(deviceIphone) != -1
+        		&& !detectIpad() 
+        		&& !detectIpod()) {
             return true;
         }
         return false;

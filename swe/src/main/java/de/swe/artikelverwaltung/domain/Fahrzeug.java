@@ -1,13 +1,13 @@
 package de.swe.artikelverwaltung.domain;
 import static de.swe.util.Constants.ERSTE_VERSION;
 import static de.swe.util.Constants.FAHRZEUG_ID;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -71,6 +71,7 @@ public class Fahrzeug implements Serializable {
 	public static final String FIND_FAHRZEUG_BY_BAUJAHR = PREFIX + "findFahrzeugByBaujahr";
 	public static final String FIND_FAHRZEUG_BY_BESCHREIBUNG = PREFIX + "findFahrzeugByBeschreibung";
 	public static final String FIND_FAHRZEUG_BY_ERSTELLT = PREFIX + "findFahrzeugByErstellt";
+	public static final String FIND_FAHRZEUG_BY_MODELL_PREFIX = PREFIX + "findFahrzeugByModellPrefix";
 	public static final String PARAM_FAHRZEUG_ID = "id";
 	public static final String PARAM_FAHRZEUG_HERSTELLER = "hersteller_fk";
 	public static final String PARAM_FAHRZEUG_MODELL = "modell";

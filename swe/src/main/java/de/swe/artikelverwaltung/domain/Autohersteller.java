@@ -1,15 +1,16 @@
 package de.swe.artikelverwaltung.domain;
 
+import static de.swe.util.Constants.AUTOHERSTELLER_ID;
+import static de.swe.util.Constants.ERSTE_VERSION;
+import static de.swe.util.Constants.KEINE_ID;
+import static de.swe.util.Constants.UID;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
-import static de.swe.util.Constants.ERSTE_VERSION;
-import static de.swe.util.Constants.UID;
-import static de.swe.util.Constants.AUTOHERSTELLER_ID;
-import static de.swe.util.Constants.KEINE_ID;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;

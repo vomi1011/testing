@@ -54,6 +54,12 @@ public class Artikelverwaltung implements Serializable {
 		return fahrzeuge;
 	}
 	
+	public List<String> findFahrzeugByModell(String modellPrefix) {
+		final List<String> artikelModell = dao.findFahrzeugByModell(modellPrefix);
+		
+		return artikelModell;
+	}
+	
 	public List<Fahrzeug> findFahrzeugByHerstellerId(Long id) {
 		final List<Fahrzeug> fahrzeuge = dao.findFahrzeugByHerstellerId(id);
 		

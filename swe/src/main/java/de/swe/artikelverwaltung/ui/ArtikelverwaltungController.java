@@ -1,5 +1,6 @@
 package de.swe.artikelverwaltung.ui;
 
+import static de.swe.util.Constants.BESTELLVERWALTUNG;
 import static de.swe.util.Constants.JSF_DEFAULT_ERROR;
 import static de.swe.util.Constants.JSF_INDEX;
 import static de.swe.util.Constants.JSF_REDIRECT_SUFFIX;
@@ -23,6 +24,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.logging.Logger;
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
 import org.jboss.solder.core.Client;
 import org.richfaces.cdi.push.Push;
 
@@ -52,8 +55,10 @@ public class ArtikelverwaltungController implements Serializable {
 	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateArtikel";
 
 	private static final String FLASH_ARTIKEL = "artikel";
-
-	private String modell;
+	private static final String MSG_KEY_ARTIKEL_NOT_FOUND_BY_MODELL = "selectArtikel.notFound";
+	private static final String CLIENT_ID_ARTIKEL_MODELL = "form:modell";
+	private static final int MAX_AUTOCOMPLETE = 10;
+	
 
 	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -76,7 +81,15 @@ public class ArtikelverwaltungController implements Serializable {
 
 	private boolean geaendertArtikel; // fuer ValueChangeListener
 	private Fahrzeug neuerArtikel;
+	
+	@Inject
+	private Messages messages;
 
+	private Long fahrzeufId;
+	private String modell;
+//	
+//	private List<Fahrzeug> fahrzeuge = Collections.emptyList();
+	
 	@Inject
 	@Push(topic = "marketingArtikel")
 	private transient Event<String> neuerArtikelEvent;
@@ -88,6 +101,27 @@ public class ArtikelverwaltungController implements Serializable {
 	private Fahrzeug fahrzeug;
 	private List<Autohersteller> hersteller;
 	private long herstellerId;
+	
+	/**
+	 * F&uuml;r rich:autocomplete
+	 * @return Liste der Produkt nach Modelle
+	 */
+	public List<String> findFahrzeugByModell(String modell) {
+		final List<String> modelle = av.findFahrzeugByModell(modell);
+		if (modell.isEmpty()) {
+			messages.error(new BundleKey(BESTELLVERWALTUNG, MSG_KEY_ARTIKEL_NOT_FOUND_BY_MODELL), fahrzeufId)
+                    .targets(CLIENT_ID_ARTIKEL_MODELL);
+			return modelle;
+		}
+
+		if (modelle.size() > MAX_AUTOCOMPLETE) {
+			return modelle.subList(0, MAX_AUTOCOMPLETE);
+		}
+
+		return modelle;
+	}
+
+
 	
 	@SuppressWarnings("unused")
 	@PostConstruct

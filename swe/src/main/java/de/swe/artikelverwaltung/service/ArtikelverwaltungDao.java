@@ -102,4 +102,12 @@ public class ArtikelverwaltungDao extends Dao {
 		
 		return autohersteller;
 	}
+
+	public List<String> findFahrzeugByModell(String modellPrefix) {
+		List<String> artikelModell = find(String.class, Fahrzeug.FIND_FAHRZEUG_BY_MODELL_PREFIX,
+										   with(Fahrzeug.PARAM_FAHRZEUG_MODELL, modellPrefix).build());
+			
+		return artikelModell;
+		
+	}
 }

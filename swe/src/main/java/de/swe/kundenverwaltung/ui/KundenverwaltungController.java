@@ -73,7 +73,7 @@ public class KundenverwaltungController implements Serializable {
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
 	private static final String MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS = "createPrivatkunde.emailExists";
 
-	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
+	private static final Class<?>[] PASSWORD_GROUP = {PasswordGroup.class};
 	
 	private static final String CLIENT_ID_KUNDEN_NACHNAME = "form:nachname";
 	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";

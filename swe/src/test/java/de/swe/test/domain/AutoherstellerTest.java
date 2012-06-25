@@ -16,9 +16,9 @@ import de.swe.test.util.AbstractTest;
 
 @RunWith(Arquillian.class)
 public class AutoherstellerTest extends AbstractTest {
-	private static final Long AID_VORHANDEN = Long.valueOf(7001);
+	private static final Long AID_VORHANDEN = Long.valueOf(7002);
 	private static final Long AID_NICHT_VORHANDEN = Long.valueOf(234);
-	private static final String NAME = "BMW";
+	private static final String NAME = "Audi";
 	private static final String NAME_NICHT_VORHANDEN = "1";
 	
 	@Test

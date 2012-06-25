@@ -35,13 +35,11 @@ public interface BestellverwaltungResource {
 	 */
 	@GET
 	@Path("/{id:[5][0-9]+}")
-	Bestellung findBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Bestellung findBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo);
 
 	
 	@GET
-	BestellungList findBestellungen(@Context UriInfo uriInfo)
-			throws NotFoundException;
+	BestellungList findBestellungen(@Context UriInfo uriInfo);
 	
 	/**
 	 * Mit der URL /bestellverwaltung/bestellungen/{id}/kunde den Kunden einer Bestellung ermitteln
@@ -51,9 +49,7 @@ public interface BestellverwaltungResource {
 	 */
 	@GET
 	@Path("/{id:[5][0-9]+}/kunde")
-	AbstractKunde findKundeByBid(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
-
+	AbstractKunde findKundeByBid(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	/**
 	 * Mit der URL /bestellverwaltung/bestellungen eine neue Bestellung anlegen
@@ -76,14 +72,12 @@ public interface BestellverwaltungResource {
 	@DELETE
 	@Path("/bestellungen/{id:[5][0-9]+}")
 	@Produces
-	Response deleteBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Response deleteBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	@PUT
 	@Path("/bestellungen/{id:[5][0-9]+}")
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	Response stornierenBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo)
-			throws NotFoundException;
+	Response stornierenBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo);
 
 }

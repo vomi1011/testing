@@ -138,7 +138,7 @@ public class Bestellung implements Serializable {
     
     @Transient
     @XmlElement(name = "gesamtPreis")
-    public long gesamtPreis;
+    private long gesamtPreis;
     
 	public long getGesamtPreis() {
 		return gesamtPreis;
@@ -146,7 +146,7 @@ public class Bestellung implements Serializable {
 
 	public void setGesamtPreis(long gesamtPreis) {
 		
-		for(Bestellposition bp : bestellpositionen) { 
+		for(Bestellposition bp : bestellpositionen){ 
 			this.gesamtPreis += bp.total;
 		}	
 	}
