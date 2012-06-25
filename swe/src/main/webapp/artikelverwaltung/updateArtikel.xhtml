@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msgAv['updateArtikel.title']}"/>
+	
+		<ui:define name="contents">
+			<h1>#{msgAv['updateArtikel.heading']}</h1>
+			
+			<h:outputText id="fehlerKeinArtikel"
+			              value="#{msgAv['updateArtikel.keinArtikel']}"
+			              class="error"
+			              rendered="#{empty av.fahrzeug}"/>
+			<!--          
+			<a4j:push id="updateEvent" address="updateKunde"
+		              ondataavailable="if (event.rf.data == '#{kv.kunde.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
+			<span id="updateMessage"></span>
+			 -->
+			 
+			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
+			<h:form id="updateArtikelForm" rendered="#{not empty av.fahrzeug}">
+				<h:panelGrid id="updateArtikelTabelle" columns="3" rendered="#{not empty av.fahrzeug}">
+					<h:outputText id="idLabel" value="#{msgAv['updateArtikel.id']}"/>
+					<h:inputText id="id" value="#{av.fahrzeug.id}" disabled="true"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="herstellerLabel" for="herstellerBezeichnung" value="#{msgAv['artikel.hersteller']}"/>
+						<rich:select id="herstellerBezeichnung" defaultLabel="#{av.fahrzeug.hersteller.name}" value="#{av.herstellerId}">
+							<c:forEach var="hersteller" items="#{av.hersteller}">
+								<f:selectItem id="herstellerItem" itemLabel="#{hersteller.name}" itemValue="#{hersteller.id}"/>
+							</c:forEach>
+				    	</rich:select>
+				    <f:verbatim/>
+					
+					<h:outputLabel id="modellLabel" for="modell" value="#{msgAv['updateArtikel.modell']}"/>
+					<h:inputText id="modell" value="#{av.fahrzeug.modell}" valueChangeListener="#{av.geaendert}"/>
+					<f:verbatim/>
+	
+					<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['updateArtikel.beschreibung']}"/>
+					<h:inputText id="beschreibung" value="#{av.fahrzeug.beschreibung}" valueChangeListener="#{av.geaendert}"/>
+					<f:verbatim/>
+
+					<h:outputLabel id="baujahrLabel" for="baujahr" value="#{msgAv['artikel.baujahr']}"/>
+					<h:inputText id="baujahr" value="#{av.fahrzeug.baujahr}"/>
+					<f:verbatim/>
+						
+					<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['updateArtikel.preis']}"/>
+					<h:inputText id="preis" value="#{av.fahrzeug.preis}" valueChangeListener="#{av.geaendert}"/>
+					<f:verbatim/>
+				</h:panelGrid>
+				
+				<p id="buttons">
+					<h:commandButton id="button" action="#{av.update}" value="#{msgAv['updateArtikel.submit']}"/>
+					#{' '}
+					<h:commandButton type="reset" value="#{msgAv['updateArtikel.reset']}"/>
+				</p>
+				
+				<p id="hinweisPflichtfelder">
+					#{msgAv['updateArtikel.required']}
+				</p>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>
