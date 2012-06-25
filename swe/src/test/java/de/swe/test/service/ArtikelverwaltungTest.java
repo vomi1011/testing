@@ -17,8 +17,8 @@ import org.junit.runner.RunWith;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeption;
-import de.swe.artikelverwaltung.service.ArtikelValidationExeptionAH;
+import de.swe.artikelverwaltung.service.ArtikelValidationException;
+import de.swe.artikelverwaltung.service.ArtikelValidationExceptionAH;
 import de.swe.artikelverwaltung.service.Artikelverwaltung;
 import de.swe.artikelverwaltung.service.ArtikelverwaltungDao.Order;
 import de.swe.test.util.AbstractTest;
@@ -28,7 +28,7 @@ import de.swe.test.util.AbstractTest;
 @RunWith(Arquillian.class)
 public class ArtikelverwaltungTest extends AbstractTest {
 	private static final long FID_VORHANDEN = 6002;
-	private static final long AID_VORHANDEN = 7004;
+	private static final long AID_VORHANDEN = 7001;
 	private static final long FID_NICHT_VORHANDEN = 1;
 	private static final long AID_NICHT_VORHANDEN = 1;
 	private static final String AUTOHERSTELLER_NAME = "Audi";
@@ -150,7 +150,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		final Fahrzeug neuesFahrzeug = new Fahrzeug();
 		neuesFahrzeug.setModell(modell);
 		
-		thrown.expect(ArtikelValidationExeption.class);
+		thrown.expect(ArtikelValidationException.class);
 		av.createFahrzeug(neuesFahrzeug, LOCALE);
 	}
 	
@@ -210,7 +210,7 @@ public class ArtikelverwaltungTest extends AbstractTest {
 		Autohersteller neuesAutohersteller = new Autohersteller();
 		neuesAutohersteller.setName(null);
 		
-		thrown.expect(ArtikelValidationExeptionAH.class);
+		thrown.expect(ArtikelValidationExceptionAH.class);
 		av.createAutohersteller(neuesAutohersteller, LOCALE);
 			
 	}

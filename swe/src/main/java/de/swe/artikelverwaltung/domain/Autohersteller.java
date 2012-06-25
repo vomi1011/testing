@@ -56,10 +56,6 @@ import de.swe.util.IdGroup;
 	
 })
 public class Autohersteller implements Serializable {
-
-	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
-	
-	public static final String HERSTELLERNAME_PATTERN = NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
 	private static final String PREFIX = "Autohersteller.";
 	public static final String FIND_AUTOHERSTELLER = PREFIX + "findAutohersteller";
 	public static final String FIND_AUTOHERSTELLER_ORDER_BY_ID = PREFIX + "findAutoherstellerOrderById";
@@ -83,7 +79,6 @@ public class Autohersteller implements Serializable {
 	
 	@XmlElement(required = true)
 	@NotNull(message = "{artikelverwaltung.autohersteller.name.notNull}")
-	@Pattern(regexp = HERSTELLERNAME_PATTERN, message = "{artikelverwaltung.autohersteller.name.pattern}")
 	private String name;
 	
 	//bi-directional one-to-many association to Fahrzeug

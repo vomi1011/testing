@@ -14,7 +14,6 @@
 	
 		<ui:define name="contents">
 			<h:form id="selectForm">
-			<rich:panel id="suchePanel" header="#{msgAv['selectArtikel.title']}">
 				<h:panelGrid id="selectGrid" columns="2">
 					<rich:select id="artikelBezeichnung"
 					             defaultLabel="#{msgAv['selectArtikel.auswahl']}"
@@ -32,7 +31,6 @@
 					                 actionListener="#{wk.beginConversation}"
 							         value="#{msgAv['selectArtikel.select']}"/>
 				</h:panelGrid>
-				</rich:panel>
 			</h:form>
 		</ui:define>
 	</ui:composition>

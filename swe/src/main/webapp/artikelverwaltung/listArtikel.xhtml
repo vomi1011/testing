@@ -11,7 +11,7 @@
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
-		
+	
 		<ui:define name="contents">
 			<h:form id="form">
 				<rich:panel id="suchePanel" header="#{msgAv['listArtikel.sucheNeu']}">
@@ -19,18 +19,14 @@
 						<h:outputLabel id="bezeichnungLabel"
 						               value="#{msgAv['listArtikel.bezeichnung']}"
 						               for="modell"/>
-						             
-						<rich:autocomplete id="modell"
-						                   value="#{av.modell}"
-						                   mode="ajax"
-						                   minChars="1"
-						                   autocompleteMethod="#{av.findFahrzeugeByModell}"/> 
 		
-						<a4j:commandButton id="sucheButton"
+						<h:inputText id="modell" value="#{av.modell}"/>
+		
+						<a4j:commandButton id="findButton"
 						                   action="#{av.findFahrzeugeByModell}"
-										   value="#{msgAv['listArtikel.submit']}"
-										   render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
-									   					
+								           value="#{msgAv['listArtikel.submit']}"
+								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
+						
 						<a4j:status id="statusStart">
 							<f:facet name="start">
 								<h:panelGroup id="waitingGroup">
@@ -42,12 +38,10 @@
 							</f:facet>
 						</a4j:status>
 					</h:panelGrid>
-					<rich:messages id="fehlermeldungBezeichnung" for="modell"/>
 					<rich:jQuery id="focus" selector="#bezeichnung" query="focus()"/>
 				</rich:panel>
 			
 				<p id="abstand1"/>
-				
 			
 				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
@@ -70,6 +64,13 @@
 								#{art.id}
 							</rich:column>
 							
+							<rich:column id="herstellerSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.hersteller']}
+								</f:facet>
+								#{art.hersteller.name}
+							</rich:column>
+							
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
 									#{msgAv['listArtikel.bezeichnung']}
@@ -84,19 +85,27 @@
 								#{art.preis}
 							</rich:column>
 							
-							<rich:column id="buttonSpalte"
+							<rich:column id="buttonSpalte1"
 							             rendered="#{not empty artikel}">
 								<h:commandButton id="warenkorbButton"
 												 image="#{resource['images:warenkorb.gif']}"
 										         action="#{wk.add(art)}"
 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
 							</rich:column>
+							
+							<rich:column id="buttonSpalte2"
+							             rendered="#{not empty artikel and rich:isUserInRole('admin')}">
+								<h:commandButton id="updatebButton"
+												 image="#{resource['images:edit.gif']}"
+										         action="#{av.selectForUpdate(art)}"
+										         alt="#{msgAv['listArtikel.alt.update']}"/>
+							</rich:column>
 						</rich:dataTable>
 						
 						<p id="abstand2"/>
 						<rich:dataScroller id="dataScroller"
 						                   for="artikelTabelle"
-						                   maxPages="5"
+						                   maxPages="10"
 						                   rendered="#{not empty artikel}"/>
 						
 						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">

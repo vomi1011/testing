@@ -13,7 +13,7 @@ import de.swe.test.util.AbstractTest;
 
 @RunWith(Arquillian.class)
 public class BestellpositionTest extends AbstractTest {
-	private static final Long BPID_VORHANDEN = Long.valueOf(9005);
+	private static final Long BPID_VORHANDEN = Long.valueOf(9001);
 	private static final Long BPID_NICHT_VORHANDEN = Long.valueOf(400);
 	private static final Long FAHRZEUGID_NICHT_VORHANDEN =  Long.valueOf(5000);
 	private static final Long FAHRZEUGID_VORHANDEN =  Long.valueOf(6001);

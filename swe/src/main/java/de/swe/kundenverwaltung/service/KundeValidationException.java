@@ -1,7 +1,5 @@
 package de.swe.kundenverwaltung.service;
 
-
-
 import static de.swe.util.Constants.UID;
 
 import java.util.Collection;
@@ -10,7 +8,6 @@ import javax.ejb.ApplicationException;
 import javax.validation.ConstraintViolation;
 
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-
 
 /**
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind

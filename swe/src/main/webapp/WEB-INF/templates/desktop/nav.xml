@@ -52,7 +52,14 @@
 					               action="#{av.selectArtikel}">
 						#{msg['nav.artikelverwaltung.selectArtikel']}
 					</h:commandLink>
-				</rich:panelMenuItem>				
+				</rich:panelMenuItem>
+				<rich:panelMenuItem id="artikelverwaltungCreateArtikelItem" rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="artikelverwaltungCreatetArtikel"
+					               value="#{request.contextPath}/artikelverwaltung/listArtikel.jsf">
+						#{msg['nav.artikelverwaltung.createArtikel']}
+					</h:outputLink>
+				</rich:panelMenuItem>
+						
 			</rich:panelMenuGroup>
 
 			<rich:panelMenuGroup id="bestellverwaltung"
@@ -60,10 +67,9 @@
 			                     expanded="true"
 			                     rendered="#{not empty wk.positionen}">
 				<rich:panelMenuItem id="bestellverwaltunghowViewWarenkorbItem">
-					<h:outputLink id="bestellverwaltungViewWarenkorb"
-					              value="#{request.contextPath}/bestellverwaltung/viewWarenkorb.jsf">
-						#{msg['nav.bestellverwaltung.viewWarenkorb']}
-					</h:outputLink>
+					<h:link outcome="/bestellverwaltung/viewWarenkorb.xhtml" value="#{msg['nav.bestellverwaltung.viewWarenkorb']}">
+						<f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+					</h:link>
 				</rich:panelMenuItem>
 			</rich:panelMenuGroup>
 			<rich:panelMenuGroup id="auth"

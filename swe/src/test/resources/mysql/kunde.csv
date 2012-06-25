@@ -1,46 +1,48 @@
-kunde_id;version;name;vorname;firma;geschlecht;telefon;email;password;art;erstellt;aktualisiert
-1001;;Volz;Michael;;M;72112312312;vomi1011@web.de;11111;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1002;;Stroemsdoerfer;Priscila;;W;72112312313;prsa@web.de;22222;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1010;;Nguyen;Nhat;;M;72112312314;ngnh@google.com;33333;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1004;;Remizova;Elena;;W;72112312315;rmel@gmx.de;44444;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1201;;Abc;;Firma Abc;M;123;abc@def.de;55555;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+kunde_id;version;name;vorname;firma;geschlecht;telefon;email;password;art;erstellt;aktualisiert;
+1001;;Neumann;Andreas;;M;72112312312;andreasneumann@web.de;11111;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1002;;Hoffmann;Laura;;W;7211249657;laurahoffmann@hotmail.de;22222;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1010;;Becker;Markus;;M;7211242432;markusbecker@googlemail.com;33333;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1004;;Kuehn;Alexandra;;W;7211248807;alexandrakuehn@hotmail.de;44444;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1006;;Hoffmann;Alex;;M;7211246257;alexhoffmann@hotmail.de;55589;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1007;;Bauer;Walter;;M;7211246682;walterbauer@hotmail.de;55591;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1201;;Abc;;Firma Abc;M;123;abc@def.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;F;2011-10-11 19:27:00;2011-10-11 19:27:00
 1202;;Def;;Firma Def;W;72112312315;def@ghi.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;F;2011-10-11 19:27:00;2011-10-11 19:27:00
 1100;;Tester;;;W;72112312315;tester@test.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;P;2011-10-11 19:27:00;2011-10-11 19:27:00
 1009;;Artikelverwalter;;;M;72112312315;artikel@test.de;UWuXg/ylF+7L0dBk2i0WUxCxl1k=;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1204;;Schneider;Phillip;;M;7211239032;phillipschneider@googlemail-com;55557;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1205;;Hoffmann;Margarete;;W;7211239882;margaretehoffmann@googlemail-com;55559;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1206;;Bauer;Irmgard;;W;7211240307;irmgardbauer@googlemail-com;55561;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1207;;Klein;Alex;;M;7211240732;alexklein@googlemail-com;55563;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1208;;Wolf;Alexandra;;W;7211241157;alexandrawolf@googlemail-com;55565;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1209;;Neumann;Edgard;;M;7211241582;edgardneumann@googlemail-com;55567;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1210;;Richter;Costantin;;M;7211242007;costantinrichter@googlemail-com;55569;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1301;;Becker;Martin;;M;7211242432;martinbecker@googlemail-com;55571;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1302;;Moeller;Andreas;;M;7211242857;andreasmoeller@googlemail-com;55573;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1303;;Wiss;Friedrich;;M;7211243282;friedrichwiss@googlemail-com;55575;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1304;;Vogel;Peters;;M;7211243707;petersvogel@googlemail-com;55577;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1305;;Jung;Walter;;M;7211244132;walterjung@googlemail-com;55579;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1306;;Vogel;Guenther;;M;7211244557;guenthervogel@googlemail-com;55581;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1307;;Schumacher;Otto;;M;7211244982;ottoschumacher@googlemail-com;55583;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1308;;Stein;Ludwig;;M;7211245407;ludwigstein@hotmail-de;55585;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1309;;Jaeger;Simon;;M;7211245832;simonjaeger@hotmail-de;55587;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1310;;Hoffmann;Lorenz;;M;7211246257;lorenzhoffmann@hotmail-de;55589;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1401;;Bauer;Seidel;;M;7211246682;seidelbauer@hotmail-de;55591;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1402;;Klein;Arnold;Hochschule Karlsruhe;M;7211247107;arnoldklein@hotmail-de;55593;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1403;;Wolf;Dietrich;Hochschule Karlsruhe;W;7211247532;dietrichwolf@hotmail-de;55595;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1404;;Sauer;Heinrich;Hochschule Karlsruhe;M;7211247957;heinrichsauer@hotmail-de;55597;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1405;;Pfeiffer;Otto;Volksbank-Ettlingen;M;7211248382;ottopfeiffer@hotmail-de;55599;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1406;;Kuehn;Maria;Volksbank-Ettlingen;W;7211248807;mariakuehn@hotmail-de;55601;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1407;;Ziegler;Frank;Volksbank-Ettlingen;M;7211249232;frankziegler@hotmail-de;55603;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1408;;Sommer;Laura;Karstadt Sport;W;7211249657;laurasommer@hotmail-de;55605;F;2011-10-11 19:27:00;2011-10-11 19:27:00
-1409;;Meyer;Karl;;M;7211250082;karlmeyer@hotmail-de;55607;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1410;;Hoffmann;Mark;;M;7211250507;markhoffmann@hotmail-de;55609;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1501;;Bauer;Markus;;M;7211250932;markusbauer@hotmail-de;55611;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1502;;Klein;Edward;;M;7211251357;edwardklein@hotmail-de;55613;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1503;;Bauer;Paula;;W;7211251782;paulabauer@hotmail-de;55615;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1504;;Klein;Edgard;;M;7211252207;edgardklein@web-de;55617;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1505;;Wolf;Costantin;;M;7211252632;costantinwolf@web-de;55619;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1506;;Sauer;Peters;;M;7211253057;peterssauer@web-de;55621;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1507;;Remizova;Walter;;M;7211253482;walterremizova@web-de;55623;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1508;;Mueller;Guenther;;M;7211253907;guenthermueller@web-de;55625;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1509;;Brot;Marta;;W;7211254332;martabrot@web-de;55627;P;2011-10-11 19:27:00;2011-10-11 19:27:00
-1510;;Schmith;Angela;;W;7211254757;angelaschmith@web-de;55629;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1204;;Schneider;Phillip;;M;7211239032;phillipschneider@googlemail.com;55557;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1205;;Hoffmann;Margarete;;W;7211239882;margaretehoffmann@googlemail.com;55559;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1206;;Bauer;Irmgard;;W;7211240307;irmgardbauer@googlemail.com;55561;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1207;;Klein;Alex;;M;7211240732;alexklein@googlemail.com;55563;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1208;;Wolf;Alexandra;;W;7211241157;alexandrawolf@googlemail.com;55565;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1209;;Neumann;Edgard;;M;7211241582;edgardneumann@googlemail.com;55567;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1210;;Richter;Costantin;;M;7211242007;costantinrichter@googlemail.com;55569;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1301;;Becker;Martin;;M;7211242432;martinbecker@googlemail.com;55571;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1302;;Moeller;Andreas;;M;7211242857;andreasmoeller@googlemail.com;55573;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1303;;Wiss;Friedrich;;M;7211243282;friedrichwiss@googlemail.com;55575;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1304;;Vogel;Peters;;M;7211243707;petersvogel@googlemail.com;55577;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1305;;Jung;Walter;;M;7211244132;walterjung@googlemail.com;55579;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1306;;Vogel;Guenther;;M;7211244557;guenthervogel@googlemail.com;55581;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1307;;Schumacher;Otto;;M;7211244982;ottoschumacher@googlemail.com;55583;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1308;;Stein;Ludwig;;M;7211245407;ludwigstein@hotmail.de;55585;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1309;;Jaeger;Simon;;M;7211245832;simonjaeger@hotmail.de;55587;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1310;;Hoffmann;Lorenz;;M;7211246257;lorenzhoffmann@hotmail.de;55589;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1401;;Bauer;Seidel;;M;7211246682;seidelbauer@hotmail.de;55591;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1402;;Klein;Arnold;Hochschule Karlsruhe;M;7211247107;arnoldklein@hotmail.de;55593;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1403;;Wolf;Dietrich;Hochschule Karlsruhe;W;7211247532;dietrichwolf@hotmail.de;55595;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1404;;Sauer;Heinrich;Hochschule Karlsruhe;M;7211247957;heinrichsauer@hotmail.de;55597;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1405;;Pfeiffer;Otto;Volksbank-Ettlingen;M;7211248382;ottopfeiffer@hotmail.de;55599;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1406;;Kuehn;Maria;Volksbank-Ettlingen;W;7211248807;mariakuehn@hotmail.de;55601;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1407;;Ziegler;Frank;Volksbank-Ettlingen;M;7211249232;frankziegler@hotmail.de;55603;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1408;;Sommer;Laura;Karstadt Sport;W;7211249657;laurasommer@hotmail.de;55605;F;2011-10-11 19:27:00;2011-10-11 19:27:00
+1409;;Meyer;Karl;;M;7211250082;karlmeyer@hotmail.de;55607;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1410;;Hoffmann;Mark;;M;7211250507;markhoffmann@hotmail.de;55609;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1501;;Bauer;Markus;;M;7211250932;markusbauer@hotmail.de;55611;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1502;;Klein;Edward;;M;7211251357;edwardklein@hotmail.de;55613;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1503;;Bauer;Paula;;W;7211251782;paulabauer@hotmail.de;55615;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1504;;Klein;Edgard;;M;7211252207;edgardklein@web.de;55617;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1505;;Wolf;Costantin;;M;7211252632;costantinwolf@web.de;55619;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1506;;Sauer;Peters;;M;7211253057;peterssauer@web.de;55621;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1507;;Remizova;Walter;;M;7211253482;walterremizova@web.de;55623;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1508;;Mueller;Guenther;;M;7211253907;guenthermueller@web.de;55625;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1509;;Brot;Marta;;W;7211254332;martabrot@web.de;55627;P;2011-10-11 19:27:00;2011-10-11 19:27:00
+1510;;Schmith;Angela;;W;7211254757;angelaschmith@web.de;55629;P;2011-10-11 19:27:00;2011-10-11 19:27:00
