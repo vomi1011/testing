@@ -39,7 +39,7 @@ public class BestellverwaltungTest extends AbstractTest {
 	private static final GregorianCalendar DATUM_NEU = new GregorianCalendar(2011, 10, 01);
 	private static final Status STATUS = Bestellung.Status.NEU;
 	private static final int ANZAHL_BESTELLUNGEN = 5;
-	private static final int ANZAHL_BESTELLPOSITIONEN = 3;
+	private static final int ANZAHL_BESTELLPOSITIONEN = 2;
 	
 	@Inject
 	private Bestellverwaltung bv;

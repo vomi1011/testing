@@ -44,6 +44,8 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 
 	private static final String NACHNAME_NEU = "Kauf";
 	private static final String EMAIL_NEU = "kauf@cdf.de";
+	private static final String EMAIL_NEU_2 = "kauf@cdf.com";
+	private static final String EMAIL_NEU_3 = "kauf@cdf.org";
 	private static final String STRASSE_NEU = "Weg";
 	private static final String HAUSNR_NEU = "22";
 	private static final String PLZ_NEU = "76133";
@@ -69,6 +71,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		
 		final Adresse adresse = new Adresse(strasse , hausnr , plz , ort);
 		AbstractKunde kunde = new Privatkunde(nachname , email , adresse);
+		kunde.setAgbAkzeptiert(true);
 		kunde = kv.createKunde(kunde, LOCALE);
 		assertThat(kunde.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -108,7 +111,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		
 		final String nachname = NACHNAME_NEU;
 		final String nachnameUpdate = "updated";
-		final String email = EMAIL_NEU;
+		final String email = EMAIL_NEU_2;
 		final String strasse = STRASSE_NEU;
 		final String hausnr = HAUSNR_NEU;
 		final String plz = PLZ_NEU;
@@ -116,6 +119,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		
 		final Adresse adresse = new Adresse(strasse, hausnr, plz, ort);
 		AbstractKunde kunde = new Privatkunde(nachname, email, adresse);
+		kunde.setAgbAkzeptiert(true);
 		kunde = kv.createKunde(kunde, LOCALE);
 		assertThat(kunde.getId().longValue() > 0, is(true));
 		trans.commit();
@@ -142,7 +146,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 		LOGGER.debug("BEGINN deleteUpdateKunde");
 
 		final String nachname = NACHNAME_NEU;
-		final String email = EMAIL_NEU;
+		final String email = EMAIL_NEU_3;
 		final String strasse = STRASSE_NEU;
 		final String hausnr = HAUSNR_NEU;
 		final String plz = PLZ_NEU;
@@ -150,6 +154,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 
 		final Adresse adresse = new Adresse(strasse, hausnr, plz, ort);
 		AbstractKunde kunde = new Privatkunde(nachname, email, adresse);
+		kunde.setAgbAkzeptiert(true);
 		kunde = kv.createKunde(kunde, LOCALE);
 		assertThat(kunde.getId().longValue() > 0, is(true));
 		trans.commit();
