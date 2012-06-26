@@ -24,21 +24,35 @@
 					<f:facet name="header">
 						#{msgBv['confirmBestellung.artikel.id']}
 					</f:facet>
-					#{bestellposition.fahrzeug.id}
+					#{pos.fahrzeug.id}
 				</rich:column>
 	
 				<rich:column id="bezeichnungSpalte">
 					<f:facet name="header">
 						#{msgBv['confirmBestellung.artikel.bezeichnung']}
 					</f:facet>
-					#{bestellposition.fahrzeug.modell}
+					#{pos.fahrzeug.modell}
+				</rich:column>
+				
+				<rich:column id="herstellerSpalte">
+						<f:facet name="header">
+							#{msgAv['listArtikel.hersteller']}
+						</f:facet>
+					#{pos.fahrzeug.hersteller.name}
+				</rich:column>
+				
+				<rich:column id="preisSpalte">
+						<f:facet name="header">
+							#{msgAv['listArtikel.preis']}
+						</f:facet>
+					#{pos.fahrzeug.preis}
 				</rich:column>
 	
 				<rich:column id="anzahlSpalte">
 					<f:facet name="header">
 						#{msgBv['confirmBestellung.artikel.anzahl']}
 					</f:facet>
-					#{bestellposition.anzahl}
+					#{pos.anzahl}
 				</rich:column>
 				
 				<f:facet name="footer">
