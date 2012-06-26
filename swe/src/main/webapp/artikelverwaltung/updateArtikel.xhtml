@@ -19,11 +19,10 @@
 			              value="#{msgAv['updateArtikel.keinArtikel']}"
 			              class="error"
 			              rendered="#{empty av.fahrzeug}"/>
-			<!--          
-			<a4j:push id="updateEvent" address="updateKunde"
-		              ondataavailable="if (event.rf.data == '#{kv.kunde.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
+			       
+			<a4j:push id="updateEvent" address="updateArtikel"
+		              ondataavailable="if (event.rf.data == '#{av.fahrzeug.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgAv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
 			<span id="updateMessage"></span>
-			 -->
 			 
 			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
 			<h:form id="updateArtikelForm" rendered="#{not empty av.fahrzeug}">

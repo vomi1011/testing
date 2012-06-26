@@ -19,13 +19,16 @@
 						<h:outputLabel id="bezeichnungLabel"
 						               value="#{msgAv['listArtikel.bezeichnung']}"
 						               for="modell"/>
-						             
+						<!--             
 						<rich:autocomplete id="modell"
 						                   value="#{av.modell}"
 						                   mode="ajax"
 						                   minChars="1"
 						                   autocompleteMethod="#{av.findFahrzeugeByModell}"/> 
-		
+						-->
+						
+						<h:inputText id="modell" value="#{av.modell}"/>
+						
 						<a4j:commandButton id="sucheButton"
 						                   action="#{av.findFahrzeugeByModell}"
 										   value="#{msgAv['listArtikel.submit']}"
@@ -70,6 +73,13 @@
 								#{art.id}
 							</rich:column>
 							
+							<rich:column id="herstellerSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.hersteller']}
+								</f:facet>
+								#{art.hersteller.name}
+							</rich:column>
+							
 							<rich:column id="modellSpalte">
 								<f:facet name="header">
 									#{msgAv['listArtikel.bezeichnung']}
@@ -77,13 +87,13 @@
 								#{art.modell}
 							</rich:column>
 							
-							<rich:column id="bezeichnungSpalte">
+							<rich:column id="beschreibungSpalte">
 								<f:facet name="header">
 									#{msgAv['listArtikel.beschreibung']}
 								</f:facet>
 								#{art.beschreibung}
 							</rich:column>
-
+							
 							<rich:column id="preisSpalte">
 								<f:facet name="header">
 									#{msgAv['listArtikel.preis']}
@@ -91,12 +101,20 @@
 								#{art.preis}
 							</rich:column>
 							
-							<rich:column id="buttonSpalte"
+							<rich:column id="buttonSpalte1"
 							             rendered="#{not empty artikel}">
 								<h:commandButton id="warenkorbButton"
 												 image="#{resource['images:warenkorb.gif']}"
 										         action="#{wk.add(art)}"
 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
+							</rich:column>
+							
+							<rich:column id="buttonSpalte2"
+							             rendered="#{not empty artikel and rich:isUserInRole('admin')}">
+								<h:commandButton id="updatebButton"
+												 image="#{resource['images:edit.gif']}"
+										         action="#{av.selectForUpdate(art)}"
+										         alt="#{msgAv['listArtikel.alt.update']}"/>
 							</rich:column>
 						</rich:dataTable>
 						
