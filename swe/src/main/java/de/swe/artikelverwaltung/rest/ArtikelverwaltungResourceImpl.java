@@ -89,7 +89,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		fahrzeugAlt.setValues(fahrzeug);
 		LOGGER.tracef("%s", fahrzeugAlt);
 		
-		fahrzeug = av.updateFahrzeug(fahrzeug, Locale.getDefault());
+		av.updateFahrzeug(fahrzeug, Locale.getDefault());
 		
 		return Response.noContent().build();
 	}
@@ -102,7 +102,7 @@ public class ArtikelverwaltungResourceImpl implements ArtikelverwaltungResource 
 		LOGGER.tracef("%s", autoherstellerAlt);
 		autoherstellerAlt.setValues(autohersteller);
 		LOGGER.tracef("%s", autoherstellerAlt);
-		autohersteller = av.updateAutohersteller(autohersteller, Locale.getDefault());
+		av.updateAutohersteller(autohersteller, Locale.getDefault());
 		
 		return Response.noContent().build();
 	}

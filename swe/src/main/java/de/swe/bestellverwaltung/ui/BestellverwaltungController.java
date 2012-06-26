@@ -36,7 +36,7 @@ import de.swe.util.Log;
 public class BestellverwaltungController implements Serializable {
 	private static final long serialVersionUID = -1790295502719370565L;
 	
-	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final String JSF_VIEW_BESTELLUNG = "/bestellverwaltung/viewBestellung";
 	

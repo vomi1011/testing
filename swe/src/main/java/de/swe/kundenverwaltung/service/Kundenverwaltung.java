@@ -70,7 +70,7 @@ public class Kundenverwaltung implements Serializable {
 	private SecurityCache securityCache;
 	
 	@Resource
-	private SessionContext ctx;
+	private transient SessionContext ctx;
 	
 	public List<AbstractKunde> findAllKunden(Fetch fetch, Order order) {
 		final List<AbstractKunde> kunden = dao.findAllKunden(fetch, order);

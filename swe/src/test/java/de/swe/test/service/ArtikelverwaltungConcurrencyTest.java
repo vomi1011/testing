@@ -301,7 +301,7 @@ public class ArtikelverwaltungConcurrencyTest extends AbstractTest {
 
 	private class ArtikelverwaltungConcurrencyHelper extends
 			AbstractConcurrencyHelper {
-		private Long artikelId;
+		private final Long artikelId;
 		private Long fahrzeugId;
 		private Long autoherstellerId;
 		private final Long min = Long.valueOf(6000);

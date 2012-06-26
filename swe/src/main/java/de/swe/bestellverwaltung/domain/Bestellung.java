@@ -146,8 +146,8 @@ public class Bestellung implements Serializable {
 
 	public void setGesamtPreis(long gesamtPreis) {
 		
-		for(Bestellposition bp : bestellpositionen){ 
-			this.gesamtPreis += bp.total;
+		for (Bestellposition bp : bestellpositionen) { 
+			this.gesamtPreis += bp.getTotal();
 		}	
 	}
 

@@ -60,7 +60,7 @@ public class ArtikelverwaltungController implements Serializable {
 	private static final int MAX_AUTOCOMPLETE = 10;
 	
 
-	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Inject
 	private Artikelverwaltung av;
@@ -106,9 +106,9 @@ public class ArtikelverwaltungController implements Serializable {
 	 * F&uuml;r rich:autocomplete
 	 * @return Liste der Produkt nach Modelle
 	 */
-	public List<String> findFahrzeugByModell(String modell) {
-		final List<String> modelle = av.findFahrzeugByModell(modell);
-		if (modell.isEmpty()) {
+	public List<String> findFahrzeugByModell(String m) {
+		final List<String> modelle = av.findFahrzeugByModell(m);
+		if (m.isEmpty()) {
 			messages.error(new BundleKey(BESTELLVERWALTUNG, MSG_KEY_ARTIKEL_NOT_FOUND_BY_MODELL), fahrzeufId)
                     .targets(CLIENT_ID_ARTIKEL_MODELL);
 			return modelle;
@@ -160,6 +160,24 @@ public class ArtikelverwaltungController implements Serializable {
 	public void setHersteller(List<Autohersteller> hersteller) {
 		this.hersteller = hersteller;
 	}
+
+	/**
+	 * @return the fahrzeufId
+	 */
+	public Long getFahrzeufId() {
+		return fahrzeufId;
+	}
+
+
+
+	/**
+	 * @param fahrzeufId the fahrzeufId to set
+	 */
+	public void setFahrzeufId(Long fahrzeufId) {
+		this.fahrzeufId = fahrzeufId;
+	}
+
+
 
 	public boolean isGeaendertArtikel() {
 		return geaendertArtikel;
@@ -251,8 +269,8 @@ public class ArtikelverwaltungController implements Serializable {
 		return JSF_SELECT_ARTIKEL;
 	}
 	
-	public String selectForUpdate(Fahrzeug fahrzeug) {
-		this.fahrzeug = fahrzeug;
+	public String selectForUpdate(Fahrzeug f) {
+		this.fahrzeug = f;
 
 		return JSF_UPDATE_ARTIKEL;
 	}

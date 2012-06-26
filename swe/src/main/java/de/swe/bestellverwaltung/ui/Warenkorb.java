@@ -25,7 +25,7 @@ import de.swe.bestellverwaltung.domain.Bestellposition;
 public class Warenkorb implements Serializable {
 	private static final long serialVersionUID = -1981070683990640854L;
 
-	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());;
 	
 	private static final String JSF_VIEW_WARENKORB = "/bestellverwaltung/viewWarenkorb?init=true";
 	private static final int TIMEOUT = 5;

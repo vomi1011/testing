@@ -9,8 +9,8 @@ import de.swe.kundenverwaltung.domain.AbstractKunde;
 @ApplicationException(rollback = true)
 public class KundeDeleteBestellungException extends AbstractKundenverwaltungException {
 	private static final long serialVersionUID = UID;
-	private Long kundeId;
-	private int anzahlBestellungen;
+	private final Long kundeId;
+	private final int anzahlBestellungen;
 	
 	public KundeDeleteBestellungException(AbstractKunde kunde) {
 		super("Kunde mit ID=" + kunde.getId() + " kann nicht geloescht werden: "

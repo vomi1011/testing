@@ -283,7 +283,7 @@ public class BestellverwaltungResourceImpl implements BestellverwaltungResource 
 			throw new NotFoundException(msg);
 		}
 
-		bestellung = bv.stornierenBestellung(bestellung, Locale.getDefault());
+		bv.stornierenBestellung(bestellung, Locale.getDefault());
 		
 		return Response.noContent().build();
 	}

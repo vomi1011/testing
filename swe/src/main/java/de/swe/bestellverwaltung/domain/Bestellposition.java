@@ -78,15 +78,15 @@ public class Bestellposition implements Serializable {
 	private URI fahrzeugUri;
 	
 	@Transient
-	public long total;
+	private long total;
 	
 	@PostLoad
 	protected void postLoad() {
 		total = fahrzeug.getPreis() * anzahl;
 	}
 	
-	//notwendig für Rest
 	public Bestellposition() {
+		super();
 	}
 	
 	public Bestellposition(Fahrzeug fahrzeug) {

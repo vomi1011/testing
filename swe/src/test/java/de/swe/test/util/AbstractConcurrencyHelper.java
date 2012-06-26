@@ -25,7 +25,7 @@ public abstract class AbstractConcurrencyHelper implements Callable<Void> {
 		DELETE
 	}
 	
-	private Cmd cmd;
+	protected Cmd cmd;
 	
 	protected AbstractConcurrencyHelper(Cmd cmd) {
 		this.cmd = cmd;

@@ -180,7 +180,7 @@ public class KundenverwaltungConcurrencyTest extends AbstractTest {
 
 	private class KundenverwaltungConcurrencyHelper extends
 			AbstractConcurrencyHelper {
-		private Long kundeId;
+		private final Long kundeId;
 	
 		protected KundenverwaltungConcurrencyHelper(Cmd cmd, Long id) {
 			super(cmd);

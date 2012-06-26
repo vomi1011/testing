@@ -167,7 +167,7 @@ public class BestellverwaltungConcurrencyTest extends AbstractTest {
 	
 	private class BestellverwaltungConcurrencyHelper extends
 	AbstractConcurrencyHelper {
-		private Long bestellId;
+		private final Long bestellId;
 
 		protected BestellverwaltungConcurrencyHelper(Cmd cmd, Long id) {
 			super(cmd);

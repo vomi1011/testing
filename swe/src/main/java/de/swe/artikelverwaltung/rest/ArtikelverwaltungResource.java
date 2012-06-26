@@ -22,7 +22,6 @@ import org.jboss.resteasy.annotations.providers.jaxb.Formatted;
 
 import de.swe.artikelverwaltung.domain.Autohersteller;
 import de.swe.artikelverwaltung.domain.Fahrzeug;
-import de.swe.util.NotFoundException;
 
 //@Path("/artikelverwaltung")
 @Produces({ APPLICATION_XML, TEXT_XML })

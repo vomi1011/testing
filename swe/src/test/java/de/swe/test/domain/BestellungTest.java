@@ -80,7 +80,7 @@ public class BestellungTest extends AbstractTest {
 		final String bestelld = DATUM_VORHANDEN;
 		Date datum = null;
 		try {
-			datum = new SimpleDateFormat("yyyy-MM-dd").parse(bestelld);
+			datum = new SimpleDateFormat("yyyy-MM-dd", LOCALE).parse(bestelld);
 		}
 		catch (ParseException e) {
 			throw new RuntimeException("Datum konnte nicht erstellt werden: " + e);
@@ -152,9 +152,9 @@ public class BestellungTest extends AbstractTest {
 		catch (ConstraintViolationException e) {
 			final Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
 			for (ConstraintViolation<?> v : violations) {
-				System.out.println("!!! FEHLERMELDUNG>>> " + v.getMessage());
-				System.out.println("!!! ATTRIBUT>>> " + v.getPropertyPath());
-				System.out.println("!!! ATTRIBUTWERT>>> " + v.getInvalidValue());
+				System.err.println("!!! FEHLERMELDUNG>>> " + v.getMessage());
+				System.err.println("!!! ATTRIBUT>>> " + v.getPropertyPath());
+				System.err.println("!!! ATTRIBUTWERT>>> " + v.getInvalidValue());
 			}
 			
 			throw new RuntimeException(e);

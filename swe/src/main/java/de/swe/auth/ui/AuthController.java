@@ -56,7 +56,7 @@ public class AuthController implements Serializable {
 	private String username;
 	private String password;
 	
-	private Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	@Produces
 	@SessionScoped

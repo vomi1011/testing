@@ -20,7 +20,6 @@ import javax.ws.rs.core.UriInfo;
 
 import de.swe.bestellverwaltung.domain.Bestellung;
 import de.swe.kundenverwaltung.domain.AbstractKunde;
-import de.swe.util.NotFoundException;
 
 @Path("/bestellungen")
 @Produces({ APPLICATION_XML, TEXT_XML })
@@ -65,9 +64,9 @@ public interface BestellverwaltungResource {
 	@Produces
 	Response createBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers);
 
-	void updateUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException;
+	void updateUriBestellung(Bestellung bestellung, UriInfo uriInfo);
 	
-	URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo) throws NotFoundException;
+	URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo);
 
 	@DELETE
 	@Path("/bestellungen/{id:[5][0-9]+}")
