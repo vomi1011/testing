@@ -279,9 +279,6 @@ public class ArtikelverwaltungController implements Serializable {
 		if (!geaendertArtikel || fahrzeug == null) {
 			return JSF_INDEX;
 		}
-
-		Autohersteller hrst = av.findAutoherstellerById(herstellerId);
-		fahrzeug.setHersteller(hrst);
 		
 		LOGGER.tracef("artikel = %s", fahrzeug);
 		try {

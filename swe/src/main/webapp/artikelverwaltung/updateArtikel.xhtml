@@ -30,7 +30,7 @@
 					<h:outputText id="idLabel" value="#{msgAv['updateArtikel.id']}"/>
 					<h:inputText id="id" value="#{av.fahrzeug.id}" disabled="true"/>
 					<f:verbatim/>
-					
+					<!--
 					<h:outputLabel id="herstellerLabel" for="herstellerBezeichnung" value="#{msgAv['artikel.hersteller']}"/>
 						<rich:select id="herstellerBezeichnung" defaultLabel="#{av.fahrzeug.hersteller.name}" value="#{av.herstellerId}">
 							<c:forEach var="hersteller" items="#{av.hersteller}">
@@ -38,6 +38,11 @@
 							</c:forEach>
 				    	</rich:select>
 				    <f:verbatim/>
+					-->
+					
+					<h:outputLabel id="herstellerLabel" for="herstellerBezeichnung" value="#{msgAv['updateArtikel.hersteller']}"/>
+					<h:inputText id="hersteller" value="#{av.fahrzeug.hersteller.name}" disabled="true"/>
+					<f:verbatim/>
 					
 					<h:outputLabel id="modellLabel" for="modell" value="#{msgAv['updateArtikel.modell']}"/>
 					<h:inputText id="modell" value="#{av.fahrzeug.modell}" valueChangeListener="#{av.geaendert}"/>
