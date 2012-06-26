@@ -45,7 +45,7 @@
 						<f:facet name="header">
 							#{msgAv['listArtikel.preis']}
 						</f:facet>
-					#{pos.fahrzeug.preis}
+					#{pos.fahrzeug.preis * pos.anzahl}
 				</rich:column>
 	
 				<rich:column id="anzahlSpalte">
