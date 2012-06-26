@@ -30,18 +30,11 @@
 						#{bestellposition.fahrzeug.id}
 					</rich:column>
 					
-					<rich:column id="modellSpalte">
+					<rich:column id="bezeichnungSpalte">
 						<f:facet name="header">
 							#{msgBv['viewWarenkorb.artikel.bezeichnung']}
 						</f:facet>
 						#{bestellposition.fahrzeug.modell}
-					</rich:column>
-					
-					<rich:column id="bezeichnungSpalte">
-						<f:facet name="header">
-							#{msgBv['viewWarenkorb.artikel.beschreibung']}
-						</f:facet>
-						#{bestellposition.fahrzeug.beschreibung}
 					</rich:column>
 		
 					<rich:column id="anzahlSpalte">
@@ -55,14 +48,12 @@
 					                             inputSize="2"/>
 					</rich:column>
 					
-					
-					<!-- <rich:column id="summeSpalte">
+					<rich:column id="summeSpalte">
 						<f:facet name="header">
 							#{msgBv['viewWarenkorb.total']}
 						</f:facet>
 					    #{bestellposition.fahrzeug.preis * bestellposition.anzahl}
 					</rich:column>
-					-->
 					
 					<rich:column id="deleteButton">
 						<h:commandButton image="#{resource['images:delete.gif']}"
