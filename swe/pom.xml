@@ -82,7 +82,7 @@
 		<name>Hochschule Karlsruhe</name>
 		<url>http://www.hs-karlsruhe.de</url>
 	</organization>
-	
+	<!-- hier können die einzelen Entwickler angegeben werden -->
 	<developers>
 		<developer>
 			<id>Nhat.Nguyen</id>
@@ -135,6 +135,7 @@
 	</developers>
 
 	<properties>
+		<!-- Property: welche Klassen sollen getestet werden-->
 		<testklassen>**/*Test.java</testklassen>
 		<domainklassen>**/domain/*.java</domainklassen>
 		
@@ -144,6 +145,10 @@
 		<sqlsrc.dir.postgresql>src/main/resources/postgresql</sqlsrc.dir.postgresql>
 		<test.dir.postgresql>src/test/resources/postgresql</test.dir.postgresql>
 		
+		<!-- hier die Verbindung zur DB genau angeben: 
+		DBName, User
+		wo liegen die CreateAnweisungen... create-tables.sql
+		wo liegen die Daten für die Tabellen... kunde.csv etc. -->
 		<dbname.mysql>swedb</dbname.mysql>
 		<user.mysql>swe</user.mysql>
 		<sqlsrc.dir.mysql>src/main/resources/mysql</sqlsrc.dir.mysql>
@@ -582,6 +587,7 @@
 		
 			<!--
 				Verwendete Software in Form von .jar-Dateien: notwendig fuer Uebersetzung und zur Laufzeit
+				Wenn dem JBOSS Module fehlen, können diese hier angegeben werden. Sie werden dann nachgeladen.
 			-->
 			<dependencies>
 				<dependency>

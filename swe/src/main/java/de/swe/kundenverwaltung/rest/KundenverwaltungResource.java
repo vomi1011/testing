@@ -106,6 +106,7 @@ public interface KundenverwaltungResource {
 	@DELETE
 	@Path("{id:[1-9][0-9]+}")
 	@Produces
+	//@PathParam = /1001
 	Response deleteKunde(@PathParam("id") Long id, @Context UriInfo uriInfo);
 	
 	void updateUriKunde(AbstractKunde kunde, UriInfo uriInfo);

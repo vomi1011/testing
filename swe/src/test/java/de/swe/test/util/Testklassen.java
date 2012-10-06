@@ -3,6 +3,8 @@ package de.swe.test.util;
 import java.util.Arrays;
 import java.util.List;
 
+import de.swe.test.service.ArtikelverwaltungTest;
+import de.swe.test.service.BestellverwaltungTest;
 import de.swe.test.service.KundenverwaltungTest;
 
 public enum Testklassen {
@@ -11,7 +13,9 @@ public enum Testklassen {
 	// Testklassen aus verschiedenen Packages auflisten,
 	// so dass alle darin enthaltenen Klassen ins Web-Archiv mitverpackt werden
 	private final List<Class<? extends AbstractTest>> klassen = Arrays.asList(AbstractTest.class,
-			                                                                  KundenverwaltungTest.class);
+			                                                                  KundenverwaltungTest.class, 
+			                                                                  ArtikelverwaltungTest.class, 
+			                                                                  BestellverwaltungTest.class);
 	
 	public List<Class<? extends AbstractTest>> getTestklassen() {
 		return klassen;

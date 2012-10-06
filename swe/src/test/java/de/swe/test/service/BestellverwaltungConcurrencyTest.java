@@ -21,6 +21,7 @@ import javax.transaction.SystemException;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.logging.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
